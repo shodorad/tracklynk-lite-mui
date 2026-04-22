@@ -36,7 +36,7 @@ export default function VehicleDetails({ next, back, step, total }) {
           <div style={{
             position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)',
             width: 240, height: 60,
-            background: 'radial-gradient(ellipse, rgba(232,101,106,0.12) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(200,255,0,0.12) 0%, transparent 70%)',
             filter: 'blur(10px)',
             pointerEvents: 'none',
           }} />
@@ -100,8 +100,8 @@ export default function VehicleDetails({ next, back, step, total }) {
               onBlur={() => setFocused(null)}
               style={{
                 ...inputStyle,
-                border: `1.5px solid ${focused === 'nick' ? 'rgba(232,101,106,0.6)' : 'rgba(255,255,255,0.09)'}`,
-                boxShadow: focused === 'nick' ? '0 0 0 3px rgba(232,101,106,0.1)' : 'none',
+                border: `1.5px solid ${focused === 'nick' ? 'rgba(200,255,0,0.6)' : 'rgba(255,255,255,0.09)'}`,
+                boxShadow: focused === 'nick' ? '0 0 0 3px rgba(200,255,0,0.1)' : 'none',
               }}
             />
           </div>
@@ -121,8 +121,8 @@ export default function VehicleDetails({ next, back, step, total }) {
                 ...inputStyle,
                 letterSpacing: plate ? '2.5px' : 0,
                 fontWeight: plate ? 700 : 400,
-                border: `1.5px solid ${focused === 'plate' ? 'rgba(232,101,106,0.6)' : 'rgba(255,255,255,0.09)'}`,
-                boxShadow: focused === 'plate' ? '0 0 0 3px rgba(232,101,106,0.1)' : 'none',
+                border: `1.5px solid ${focused === 'plate' ? 'rgba(200,255,0,0.6)' : 'rgba(255,255,255,0.09)'}`,
+                boxShadow: focused === 'plate' ? '0 0 0 3px rgba(200,255,0,0.1)' : 'none',
               }}
             />
           </div>

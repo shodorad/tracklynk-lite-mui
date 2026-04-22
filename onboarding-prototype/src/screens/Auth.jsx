@@ -39,7 +39,7 @@ function FaceIDButton({ onClick }) {
     setTimeout(() => { setState('idle'); onClick?.() }, 2100)
   }
 
-  const color = state === 'verified' ? '#4ade80' : '#E8656A'
+  const color = state === 'verified' ? '#4ade80' : '#C8FF00'
 
   return (
     <motion.button
@@ -176,11 +176,11 @@ export default function Auth({ next, back }) {
             style={{
               width: '100%', height: 54, borderRadius: 18,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              background: 'linear-gradient(135deg, #E8656A 0%, #C42B35 100%)',
+              background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
               border: '1px solid rgba(255,255,255,0.12)',
-              color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer',
+              color: '#000', fontSize: 16, fontWeight: 700, cursor: 'pointer',
               letterSpacing: '-0.2px',
-              boxShadow: '0 8px 32px rgba(232,101,106,0.36), inset 0 1px 0 rgba(255,255,255,0.14)',
+              boxShadow: '0 8px 32px rgba(200,255,0,0.30), inset 0 1px 0 rgba(255,255,255,0.25)',
               fontFamily: 'Inter, sans-serif',
             }}
           >
@@ -226,7 +226,7 @@ export default function Auth({ next, back }) {
             }}
           >
             Sign up with Email{' '}
-            <span style={{ color: '#E8656A' }}>→</span>
+            <span style={{ color: '#C8FF00' }}>→</span>
           </motion.button>
         </motion.div>
 
@@ -255,7 +255,7 @@ export default function Auth({ next, back }) {
             onClick={next}
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              color: '#E8656A', fontSize: 13.5, fontWeight: 700,
+              color: '#C8FF00', fontSize: 13.5, fontWeight: 700,
               fontFamily: 'Inter, sans-serif', padding: 0,
             }}
           >

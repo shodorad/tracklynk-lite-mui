@@ -56,8 +56,8 @@ export default function SignUp({ next, back, step, total }) {
 
           <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 11.5, textAlign: 'center', padding: '4px 0', fontFamily: 'Inter, sans-serif' }}>
             By continuing you agree to our{' '}
-            <span style={{ color: '#E8656A' }}>Terms</span> &amp;{' '}
-            <span style={{ color: '#E8656A' }}>Privacy Policy</span>
+            <span style={{ color: '#C8FF00' }}>Terms</span> &amp;{' '}
+            <span style={{ color: '#C8FF00' }}>Privacy Policy</span>
           </p>
         </motion.div>
       </div>
@@ -88,8 +88,8 @@ function Field({ label, value, onChange, placeholder, type = 'text' }) {
         onBlur={() => setFocused(false)}
         style={{
           ...inputStyle,
-          border: `1.5px solid ${focused ? 'rgba(232,101,106,0.6)' : 'rgba(255,255,255,0.09)'}`,
-          boxShadow: focused ? '0 0 0 3px rgba(232,101,106,0.1)' : 'none',
+          border: `1.5px solid ${focused ? 'rgba(200,255,0,0.6)' : 'rgba(255,255,255,0.09)'}`,
+          boxShadow: focused ? '0 0 0 3px rgba(200,255,0,0.1)' : 'none',
         }}
       />
     </div>
@@ -163,14 +163,14 @@ export function PrimaryButton({ onClick, label, disabled }) {
         borderRadius: 18,
         background: disabled
           ? 'rgba(255,255,255,0.06)'
-          : 'linear-gradient(135deg, #E8656A 0%, #C42B35 100%)',
+          : 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
         border: '1px solid rgba(255,255,255,0.1)',
-        color: disabled ? 'rgba(255,255,255,0.3)' : '#fff',
+        color: disabled ? 'rgba(255,255,255,0.3)' : '#000',
         fontSize: 16,
         fontWeight: 700,
         cursor: disabled ? 'default' : 'pointer',
         letterSpacing: '-0.2px',
-        boxShadow: disabled ? 'none' : '0 8px 28px rgba(232,101,106,0.32), inset 0 1px 0 rgba(255,255,255,0.14)',
+        boxShadow: disabled ? 'none' : '0 8px 28px rgba(200,255,0,0.28), inset 0 1px 0 rgba(255,255,255,0.25)',
         fontFamily: 'Inter, sans-serif',
         transition: 'all 0.2s',
       }}

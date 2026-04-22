@@ -39,7 +39,7 @@ export default function ScanDevice({ next, back, step, total }) {
                   position: 'absolute',
                   inset: -12,
                   borderRadius: 30,
-                  border: '1px solid rgba(232,101,106,0.25)',
+                  border: '1px solid rgba(200,255,0,0.25)',
                   pointerEvents: 'none',
                 }}
               />
@@ -90,9 +90,9 @@ export default function ScanDevice({ next, back, step, total }) {
                     left: 8,
                     right: 8,
                     height: 1.5,
-                    background: 'linear-gradient(90deg, transparent, #E8656A 30%, #E8656A 70%, transparent)',
+                    background: 'linear-gradient(90deg, transparent, #C8FF00 30%, #C8FF00 70%, transparent)',
                     borderRadius: 99,
-                    boxShadow: '0 0 6px rgba(232,101,106,0.7)',
+                    boxShadow: '0 0 6px rgba(200,255,0,0.7)',
                   }}
                 />
               )}
@@ -108,8 +108,8 @@ export default function ScanDevice({ next, back, step, total }) {
                   width: 7,
                   height: 7,
                   borderRadius: '50%',
-                  background: scanned ? '#4ade80' : '#E8656A',
-                  boxShadow: scanned ? '0 0 6px rgba(74,222,128,0.8)' : '0 0 6px rgba(232,101,106,0.6)',
+                  background: scanned ? '#4ade80' : '#C8FF00',
+                  boxShadow: scanned ? '0 0 6px rgba(74,222,128,0.8)' : '0 0 6px rgba(200,255,0,0.6)',
                 }}
               />
             </div>
@@ -181,16 +181,16 @@ export default function ScanDevice({ next, back, step, total }) {
                 gap: 9,
                 padding: '13px 26px',
                 borderRadius: 16,
-                background: 'rgba(232,101,106,0.1)',
+                background: 'rgba(200,255,0,0.1)',
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                border: '1px solid rgba(232,101,106,0.28)',
-                color: '#E8656A',
+                border: '1px solid rgba(200,255,0,0.28)',
+                color: '#C8FF00',
                 fontSize: 14.5,
                 fontWeight: 600,
                 cursor: 'pointer',
                 fontFamily: 'Inter, sans-serif',
-                boxShadow: '0 4px 16px rgba(232,101,106,0.12)',
+                boxShadow: '0 4px 16px rgba(200,255,0,0.12)',
               }}
             >
               <Scan size={17} /> Scan Barcode

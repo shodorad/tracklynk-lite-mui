@@ -55,12 +55,12 @@ export default function ChoosePlan({ next, back, step, total }) {
               top: 4,
               bottom: 4,
               width: 'calc(50% - 4px)',
-              background: 'rgba(232,101,106,0.14)',
+              background: 'rgba(200,255,0,0.14)',
               backdropFilter: 'blur(8px)',
               WebkitBackdropFilter: 'blur(8px)',
               borderRadius: 10,
-              border: '1px solid rgba(232,101,106,0.28)',
-              boxShadow: '0 0 12px rgba(232,101,106,0.1)',
+              border: '1px solid rgba(200,255,0,0.28)',
+              boxShadow: '0 0 12px rgba(200,255,0,0.1)',
             }}
           />
           {['Monthly', 'Annual'].map((label, i) => (
@@ -72,7 +72,7 @@ export default function ChoosePlan({ next, back, step, total }) {
                 padding: '9px 0',
                 background: 'none',
                 border: 'none',
-                color: (i === 1) === annual ? '#E8656A' : 'rgba(255,255,255,0.42)',
+                color: (i === 1) === annual ? '#C8FF00' : 'rgba(255,255,255,0.42)',
                 fontSize: 13,
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -124,7 +124,7 @@ export default function ChoosePlan({ next, back, step, total }) {
             right: -40,
             width: 160,
             height: 160,
-            background: 'radial-gradient(circle, rgba(232,101,106,0.1) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(200,255,0,0.1) 0%, transparent 70%)',
             pointerEvents: 'none',
           }} />
 
@@ -172,14 +172,14 @@ export default function ChoosePlan({ next, back, step, total }) {
                   width: 24,
                   height: 24,
                   borderRadius: 99,
-                  background: 'rgba(232,101,106,0.12)',
-                  border: '1px solid rgba(232,101,106,0.18)',
+                  background: 'rgba(200,255,0,0.12)',
+                  border: '1px solid rgba(200,255,0,0.18)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
                 }}>
-                  <Icon size={12} color="#E8656A" />
+                  <Icon size={12} color="#C8FF00" />
                 </div>
                 <span style={{ color: 'rgba(255,255,255,0.72)', fontSize: 13, fontFamily: 'Inter, sans-serif' }}>{text}</span>
               </div>

@@ -18,7 +18,7 @@ const item = {
   show:   { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 360, damping: 28 } },
 }
 
-export default function Success({ goTo }) {
+export default function Success({ goTo, onEnterApp }) {
   return (
     <div style={{
       height: '100%',
@@ -187,14 +187,14 @@ export default function Success({ goTo }) {
                 width: 36,
                 height: 36,
                 borderRadius: 11,
-                background: 'rgba(232,101,106,0.1)',
-                border: '1px solid rgba(232,101,106,0.18)',
+                background: 'rgba(200,255,0,0.1)',
+                border: '1px solid rgba(200,255,0,0.18)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
               }}>
-                <Icon size={17} color="#E8656A" />
+                <Icon size={17} color="#C8FF00" />
               </div>
               <div>
                 <p style={{ color: '#fff', fontWeight: 600, fontSize: 13.5, marginBottom: 2, fontFamily: 'Inter, sans-serif' }}>
@@ -215,7 +215,7 @@ export default function Success({ goTo }) {
         transition={{ delay: 1.05 }}
         style={{ padding: '18px 24px 48px' }}
       >
-        <PrimaryButton onClick={() => goTo(0)} label="Open TrackLynk" />
+        <PrimaryButton onClick={onEnterApp} label="Open TrackLynk" />
       </motion.div>
     </div>
   )

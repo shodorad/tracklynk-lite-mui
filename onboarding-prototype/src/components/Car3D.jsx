@@ -4,11 +4,10 @@ import carImage from '../../Car_images/vecteezy_white-city-car-isolated-on-trans
  * Car3D — 3/4 perspective render with GPS pin overlay.
  * Uses the pre-rendered 3D PNG (transparent background).
  */
-export default function Car3D({ width = 320, glowColor = '#E8656A' }) {
-  // Convert hex to rgba for glow
+export default function Car3D({ width = 320, glowColor = '#C8FF00' }) {
   const glowRgba = glowColor === '#4ade80'
     ? 'rgba(74,222,128,0.24)'
-    : 'rgba(232,101,106,0.22)'
+    : 'rgba(200,255,0,0.20)'
 
   return (
     <div style={{
@@ -63,13 +62,13 @@ export default function Car3D({ width = 320, glowColor = '#E8656A' }) {
           </defs>
           {/* Ambient glow */}
           <circle cx="14" cy="14" r="13"
-            fill="rgba(232,101,106,0.20)"
+            fill="rgba(200,255,0,0.20)"
             filter="url(#pinGlow)"
           />
           {/* Teardrop */}
           <path
             d="M14 2 C8 2 3 7 3 13 C3 20 10 27 14 33 C18 27 25 20 25 13 C25 7 20 2 14 2Z"
-            fill="#E8656A"
+            fill="#C8FF00"
             filter="url(#pinGlow)"
           />
           {/* Inner dot */}
@@ -79,7 +78,7 @@ export default function Car3D({ width = 320, glowColor = '#E8656A' }) {
         {/* Dashed guide line from pin to roof */}
         <svg width="2" height="18" viewBox="0 0 2 18" style={{ marginTop: -1 }}>
           <line x1="1" y1="0" x2="1" y2="18"
-            stroke="rgba(232,101,106,0.45)" strokeWidth="1.5"
+            stroke="rgba(200,255,0,0.45)" strokeWidth="1.5"
             strokeDasharray="3 3"
           />
         </svg>

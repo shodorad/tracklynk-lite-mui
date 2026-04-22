@@ -64,8 +64,8 @@ export default function ProgressBar({ current, total, onBack, title }) {
           style={{
             height: '100%',
             borderRadius: 99,
-            background: 'linear-gradient(90deg, #E8656A, #F29097)',
-            boxShadow: '0 0 8px rgba(232,101,106,0.5)',
+            background: 'linear-gradient(90deg, #C8FF00, #E5FF6A)',
+            boxShadow: '0 0 8px rgba(200,255,0,0.45)',
           }}
         />
       </div>
@@ -77,8 +77,8 @@ export default function ProgressBar({ current, total, onBack, title }) {
             key={i}
             animate={{
               width: i === current ? 22 : 6,
-              background: i <= current ? '#E8656A' : 'rgba(255,255,255,0.1)',
-              boxShadow: i === current ? '0 0 8px rgba(232,101,106,0.5)' : 'none',
+              background: i <= current ? '#C8FF00' : 'rgba(255,255,255,0.1)',
+              boxShadow: i === current ? '0 0 8px rgba(200,255,0,0.45)' : 'none',
             }}
             transition={{ type: 'spring', stiffness: 400, damping: 28 }}
             style={{ height: 6, borderRadius: 99 }}

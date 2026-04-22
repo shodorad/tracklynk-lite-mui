@@ -66,7 +66,7 @@ function HeroSlide() {
           textAlign: 'center', marginBottom: 8,
         }}
       >
-        Track<span style={{ color: '#E8656A' }}>Lynk</span>
+        Track<span style={{ color: '#C8FF00' }}>Lynk</span>
       </motion.h1>
 
       {/* Tagline */}
@@ -106,15 +106,15 @@ function HeroSlide() {
         {[0, 1, 2].map(i => (
           <div key={i} style={{
             width: 24, height: 24, borderRadius: 7,
-            background: 'rgba(232,101,106,0.12)',
-            border: '1px solid rgba(232,101,106,0.22)',
+            background: 'rgba(200,255,0,0.10)',
+            border: '1px solid rgba(200,255,0,0.18)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
-              <path d="M11.5 5.3L10.6 3H3.4L2.5 5.3H11.5Z" fill="#E8656A" opacity="0.9"/>
-              <rect x="1" y="5.3" width="12" height="3" rx="1" fill="#E8656A" opacity="0.7"/>
-              <circle cx="3.5" cy="9" r="1.2" fill="#E8656A"/>
-              <circle cx="10.5" cy="9" r="1.2" fill="#E8656A"/>
+              <path d="M11.5 5.3L10.6 3H3.4L2.5 5.3H11.5Z" fill="#C8FF00" opacity="0.9"/>
+              <rect x="1" y="5.3" width="12" height="3" rx="1" fill="#C8FF00" opacity="0.7"/>
+              <circle cx="3.5" cy="9" r="1.2" fill="#C8FF00"/>
+              <circle cx="10.5" cy="9" r="1.2" fill="#C8FF00"/>
             </svg>
           </div>
         ))}
@@ -182,11 +182,11 @@ function FeaturesSlide() {
           >
             <div style={{
               width: 42, height: 42, borderRadius: 13, flexShrink: 0,
-              background: 'rgba(232,101,106,0.12)',
-              border: '1px solid rgba(232,101,106,0.20)',
+              background: 'rgba(200,255,0,0.10)',
+              border: '1px solid rgba(200,255,0,0.18)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Icon size={19} color="#E8656A" />
+              <Icon size={19} color="#C8FF00" />
             </div>
             <div>
               <p style={{ color: '#fff', fontWeight: 600, fontSize: 14, marginBottom: 3, fontFamily: 'Inter, sans-serif' }}>
@@ -257,11 +257,11 @@ function PricingSlide() {
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           style={{
             position: 'absolute', top: 3, bottom: 3, width: 'calc(50% - 3px)',
-            background: 'rgba(232,101,106,0.14)',
+            background: 'rgba(200,255,0,0.12)',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
             borderRadius: 9,
-            border: '1px solid rgba(232,101,106,0.28)',
+            border: '1px solid rgba(200,255,0,0.25)',
           }}
         />
         {['Monthly', 'Annual'].map((label, i) => (
@@ -270,7 +270,7 @@ function PricingSlide() {
             onClick={() => setAnnual(i === 1)}
             style={{
               flex: 1, padding: '8px 0', background: 'none', border: 'none',
-              color: (i === 1) === annual ? '#E8656A' : 'rgba(255,255,255,0.4)',
+              color: (i === 1) === annual ? '#C8FF00' : 'rgba(255,255,255,0.4)',
               fontSize: 13, fontWeight: 600, cursor: 'pointer',
               position: 'relative', zIndex: 1,
               fontFamily: 'Inter, sans-serif',
@@ -306,7 +306,7 @@ function PricingSlide() {
       >
         <div style={{
           position: 'absolute', top: -30, right: -30, width: 130, height: 130,
-          background: 'radial-gradient(circle, rgba(232,101,106,0.10) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(200,255,0,0.07) 0%, transparent 70%)',
           pointerEvents: 'none',
         }} />
 
@@ -334,11 +334,11 @@ function PricingSlide() {
             <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{
                 width: 20, height: 20, borderRadius: 99, flexShrink: 0,
-                background: 'rgba(232,101,106,0.12)',
-                border: '1px solid rgba(232,101,106,0.18)',
+                background: 'rgba(200,255,0,0.10)',
+                border: '1px solid rgba(200,255,0,0.18)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <Check size={11} color="#E8656A" />
+                <Check size={11} color="#C8FF00" />
               </div>
               <span style={{ color: 'rgba(255,255,255,0.70)', fontSize: 13, fontFamily: 'Inter, sans-serif' }}>{f}</span>
             </div>
@@ -351,7 +351,7 @@ function PricingSlide() {
 
 // ─── Main component ────────────────────────────────────
 
-export default function Welcome({ next, goTo }) {
+export default function Welcome({ next, goTo, onEnterApp }) {
   const [slide, setSlide] = useState(0)
   const [dir, setDir]     = useState(1)
   const timerRef          = useRef(null)
@@ -431,7 +431,7 @@ export default function Welcome({ next, goTo }) {
             onClick={() => goToSlide(i)}
             animate={{
               width: i === slide ? 24 : 6,
-              background: i === slide ? '#E8656A' : 'rgba(255,255,255,0.20)',
+              background: i === slide ? '#C8FF00' : 'rgba(255,255,255,0.20)',
             }}
             transition={{ type: 'spring', stiffness: 500, damping: 30 }}
             style={{ height: 6, borderRadius: 99, cursor: 'pointer' }}
@@ -451,11 +451,11 @@ export default function Welcome({ next, goTo }) {
           onClick={next}
           style={{
             width: '100%', height: 54, borderRadius: 18,
-            background: 'linear-gradient(135deg, #E8656A 0%, #C42B35 100%)',
+            background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
             border: '1px solid rgba(255,255,255,0.12)',
-            color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer',
+            color: '#000', fontSize: 16, fontWeight: 700, cursor: 'pointer',
             letterSpacing: '-0.2px',
-            boxShadow: '0 8px 32px rgba(232,101,106,0.36), inset 0 1px 0 rgba(255,255,255,0.15)',
+            boxShadow: '0 8px 32px rgba(200,255,0,0.30), inset 0 1px 0 rgba(255,255,255,0.25)',
             fontFamily: 'Inter, sans-serif',
           }}
         >
@@ -468,7 +468,7 @@ export default function Welcome({ next, goTo }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.26 }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => goTo(5)}
+          onClick={onEnterApp}
           style={{
             width: '100%', height: 48, borderRadius: 16,
             background: 'rgba(255,255,255,0.06)',
@@ -496,7 +496,7 @@ export default function Welcome({ next, goTo }) {
           }}
         >
           Already have an account?{' '}
-          <span style={{ color: '#E8656A', fontWeight: 700 }}>Sign In</span>
+          <span style={{ color: '#C8FF00', fontWeight: 700 }}>Sign In</span>
         </motion.button>
 
       </div>

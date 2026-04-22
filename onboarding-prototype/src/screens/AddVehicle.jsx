@@ -37,11 +37,11 @@ export default function AddVehicle({ next, back, step, total }) {
               height: 76,
               borderRadius: 20,
               background: scanning
-                ? 'rgba(232,101,106,0.12)'
-                : 'rgba(232,101,106,0.07)',
+                ? 'rgba(200,255,0,0.12)'
+                : 'rgba(200,255,0,0.07)',
               backdropFilter: 'blur(12px)',
               WebkitBackdropFilter: 'blur(12px)',
-              border: `1.5px dashed ${scanning ? 'rgba(232,101,106,0.7)' : 'rgba(232,101,106,0.3)'}`,
+              border: `1.5px dashed ${scanning ? 'rgba(200,255,0,0.7)' : 'rgba(200,255,0,0.3)'}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -55,12 +55,12 @@ export default function AddVehicle({ next, back, step, total }) {
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                style={{ width: 22, height: 22, border: '2.5px solid #E8656A', borderTopColor: 'transparent', borderRadius: '50%' }}
+                style={{ width: 22, height: 22, border: '2.5px solid #C8FF00', borderTopColor: 'transparent', borderRadius: '50%' }}
               />
             ) : (
-              <Camera size={20} color="#E8656A" />
+              <Camera size={20} color="#C8FF00" />
             )}
-            <span style={{ color: '#E8656A', fontSize: 15, fontWeight: 600, fontFamily: 'Inter, sans-serif' }}>
+            <span style={{ color: '#C8FF00', fontSize: 15, fontWeight: 600, fontFamily: 'Inter, sans-serif' }}>
               {scanning ? 'Scanning barcode...' : 'Scan VIN barcode'}
             </span>
           </motion.button>
@@ -82,11 +82,11 @@ export default function AddVehicle({ next, back, step, total }) {
               onBlur={() => setFocused(false)}
               style={{
                 ...inputStyle,
-                border: `1.5px solid ${isValid ? 'rgba(74,222,128,0.6)' : focused ? 'rgba(232,101,106,0.6)' : 'rgba(255,255,255,0.09)'}`,
+                border: `1.5px solid ${isValid ? 'rgba(74,222,128,0.6)' : focused ? 'rgba(200,255,0,0.6)' : 'rgba(255,255,255,0.09)'}`,
                 boxShadow: isValid
                   ? '0 0 0 3px rgba(74,222,128,0.1)'
                   : focused
-                    ? '0 0 0 3px rgba(232,101,106,0.1)'
+                    ? '0 0 0 3px rgba(200,255,0,0.1)'
                     : 'none',
                 letterSpacing: vin ? '1.5px' : 0,
                 fontSize: vin ? 13 : 15,
