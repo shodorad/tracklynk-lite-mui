@@ -1,58 +1,6 @@
-# TrackLynk Lite — Onboarding Prototype
+# TrackLynk Lite — MUI Prototype
 
-A high-fidelity mobile onboarding prototype for **TrackLynk**, a GPS vehicle tracking app. Built in React with Framer Motion, rendered inside a pixel-accurate iPhone frame at 390×844 px.
-
-![Hero](hero-final.png)
-
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Live Demo](#live-demo)
-- [Screenshots](#screenshots)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Screen Flow](#screen-flow)
-- [Design System](#design-system)
-- [Animation Architecture](#animation-architecture)
-- [Getting Started](#getting-started)
-- [Research & UX Assets](#research--ux-assets)
-- [Known Issues & Next Steps](#known-issues--next-steps)
-
----
-
-## Overview
-
-TrackLynk Lite is a prototype designed to validate the end-to-end onboarding experience for a consumer GPS vehicle tracking product. It covers:
-
-- **Welcome carousel** — hero, feature highlights, and pricing, with auto-advance and drag-to-swipe
-- **OAuth + biometric auth** — Apple, Google, email, and Face ID flows
-- **Account creation** — email/password sign-up form with live validation
-- **Vehicle setup** — VIN barcode scan (simulated) with manual fallback
-- **OBD device pairing** — animated device scan UI
-- **Subscription plan selection** — monthly/annual toggle with animated price transition
-- **Success screen** — animated confirmation with next-steps checklist
-
-The prototype was built to inform native iOS/Android development and user-testing sessions, not for production deployment.
-
----
-
-## Live Demo
-
-Clone the repo and run locally (see [Getting Started](#getting-started)). No hosted deployment yet.
-
----
-
-## Screenshots
-
-| Welcome | Auth | Sign Up |
-|:---:|:---:|:---:|
-| ![Welcome](welcome-carousel.png) | ![Auth](auth-final.png) | ![Hero](hero-final.png) |
-
-| Features | Pricing | Vehicle |
-|:---:|:---:|:---:|
-| ![Features](features-final.png) | ![Pricing](pricing-slide.png) | ![Hero v4](hero-v4.png) |
+A high-fidelity mobile onboarding prototype for **TrackLynk**, a GPS vehicle tracking app. Built in React with a full MUI design system, Framer Motion animations, and Google Maps integration. Renders inside a pixel-accurate iPhone frame at 390×844 px.
 
 ---
 
@@ -61,65 +9,101 @@ Clone the repo and run locally (see [Getting Started](#getting-started)). No hos
 | Layer | Technology |
 |---|---|
 | UI Framework | React 18.3.1 |
+| Component Library | MUI (Material UI) 5.x |
 | Build Tool | Vite 5.3.1 |
 | Animation | Framer Motion 11.0.0 |
 | Icons | Lucide React 0.383.0 |
-| Styling | Tailwind CSS 3.4.4 + inline style objects |
-| CSS Processing | PostCSS 8.4.38 + Autoprefixer |
+| Maps | @react-google-maps/api |
 | Font | Inter (Google Fonts — 400/500/600/700/800/900) |
 | Package Manager | npm |
+
+---
+
+## Design System
+
+All design tokens live in a single file: `onboarding-prototype/src/theme.js`.
+
+### Palette
+
+| Token | Value |
+|---|---|
+| `primary.main` | `#C8FF00` (neon lime) |
+| `primary.dark` | `#8FB800` (olive, gradient end) |
+| `background.default` | `#04050d` |
+| `background.paper` | `#0d0d14` |
+| `text.primary` | `#ffffff` |
+| `text.secondary` | `rgba(255,255,255,0.70)` |
+| `text.disabled` | `rgba(255,255,255,0.38)` |
+
+### Glassmorphism
+
+Shared glass tokens live in `src/styles/glass.js` and are applied via the `GlassCard` component (`src/components/GlassCard.jsx`):
+
+```js
+background: rgba(255,255,255,0.055);
+backdrop-filter: blur(20px) saturate(160%);
+border: 1px solid rgba(255,255,255,0.10);
+```
+
+### Typography
+
+All text uses **Inter** via MUI's `ThemeProvider`. Custom `fontWeightBlack: 900` token is defined for headings (MUI only ships up to `fontWeightBold: 700` by default).
+
+### Component overrides (theme.js)
+
+| Component | Override |
+|---|---|
+| `MuiButton` | Pill shape (borderRadius: 99), lime gradient, glow shadow |
+| `MuiOutlinedInput` | Glass background, lime focus ring |
+| `MuiBottomNavigation` | Glass blur, lime selected state |
+| `MuiLinearProgress` | Lime gradient bar |
+| `MuiAvatar` | Rounded-square (borderRadius: 13) instead of circle |
+| `MuiChip` | Height 36 to match design pill sizing |
 
 ---
 
 ## Project Structure
 
 ```
-Tracklynk-lite/
+tracklynk-lite-mui/
 │
-├── onboarding-prototype/          # Main React application
-│   ├── src/
-│   │   ├── App.jsx                # Navigation shell + phone frame
-│   │   ├── main.jsx               # React entry point
-│   │   ├── index.css              # Global styles, animations, glassmorphism utilities
-│   │   │
-│   │   ├── screens/               # One file per onboarding step
-│   │   │   ├── Welcome.jsx        # Step 0 — 3-slide carousel (hero, features, pricing)
-│   │   │   ├── Auth.jsx           # Step 1 — OAuth + Face ID
-│   │   │   ├── SignUp.jsx         # Step 2 — Email/password form + shared style exports
-│   │   │   ├── AddVehicle.jsx     # Step 3 — VIN barcode scan / manual entry
-│   │   │   ├── VehicleDetails.jsx # Step 4 — Nickname + license plate
-│   │   │   ├── ScanDevice.jsx     # Step 5 — OBD device pairing
-│   │   │   ├── ChoosePlan.jsx     # Step 6 — Subscription plan
-│   │   │   ├── Success.jsx        # Step 7 — Completion + next-steps
-│   │   │   └── ProgressBar.jsx    # Shared: step indicator + back button
-│   │   │
-│   │   └── components/
-│   │       └── Car3D.jsx          # 3D car PNG with GPS pin overlay + ground glow
-│   │
-│   ├── dist/                      # Vite production build output
-│   ├── index.html                 # HTML template
-│   ├── vite.config.js
-│   ├── tailwind.config.js
-│   └── package.json
+├── Plan.md                            # Full migration strategy + hazard notes
+├── README.md
 │
-├── deep-dive/                     # Architecture documentation
-│   └── tracklynk-onboarding-prototype-2026-04-16.md
-│
-├── qa-reports/                    # QA audit reports
-│   ├── welcome-audit-2026-04-16-2131.md
-│   └── ...
-│
-├── Car_images/                    # 3D vehicle render assets
-│
-├── Boucie screenshots/            # Competitor UX research (Bouncie)
-│
-└── Research assets
-    ├── OBD_Feature_Matrix.html
-    ├── OBD_UIX_Research.html
-    ├── TracklynkLite_Competitive_Analysis.pptx
-    ├── Bouncie_UX_Audit.pptx
-    ├── Bouncie_UX_Gap_Analysis.pptx
-    └── vehicle-ui-moodboard.html
+└── onboarding-prototype/              # React application
+    ├── src/
+    │   ├── theme.js                   # MUI theme — single source of truth for all tokens
+    │   ├── App.jsx                    # Navigation shell + iPhone frame
+    │   ├── main.jsx                   # ThemeProvider + CssBaseline entry point
+    │   ├── index.css                  # Global keyframes (car-float, aurora-bg)
+    │   │
+    │   ├── styles/
+    │   │   └── glass.js               # Shared glassmorphism style objects
+    │   │
+    │   ├── components/
+    │   │   ├── GlassCard.jsx          # MUI Box wrapper with glass styles
+    │   │   ├── BottomTabs.jsx         # Custom nav tabs (kept outside MUI — layoutId indicator)
+    │   │   └── Car3D.jsx              # 3D car PNG with GPS pin + ground glow
+    │   │
+    │   └── screens/
+    │       ├── Welcome.jsx            # 3-slide carousel (hero, features, pricing)
+    │       ├── Auth.jsx               # OAuth (Apple, Google) + Face ID
+    │       ├── SignUp.jsx             # Email/password form
+    │       ├── AddVehicle.jsx         # VIN barcode scan / manual entry
+    │       ├── VehicleDetails.jsx     # Nickname + license plate
+    │       ├── ScanDevice.jsx         # OBD device pairing
+    │       ├── DeviceSetupWizard.jsx  # 4-step device setup guide
+    │       ├── Success.jsx            # Completion + next-steps checklist
+    │       ├── Home.jsx               # Map view + conversational AI chat sheet
+    │       ├── Trips.jsx              # Trip history list
+    │       ├── Settings.jsx           # Full settings with nested sub-screens
+    │       ├── ChoosePlan.jsx         # Subscription plan selection
+    │       └── ProgressBar.jsx        # Shared step indicator + back button
+    │
+    ├── Car_images/                    # 3D vehicle render (used by Car3D.jsx)
+    ├── index.html
+    ├── vite.config.js
+    └── package.json
 ```
 
 ---
@@ -129,119 +113,16 @@ Tracklynk-lite/
 ```
 Welcome (carousel)
   └─► Auth (OAuth / Face ID)
-        └─► SignUp (email + password form)
-              └─► AddVehicle (VIN scan / manual)
+        └─► SignUp (email + password)
+              └─► AddVehicle (VIN scan)
                     └─► VehicleDetails (nickname, plate)
                           └─► ScanDevice (OBD pairing)
-                                └─► ChoosePlan (subscription)
+                                └─► DeviceSetupWizard (4-step guide)
                                       └─► Success
-                                            └─► [loops to Welcome via goTo(0)]
+                                            └─► Home (map + chat)
+                                                  ├─► Trips
+                                                  └─► Settings
 ```
-
-### Navigation mechanics
-
-- `next()` — advances one step forward (direction = +1)
-- `back()` — steps backward (direction = −1)
-- `goTo(i)` — jumps to any step; sets direction based on delta
-- All transitions are directional slide animations via Framer Motion `AnimatePresence`
-
-The "Test drive the app" shortcut on the Welcome screen jumps directly to step 5 (ScanDevice) to demonstrate the device-pairing flow without going through account creation.
-
----
-
-## Design System
-
-### Colors
-
-| Token | Value | Usage |
-|---|---|---|
-| Brand red | `#E8656A` | Primary buttons, icons, accents |
-| Brand red dark | `#C42B35` | Button gradient endpoint |
-| Success green | `#4ade80` | Validation states, device confirmed |
-| Background | `#04050d` / `#060810` | App + phone backgrounds |
-| Glass surface | `rgba(255,255,255,0.055)` | Cards, inputs, overlays |
-| Text primary | `#ffffff` | Headings, values |
-| Text secondary | `rgba(255,255,255,0.38–0.42)` | Subtitles, descriptions |
-| Text muted | `rgba(255,255,255,0.22–0.28)` | Legal text, hints |
-
-### Typography
-
-All text uses **Inter**. Common scales:
-
-| Role | Size | Weight |
-|---|---|---|
-| Wordmark | 42px | 900 |
-| Screen heading | 26–30px | 800–900 |
-| Section heading | 28px | 800 |
-| Body / label | 14–15px | 400–600 |
-| Caption / legal | 11–12.5px | 400–600 |
-| Input | 15px | 400 (empty) / 600 (filled) |
-
-### Glassmorphism
-
-Cards and inputs use a consistent glass language:
-
-```css
-background: rgba(255,255,255,0.055);
-backdrop-filter: blur(20px);
-border: 1px solid rgba(255,255,255,0.10);
-```
-
-The `.glass` and `.glass-sm` utility classes in `index.css` encode these. The `glassCard` JS object in `SignUp.jsx` is used inline across screens.
-
-### Phone Frame
-
-The prototype renders inside a `390×844 px` frame (iPhone 12 mini dimensions) with:
-- `border-radius: 48px`
-- Multi-layer `box-shadow` for depth and glow
-- Fixed iOS-style status bar (time: 9:41, signal, WiFi, battery SVGs)
-- Home indicator bar at the bottom
-
----
-
-## Animation Architecture
-
-### Screen transitions (App.jsx)
-
-```js
-const slideVariants = {
-  enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit:  (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 }),
-}
-// Spring: stiffness 380, damping 38, mass 0.8
-```
-
-`AnimatePresence mode="popLayout"` prevents overlapping screens during fast taps.
-
-### Welcome carousel
-
-The 3-slide carousel auto-advances every 4.5 s with `setInterval`. Manual drag (`dragElastic: 0.12`) or dot-tap resets the timer via `startTimer()`. Each slide re-animates its content independently on mount.
-
-### Key micro-interactions
-
-| Interaction | Implementation |
-|---|---|
-| Button press | `whileTap={{ scale: 0.97 }}` |
-| Face ID scanning | State machine: idle → scanning (blinking icon) → verified (check) → idle |
-| OBD scan line | `animate={{ top: ['18%', '78%', '18%'] }}` repeating loop |
-| Status LED | Opacity pulse animation, color switches on `scanned` |
-| VIN validation | Border + shadow transition on `vin.length === 17` |
-| Success checkmark | `pathLength` draw animation on SVG `<path>` |
-| Progress bar | Spring-animated `width` between step percentages |
-| Pricing toggle | Spring-animated sliding indicator div |
-| Feature list | Stagger variant: 90 ms delay between list items |
-| Car float | CSS `@keyframes float` — 8 px translateY over 4 s |
-
-### Spring config reference
-
-| Use | Stiffness | Damping | Mass |
-|---|---|---|---|
-| Screen slides | 380 | 38 | 0.8 |
-| Feature stagger items | 360 | 28 | — |
-| Pricing toggle | 400 | 30 | — |
-| Success badge | 400 | 18 | — |
-| Progress bar | 300 | 32 | — |
 
 ---
 
@@ -260,7 +141,17 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). The prototype renders centered in the browser at any viewport size.
+Open [http://localhost:5173](http://localhost:5173). The prototype renders centered in the browser inside an iPhone frame.
+
+### Google Maps
+
+The Home screen uses Google Maps. Add your API key to `onboarding-prototype/.env`:
+
+```
+VITE_GOOGLE_MAPS_API_KEY=your_key_here
+```
+
+Without a key the map falls back to a dark placeholder.
 
 ### Build
 
@@ -269,54 +160,21 @@ npm run build
 # Output: onboarding-prototype/dist/
 ```
 
-### Preview production build
-
-```bash
-npm run preview
-```
-
 ---
 
-## Research & UX Assets
+## Key Design Decisions
 
-All research materials live at the repo root:
+**Components kept outside MUI:**
+- `BottomTabs.jsx` — MUI `BottomNavigation` has `overflow: hidden` that clips the Framer Motion `layoutId` sliding indicator
+- `Toggle` (in Settings) — MUI Switch uses CSS transitions; the Framer Motion spring feel can't be replicated
+- Pricing slide toggle (in Welcome) — sliding pill requires an absolute-positioned `motion.div` that MUI `ToggleButtonGroup` doesn't support
 
-| File | Description |
-|---|---|
-| `OBD_Feature_Matrix.html` | Comparison of OBD device features across competitors |
-| `OBD_UIX_Research.html` | UX research findings for OBD setup flows |
-| `vehicle-ui-moodboard.html` | Visual moodboard for vehicle UI patterns |
-| `TracklynkLite_Competitive_Analysis.pptx` | Full competitive landscape analysis |
-| `Bouncie_UX_Audit.pptx` | Detailed UX audit of Bouncie (primary competitor) |
-| `Bouncie_UX_Gap_Analysis.pptx` | Gap analysis — Bouncie vs TrackLynk opportunity areas |
-| `Boucie screenshots/` | 15+ annotated screenshots of the Bouncie app |
-| `deep-dive/` | In-depth prototype architecture documentation |
-| `qa-reports/` | QA audit reports per screen |
+**Portal glass blur:** Any `Drawer` or `Dialog` that needs glass blur uses `disablePortal` so it renders inside the phone frame DOM tree rather than at `document.body`, which is outside the stacking context.
 
----
-
-## Known Issues & Next Steps
-
-### Active issues
-
-- `setTimeout` calls in `FaceIDButton` (`Auth.jsx`) and `ScanDevice.jsx` are not cleaned up on unmount. If the user navigates away mid-animation, the callback fires on an unmounted component and advances the step unexpectedly.
-- The "Sign In" button routes to the sign-up flow (`next()`) — sign-in is not yet implemented.
-- Shared style exports (`screenBase`, `glassCard`, `PrimaryButton`, etc.) live in `SignUp.jsx`. This should be refactored into a dedicated `src/ui/` module before scaling the codebase.
-- `goTo(5)` on the "Test drive" button is a hardcoded index — fragile if screen order changes.
-
-### Planned work
-
-- [ ] Extract shared styles/components out of `SignUp.jsx` into `src/ui/index.js`
-- [ ] Clean up `setTimeout` calls with `useEffect` + `clearTimeout`
-- [ ] Implement a real sign-in screen
-- [ ] Add `aria-label` to all icon-only buttons (back button, password toggle)
-- [ ] Add focus management between screen transitions
-- [ ] Replace hardcoded `goTo(5)` with `goTo(SCREENS.indexOf('scan'))`
-- [ ] Implement multi-vehicle support in the vehicle selection step
-- [ ] Connect plan selection to Stripe or RevenueCat (for native handoff)
+**Motion + MUI buttons:** All animated buttons use `motion(Button)` (Framer's `forwardRef`-aware factory), never `component={motion.button}`, to avoid ref conflicts.
 
 ---
 
 ## License
 
-This is a private prototype. All design assets, research materials, and code are proprietary to the TrackLynk project.
+Private prototype. All design assets and code are proprietary to the TrackLynk project.
