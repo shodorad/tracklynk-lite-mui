@@ -1,22 +1,27 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Box, Typography, TextField } from '@mui/material'
 import ProgressBar from './ProgressBar.jsx'
-import { inputStyle, labelStyle, screenBase, headingStyle, subStyle, PrimaryButton, glassCard } from './SignUp.jsx'
+import { GlassCard } from '../components/GlassCard.jsx'
+import { PrimaryButton } from './SignUp.jsx'
 import Car3D from '../components/Car3D.jsx'
 
 export default function VehicleDetails({ next, back, step, total }) {
   const [nickname, setNickname] = useState('')
   const [plate, setPlate] = useState('')
-  const [focused, setFocused] = useState(null)
 
   return (
-    <div style={screenBase}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', pt: '44px', position: 'relative' }}>
       <ProgressBar current={step} total={total} onBack={back} title="Vehicle Details" />
 
-      <div style={{ flex: 1, padding: '16px 24px 0', overflowY: 'auto' }}>
+      <Box sx={{ flex: 1, p: '16px 24px 0', overflowY: 'auto' }}>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <h2 style={headingStyle}>Name your vehicle</h2>
-          <p style={subStyle}>Optional — helps you identify it in the app.</p>
+          <Typography sx={{ fontSize: 26, fontWeight: 800, letterSpacing: '-0.6px', mb: '6px' }}>
+            Name your vehicle
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: 14, mb: '24px' }}>
+            Optional — helps you identify it in the app.
+          </Typography>
         </motion.div>
 
         {/* 3D Car preview card */}
@@ -24,61 +29,38 @@ export default function VehicleDetails({ next, back, step, total }) {
           initial={{ opacity: 0, scale: 0.93 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.18, type: 'spring', stiffness: 280, damping: 26 }}
-          style={{
-            ...glassCard,
-            padding: '20px 16px 14px',
-            marginBottom: 22,
-            position: 'relative',
-            overflow: 'hidden',
-          }}
         >
-          {/* Background glow inside card */}
-          <div style={{
-            position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)',
-            width: 240, height: 60,
-            background: 'radial-gradient(ellipse, rgba(200,255,0,0.12) 0%, transparent 70%)',
-            filter: 'blur(10px)',
-            pointerEvents: 'none',
-          }} />
+          <GlassCard sx={{ p: '20px 16px 14px', mb: '22px', position: 'relative', overflow: 'hidden' }}>
+            <Box sx={{
+              position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)',
+              width: 240, height: 60,
+              background: 'radial-gradient(ellipse, rgba(200,255,0,0.12) 0%, transparent 70%)',
+              filter: 'blur(10px)', pointerEvents: 'none',
+            }} />
 
-          {/* Car SVG */}
-          <div className="car-float" style={{ position: 'relative', zIndex: 1 }}>
-            <Car3D width={310} />
-          </div>
+            <Box className="car-float" sx={{ position: 'relative', zIndex: 1 }}>
+              <Car3D width={310} />
+            </Box>
 
-          {/* Vehicle info row */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: 12,
-            position: 'relative',
-            zIndex: 1,
-          }}>
-            <div>
-              <p style={{ color: '#fff', fontWeight: 700, fontSize: 15, fontFamily: 'Inter, sans-serif' }}>
-                {nickname || 'My Vehicle'}
-              </p>
-              <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}>
-                Toyota Tacoma 2024
-              </p>
-            </div>
-            <div style={{
-              background: 'rgba(74,222,128,0.12)',
-              border: '1px solid rgba(74,222,128,0.22)',
-              borderRadius: 99,
-              padding: '4px 12px',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                <motion.div
-                  animate={{ opacity: [1, 0.3, 1] }}
-                  transition={{ repeat: Infinity, duration: 1.8 }}
-                  style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80' }}
-                />
-                <span style={{ color: '#4ade80', fontSize: 11, fontWeight: 600, fontFamily: 'Inter, sans-serif' }}>Parked</span>
-              </div>
-            </div>
-          </div>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: '12px', position: 'relative', zIndex: 1 }}>
+              <Box>
+                <Typography sx={{ fontWeight: 700, fontSize: 15 }}>
+                  {nickname || 'My Vehicle'}
+                </Typography>
+                <Typography variant="caption" sx={{ fontSize: 12 }}>Toyota Tacoma 2024</Typography>
+              </Box>
+              <Box sx={{ bgcolor: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.22)', borderRadius: '99px', p: '4px 12px' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <motion.div
+                    animate={{ opacity: [1, 0.3, 1] }}
+                    transition={{ repeat: Infinity, duration: 1.8 }}
+                    style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0 }}
+                  />
+                  <Typography sx={{ color: '#4ade80', fontSize: 11, fontWeight: 600 }}>Parked</Typography>
+                </Box>
+              </Box>
+            </Box>
+          </GlassCard>
         </motion.div>
 
         <motion.div
@@ -87,56 +69,42 @@ export default function VehicleDetails({ next, back, step, total }) {
           transition={{ delay: 0.22 }}
           style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
         >
-          <div>
-            <label style={labelStyle}>
+          {/* Nickname */}
+          <Box>
+            <Typography sx={{ color: 'rgba(255,255,255,0.48)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', mb: '8px' }}>
               Nickname{' '}
-              <span style={{ color: 'rgba(255,255,255,0.2)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(optional)</span>
-            </label>
-            <input
+              <Box component="span" sx={{ color: 'rgba(255,255,255,0.2)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(optional)</Box>
+            </Typography>
+            <TextField
+              fullWidth
               placeholder="e.g. Daily Driver, Work Truck..."
               value={nickname}
               onChange={e => setNickname(e.target.value)}
-              onFocus={() => setFocused('nick')}
-              onBlur={() => setFocused(null)}
-              style={{
-                ...inputStyle,
-                border: `1.5px solid ${focused === 'nick' ? 'rgba(200,255,0,0.6)' : 'rgba(255,255,255,0.09)'}`,
-                boxShadow: focused === 'nick' ? '0 0 0 3px rgba(200,255,0,0.1)' : 'none',
-              }}
             />
-          </div>
+          </Box>
 
-          <div>
-            <label style={labelStyle}>
+          {/* License plate */}
+          <Box>
+            <Typography sx={{ color: 'rgba(255,255,255,0.48)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', mb: '8px' }}>
               License Plate{' '}
-              <span style={{ color: 'rgba(255,255,255,0.2)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(optional)</span>
-            </label>
-            <input
+              <Box component="span" sx={{ color: 'rgba(255,255,255,0.2)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(optional)</Box>
+            </Typography>
+            <TextField
+              fullWidth
               placeholder="e.g. ABC 1234"
               value={plate}
               onChange={e => setPlate(e.target.value.toUpperCase())}
-              onFocus={() => setFocused('plate')}
-              onBlur={() => setFocused(null)}
-              style={{
-                ...inputStyle,
-                letterSpacing: plate ? '2.5px' : 0,
-                fontWeight: plate ? 700 : 400,
-                border: `1.5px solid ${focused === 'plate' ? 'rgba(200,255,0,0.6)' : 'rgba(255,255,255,0.09)'}`,
-                boxShadow: focused === 'plate' ? '0 0 0 3px rgba(200,255,0,0.1)' : 'none',
-              }}
+              sx={{ '& input': { letterSpacing: plate ? '2.5px' : 0, fontWeight: plate ? 700 : 400 } }}
             />
-          </div>
+          </Box>
         </motion.div>
-      </div>
+      </Box>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        style={{ padding: '20px 24px 48px' }}
-      >
-        <PrimaryButton onClick={next} label="Continue" />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+        <Box sx={{ p: '20px 24px 48px' }}>
+          <PrimaryButton onClick={next} label="Continue" />
+        </Box>
       </motion.div>
-    </div>
+    </Box>
   )
 }

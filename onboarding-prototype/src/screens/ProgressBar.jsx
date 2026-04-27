@@ -1,77 +1,63 @@
 import { motion } from 'framer-motion'
+import { Box, Typography, Button } from '@mui/material'
 import { ArrowLeft } from 'lucide-react'
+
+const MotionButton = motion(Button)
 
 export default function ProgressBar({ current, total, onBack, title }) {
   const stepNumber = current + 1
   const pct = ((current + 1) / total) * 100
 
   return (
-    <div style={{ padding: '12px 20px 16px', paddingTop: 54 }}>
+    <Box sx={{ p: '12px 20px 16px', pt: '54px' }}>
+
       {/* Back button + label row */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-        <motion.button
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', mb: '16px' }}>
+        <MotionButton
           whileTap={{ scale: 0.88 }}
           onClick={onBack}
-          style={{
-            width: 38,
-            height: 38,
-            borderRadius: 13,
+          variant="outlined"
+          sx={{
+            minWidth: 0, width: 38, height: 38, borderRadius: '13px', p: 0, flexShrink: 0,
             background: 'rgba(255,255,255,0.07)',
             backdropFilter: 'blur(12px)',
             WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            flexShrink: 0,
           }}
         >
           <ArrowLeft size={17} color="rgba(255,255,255,0.8)" />
-        </motion.button>
+        </MotionButton>
 
-        <div style={{ flex: 1 }}>
-          <p style={{
-            color: 'rgba(255,255,255,0.38)',
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: '0.6px',
-            textTransform: 'uppercase',
-            marginBottom: 2,
-            fontFamily: 'Inter, sans-serif',
+        <Box sx={{ flex: 1 }}>
+          <Typography sx={{
+            color: 'text.disabled', fontSize: 11, fontWeight: 600,
+            letterSpacing: '0.6px', textTransform: 'uppercase', mb: '2px',
           }}>
             Step {stepNumber} of {total}
-          </p>
-          <p style={{ color: '#fff', fontSize: 13.5, fontWeight: 700, fontFamily: 'Inter, sans-serif' }}>{title}</p>
-        </div>
+          </Typography>
+          <Typography sx={{ fontSize: 13.5, fontWeight: 700 }}>{title}</Typography>
+        </Box>
 
-        <span style={{ color: 'rgba(255,255,255,0.28)', fontSize: 12, fontWeight: 600, fontFamily: 'Inter, sans-serif' }}>
+        <Typography variant="caption" sx={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.28)' }}>
           {Math.round(pct)}%
-        </span>
-      </div>
+        </Typography>
+      </Box>
 
-      {/* Progress track */}
-      <div style={{
-        height: 3.5,
-        borderRadius: 99,
-        background: 'rgba(255,255,255,0.07)',
-        overflow: 'hidden',
-      }}>
+      {/* Progress track — keeps Framer Motion spring animation */}
+      <Box sx={{ height: '3.5px', borderRadius: '99px', bgcolor: 'rgba(255,255,255,0.07)', overflow: 'hidden' }}>
         <motion.div
           initial={{ width: `${(current / total) * 100}%` }}
           animate={{ width: `${pct}%` }}
           transition={{ type: 'spring', stiffness: 300, damping: 32 }}
           style={{
-            height: '100%',
-            borderRadius: 99,
+            height: '100%', borderRadius: 99,
             background: 'linear-gradient(90deg, #C8FF00, #E5FF6A)',
             boxShadow: '0 0 8px rgba(200,255,0,0.45)',
           }}
         />
-      </div>
+      </Box>
 
       {/* Step dots */}
-      <div style={{ display: 'flex', gap: 5, marginTop: 10, justifyContent: 'center' }}>
+      <Box sx={{ display: 'flex', gap: '5px', mt: '10px', justifyContent: 'center' }}>
         {Array.from({ length: total }).map((_, i) => (
           <motion.div
             key={i}
@@ -84,7 +70,7 @@ export default function ProgressBar({ current, total, onBack, title }) {
             style={{ height: 6, borderRadius: 99 }}
           />
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }

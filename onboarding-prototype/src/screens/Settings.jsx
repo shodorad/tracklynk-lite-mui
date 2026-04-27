@@ -1,5 +1,13 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
+import { GlassCard } from '../components/GlassCard.jsx'
+import { glassCard } from '../styles/glass'
 import {
   ChevronRight, Car, CreditCard, Zap, MapPin, Route,
   Activity, Lock, Fingerprint, LifeBuoy, FileText,
@@ -20,6 +28,8 @@ const slideIn         = { x: '100%', opacity: 0 }
 const slideOut        = { x: '100%', opacity: 0 }
 const center          = { x: 0, opacity: 1 }
 const slideTransition = { type: 'spring', stiffness: 380, damping: 38, mass: 0.8 }
+
+const MotionButton = motion(Button)
 
 /* ─────────────────────────────────────────
    Shared primitives
@@ -60,28 +70,28 @@ function Row({ icon: Icon, iconBg, label, sublabel, value, onPress, toggle, dang
       }}
     >
       {Icon && (
-        <div style={{
-          width: 34, height: 34, borderRadius: 10, flexShrink: 0,
+        <Box sx={{
+          width: 34, height: 34, borderRadius: '10px', flexShrink: 0,
           background: danger ? 'rgba(232,101,106,0.15)' : (iconBg || 'rgba(200,255,0,0.10)'),
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <Icon size={15} color={danger ? '#E8656A' : '#C8FF00'} />
-        </div>
+        </Box>
       )}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ color: danger ? '#E8656A' : '#fff', fontSize: 14.5, fontWeight: 500, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.1px', margin: 0 }}>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography sx={{ color: danger ? '#E8656A' : '#fff', fontSize: 14.5, fontWeight: 500, letterSpacing: '-0.1px', m: 0 }}>
           {label}
-        </p>
+        </Typography>
         {sublabel && (
-          <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, mt: '2px' }}>
             {sublabel}
-          </p>
+          </Typography>
         )}
-      </div>
+      </Box>
       {toggle ? (
         <Toggle on={toggle.on} onToggle={toggle.onToggle} />
       ) : value ? (
-        <span style={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, fontFamily: 'Inter, sans-serif', flexShrink: 0 }}>{value}</span>
+        <Typography component="span" sx={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, flexShrink: 0 }}>{value}</Typography>
       ) : onPress ? (
         <ChevronRight size={15} color="rgba(255,255,255,0.22)" style={{ flexShrink: 0 }} />
       ) : null}
@@ -97,71 +107,68 @@ function Section({ title, delay = 0, children }) {
       style={{ marginBottom: 22 }}
     >
       {title && (
-        <p style={{
+        <Typography sx={{
           color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700,
           letterSpacing: '0.6px', textTransform: 'uppercase',
-          fontFamily: 'Inter, sans-serif', marginBottom: 8, paddingLeft: 4,
+          mb: 1, pl: '4px',
         }}>
           {title}
-        </p>
+        </Typography>
       )}
-      <div style={{
-        background: 'rgba(255,255,255,0.055)',
-        backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.09)',
-        borderRadius: 18, overflow: 'hidden',
-      }}>
+      <GlassCard sx={{ borderRadius: '18px', overflow: 'hidden' }}>
         {children}
-      </div>
+      </GlassCard>
     </motion.div>
   )
 }
 
 function SubNav({ title, onBack, right }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px 12px', flexShrink: 0 }}>
-      <motion.button
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px 12px', flexShrink: 0 }}>
+      <MotionButton
         whileTap={{ scale: 0.88 }} onClick={onBack}
-        style={{
-          width: 36, height: 36, borderRadius: 12,
+        disableRipple disableTouchRipple
+        sx={{
+          minWidth: 0, width: 36, height: 36, borderRadius: '12px',
           background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.09)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer', flexShrink: 0,
+          cursor: 'pointer', flexShrink: 0, p: 0,
         }}
       >
         <ArrowLeft size={16} color="rgba(255,255,255,0.8)" />
-      </motion.button>
-      <p style={{ flex: 1, color: '#fff', fontSize: 17, fontWeight: 700, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.3px', margin: 0 }}>
+      </MotionButton>
+      <Typography sx={{ flex: 1, color: '#fff', fontSize: 17, fontWeight: 700, letterSpacing: '-0.3px', m: 0 }}>
         {title}
-      </p>
+      </Typography>
       {right}
-    </div>
+    </Box>
   )
 }
 
 function EditField({ label, value, onChange, type = 'text', placeholder, disabled }) {
-  const [focused, setFocused] = useState(false)
   return (
-    <div style={{ marginBottom: 14 }}>
-      <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 7px' }}>
+    <Box sx={{ mb: '14px' }}>
+      <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 7px' }}>
         {label}
-      </p>
-      <input
+      </Typography>
+      <TextField
         type={type} value={value} placeholder={placeholder} disabled={disabled}
         onChange={e => onChange(e.target.value)}
-        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-        style={{
-          width: '100%', height: 50, borderRadius: 14, boxSizing: 'border-box',
-          background: disabled ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.07)',
-          backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-          border: `1.5px solid ${focused ? 'rgba(200,255,0,0.55)' : 'rgba(255,255,255,0.09)'}`,
-          boxShadow: focused ? '0 0 0 3px rgba(200,255,0,0.09)' : 'none',
-          color: disabled ? 'rgba(255,255,255,0.3)' : '#fff',
-          fontSize: 15, padding: '0 16px', fontFamily: 'Inter, sans-serif',
-          transition: 'border-color 0.18s, box-shadow 0.18s', outline: 'none',
+        fullWidth
+        variant="outlined"
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            height: 50, borderRadius: '14px',
+            background: disabled ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.07)',
+            backdropFilter: 'blur(12px)',
+            '& fieldset': { borderColor: 'rgba(255,255,255,0.09)', borderWidth: '1.5px' },
+            '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.18)' },
+            '&.Mui-focused fieldset': { borderColor: 'rgba(200,255,0,0.55)', boxShadow: '0 0 0 3px rgba(200,255,0,0.09)' },
+            '& input': { color: disabled ? 'rgba(255,255,255,0.3)' : '#fff', fontSize: 15, padding: '0 16px' },
+          },
         }}
       />
-    </div>
+    </Box>
   )
 }
 
@@ -199,12 +206,12 @@ function PlateField({ value, onChange, optional }) {
       : 'none'
 
   return (
-    <div style={{ marginBottom: 14 }}>
+    <Box sx={{ mb: '14px' }}>
       {/* Label row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
-        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: 0 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: '7px' }}>
+        <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: 0 }}>
           License Plate{optional ? ' (optional)' : ''}
-        </p>
+        </Typography>
         {/* Character counter — only show when approaching the limit */}
         <AnimatePresence>
           {value.length > 0 && (
@@ -212,7 +219,7 @@ function PlateField({ value, onChange, optional }) {
               key="counter"
               initial={{ opacity: 0, x: 6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 6 }}
               style={{
-                fontSize: 11, fontFamily: 'Inter, sans-serif',
+                fontSize: 11,
                 color: remaining <= 2 ? '#E8656A' : 'rgba(255,255,255,0.28)',
                 fontWeight: 600,
               }}
@@ -221,27 +228,29 @@ function PlateField({ value, onChange, optional }) {
             </motion.span>
           )}
         </AnimatePresence>
-      </div>
+      </Box>
 
       {/* Input row */}
-      <div style={{ position: 'relative' }}>
-        <input
+      <Box sx={{ position: 'relative' }}>
+        <TextField
           value={value}
           onChange={e => handleChange(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder="e.g. 8ABC123"
-          autoCapitalize="characters"
-          style={{
-            width: '100%', height: 50, borderRadius: 14, boxSizing: 'border-box',
-            background: 'rgba(255,255,255,0.07)',
-            backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-            border: `1.5px solid ${borderColor}`,
-            boxShadow,
-            color: '#fff', fontSize: 16, fontWeight: 600,
-            padding: '0 44px 0 16px',
-            fontFamily: 'Inter, sans-serif', letterSpacing: '1.5px',
-            transition: 'border-color 0.18s, box-shadow 0.18s', outline: 'none',
+          inputProps={{ autoCapitalize: 'characters' }}
+          fullWidth
+          variant="outlined"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              height: 50, borderRadius: '14px',
+              background: 'rgba(255,255,255,0.07)',
+              backdropFilter: 'blur(12px)',
+              '& fieldset': { borderColor: borderColor, borderWidth: '1.5px', boxShadow },
+              '&:hover fieldset': { borderColor: borderColor },
+              '&.Mui-focused fieldset': { borderColor: borderColor, boxShadow },
+              '& input': { color: '#fff', fontSize: 16, fontWeight: 600, padding: '0 44px 0 16px', letterSpacing: '1.5px' },
+            },
           }}
         />
         {/* Validity checkmark */}
@@ -261,29 +270,29 @@ function PlateField({ value, onChange, optional }) {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </Box>
 
       {/* Hint */}
-      <p style={{ color: 'rgba(255,255,255,0.22)', fontSize: 11.5, fontFamily: 'Inter, sans-serif', margin: '6px 0 0' }}>
+      <Typography sx={{ color: 'rgba(255,255,255,0.22)', fontSize: 11.5, mt: '6px' }}>
         Letters & numbers only · auto-uppercased
-      </p>
-    </div>
+      </Typography>
+    </Box>
   )
 }
 
 function Avatar({ initial, size = 72 }) {
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <div style={{
-        width: size, height: size, borderRadius: size / 2,
+    <Box sx={{ position: 'relative', display: 'inline-block' }}>
+      <Box sx={{
+        width: size, height: size, borderRadius: `${size / 2}px`,
         background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         boxShadow: '0 0 0 3px rgba(200,255,0,0.2)',
       }}>
-        <span style={{ color: '#000', fontSize: size * 0.34, fontWeight: 800, fontFamily: 'Inter, sans-serif', lineHeight: 1 }}>
+        <Typography component="span" sx={{ color: '#000', fontSize: size * 0.34, fontWeight: 800, lineHeight: 1 }}>
           {initial}
-        </span>
-      </div>
+        </Typography>
+      </Box>
       <motion.div whileTap={{ scale: 0.9 }} style={{
         position: 'absolute', bottom: -2, right: -2, width: 28, height: 28, borderRadius: 14,
         background: 'rgba(18,22,32,0.95)', border: '1.5px solid rgba(255,255,255,0.15)',
@@ -291,7 +300,7 @@ function Avatar({ initial, size = 72 }) {
       }}>
         <Camera size={13} color="rgba(255,255,255,0.7)" />
       </motion.div>
-    </div>
+    </Box>
   )
 }
 
@@ -311,11 +320,12 @@ function Spinner({ color = '#000', size = 18 }) {
 
 function PrimaryBtn({ label, onClick, disabled, loading, done, icon: Icon }) {
   return (
-    <motion.button
+    <MotionButton
       whileTap={!disabled && !loading ? { scale: 0.97 } : {}}
       onClick={onClick}
-      style={{
-        width: '100%', height: 54, borderRadius: 18,
+      disableRipple disableTouchRipple
+      sx={{
+        width: '100%', height: 54, borderRadius: '18px',
         background: done
           ? 'linear-gradient(135deg, #4ade80, #22c55e)'
           : !disabled && !loading
@@ -323,15 +333,17 @@ function PrimaryBtn({ label, onClick, disabled, loading, done, icon: Icon }) {
             : 'rgba(255,255,255,0.06)',
         border: '1px solid rgba(255,255,255,0.08)',
         color: done ? '#fff' : !disabled && !loading ? '#000' : 'rgba(255,255,255,0.25)',
-        fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.2px',
+        fontSize: 16, fontWeight: 700, letterSpacing: '-0.2px',
         cursor: !disabled && !loading ? 'pointer' : 'default',
         boxShadow: !disabled && !loading && !done ? '0 8px 28px rgba(200,255,0,0.25), inset 0 1px 0 rgba(255,255,255,0.22)' : 'none',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
         transition: 'background 0.25s, color 0.25s, box-shadow 0.25s',
+        minWidth: 0, textTransform: 'none',
+        '&:hover': { background: done ? 'linear-gradient(135deg, #4ade80, #22c55e)' : !disabled && !loading ? 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)' : 'rgba(255,255,255,0.06)' },
       }}
     >
       {done ? <><Check size={18} /> Saved</> : loading ? <Spinner /> : label}
-    </motion.button>
+    </MotionButton>
   )
 }
 
@@ -340,15 +352,15 @@ function PrimaryBtn({ label, onClick, disabled, loading, done, icon: Icon }) {
 ───────────────────────────────────────── */
 function SignalBars({ level, max = 5 }) {
   return (
-    <div style={{ display: 'flex', gap: 3, alignItems: 'flex-end' }}>
+    <Box sx={{ display: 'flex', gap: '3px', alignItems: 'flex-end' }}>
       {Array.from({ length: max }).map((_, i) => (
-        <div key={i} style={{
-          width: 4, height: 5 + i * 3, borderRadius: 2,
+        <Box key={i} sx={{
+          width: 4, height: 5 + i * 3, borderRadius: '2px',
           background: i < level ? '#C8FF00' : 'rgba(255,255,255,0.15)',
           transition: 'background 0.3s',
         }} />
       ))}
-    </div>
+    </Box>
   )
 }
 
@@ -369,32 +381,32 @@ function ProfileEditView({ profile, onSave, onBack }) {
   }
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav title="Edit Profile" onBack={onBack} />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '8px 20px', paddingBottom: 96 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '8px 20px', paddingBottom: '96px' }}>
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 32 }}
         >
           <Avatar initial={form.first[0]?.toUpperCase() || 'J'} size={80} />
-          <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', marginTop: 10 }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, mt: '10px' }}>
             Tap to change photo
-          </p>
+          </Typography>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <div style={{ flex: 1 }}><EditField label="First name" value={form.first} onChange={set('first')} placeholder="Jane" /></div>
-            <div style={{ flex: 1 }}><EditField label="Last name"  value={form.last}  onChange={set('last')}  placeholder="Smith" /></div>
-          </div>
+          <Box sx={{ display: 'flex', gap: '10px' }}>
+            <Box sx={{ flex: 1 }}><EditField label="First name" value={form.first} onChange={set('first')} placeholder="Jane" /></Box>
+            <Box sx={{ flex: 1 }}><EditField label="Last name"  value={form.last}  onChange={set('last')}  placeholder="Smith" /></Box>
+          </Box>
           <EditField label="Email address" value={form.email} onChange={set('email')} type="email" placeholder="jane@email.com" />
           <EditField label="Mobile number" value={form.phone} onChange={set('phone')} type="tel"   placeholder="+1 (555) 000-0000" />
         </motion.div>
-      </div>
+      </Box>
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
         style={{ padding: '12px 20px 36px', flexShrink: 0 }}
       >
         <PrimaryBtn label="Save Changes" onClick={handleSave} disabled={!hasChanges} loading={saving && !done} done={done} />
       </motion.div>
-    </div>
+    </Box>
   )
 }
 
@@ -428,47 +440,41 @@ function VehicleDetailView({ vehicle, onSave, onRemove, onBack }) {
   const connected = vehicle.device.connected
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav title={vehicle.nickname} onBack={onBack} />
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '4px 16px', paddingBottom: 96 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '4px 16px', paddingBottom: '96px' }}>
 
         {/* Vehicle hero card */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 }}
-          style={{
-            background: 'rgba(255,255,255,0.055)',
-            backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.09)',
-            borderRadius: 18, padding: '18px 16px', marginBottom: 22,
-            display: 'flex', alignItems: 'center', gap: 14,
-          }}
+          style={{ ...glassCard, borderRadius: 18, padding: '18px 16px', marginBottom: 22, display: 'flex', alignItems: 'center', gap: 14 }}
         >
-          <div style={{
-            width: 52, height: 52, borderRadius: 16, flexShrink: 0,
+          <Box sx={{
+            width: 52, height: 52, borderRadius: '16px', flexShrink: 0,
             background: 'rgba(200,255,0,0.10)',
             border: '1px solid rgba(200,255,0,0.18)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <Car size={24} color="#C8FF00" />
-          </div>
-          <div style={{ flex: 1 }}>
-            <p style={{ color: '#fff', fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.2px', margin: '0 0 4px' }}>
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <Typography sx={{ color: '#fff', fontSize: 16, fontWeight: 700, letterSpacing: '-0.2px', m: '0 0 4px' }}>
               {form.nickname}
-            </p>
-            <p style={{ color: 'rgba(255,255,255,0.42)', fontSize: 13, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+            </Typography>
+            <Typography sx={{ color: 'rgba(255,255,255,0.42)', fontSize: 13, m: 0 }}>
               {vehicle.year} {vehicle.make} {vehicle.model} · {vehicle.trim}
-            </p>
-          </div>
+            </Typography>
+          </Box>
           {form.plate ? (
-            <div style={{
+            <Box sx={{
               background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)',
-              borderRadius: 8, padding: '5px 10px', flexShrink: 0,
+              borderRadius: '8px', padding: '5px 10px', flexShrink: 0,
             }}>
-              <p style={{ color: '#fff', fontSize: 12, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0, letterSpacing: '0.5px' }}>
+              <Typography sx={{ color: '#fff', fontSize: 12, fontWeight: 600, m: 0, letterSpacing: '0.5px' }}>
                 {form.plate}
-              </p>
-            </div>
+              </Typography>
+            </Box>
           ) : null}
         </motion.div>
 
@@ -477,21 +483,16 @@ function VehicleDetailView({ vehicle, onSave, onRemove, onBack }) {
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.07 }}
           style={{ marginBottom: 22 }}
         >
-          <p style={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', marginBottom: 8, paddingLeft: 4 }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', mb: 1, pl: '4px' }}>
             OBD-II Device
-          </p>
-          <div style={{
-            background: 'rgba(255,255,255,0.055)',
-            backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.09)',
-            borderRadius: 18, padding: '16px',
-          }}>
+          </Typography>
+          <GlassCard sx={{ borderRadius: '18px', padding: '16px' }}>
             {/* Status row */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div style={{ position: 'relative', width: 10, height: 10 }}>
-                  <div style={{
-                    width: 10, height: 10, borderRadius: 5,
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: '12px' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Box sx={{ position: 'relative', width: 10, height: 10 }}>
+                  <Box sx={{
+                    width: 10, height: 10, borderRadius: '5px',
                     background: connected ? '#4ade80' : '#E8656A',
                   }} />
                   {connected && (
@@ -504,24 +505,24 @@ function VehicleDetailView({ vehicle, onSave, onRemove, onBack }) {
                       }}
                     />
                   )}
-                </div>
-                <span style={{ color: connected ? '#4ade80' : '#E8656A', fontSize: 13, fontWeight: 600, fontFamily: 'Inter, sans-serif' }}>
+                </Box>
+                <Typography component="span" sx={{ color: connected ? '#4ade80' : '#E8656A', fontSize: 13, fontWeight: 600 }}>
                   {connected ? 'Connected' : 'Disconnected'}
-                </span>
-              </div>
+                </Typography>
+              </Box>
               <SignalBars level={connected ? vehicle.device.signal : 0} />
-            </div>
+            </Box>
 
             {/* Device info */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div>
-                <p style={{ color: '#fff', fontSize: 14, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: '0 0 3px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Box>
+                <Typography sx={{ color: '#fff', fontSize: 14, fontWeight: 500, m: '0 0 3px' }}>
                   TrackLynk OBD-II
-                </p>
-                <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+                </Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: 0 }}>
                   Last seen {vehicle.device.lastSeen}
-                </p>
-              </div>
+                </Typography>
+              </Box>
               <motion.button
                 whileTap={{ scale: 0.92 }}
                 onClick={handleRepair}
@@ -536,25 +537,20 @@ function VehicleDetailView({ vehicle, onSave, onRemove, onBack }) {
                 ) : (
                   <RotateCcw size={13} color="rgba(255,255,255,0.6)" />
                 )}
-                <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, fontWeight: 500, fontFamily: 'Inter, sans-serif' }}>
+                <Typography component="span" sx={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, fontWeight: 500 }}>
                   {repairing ? 'Pairing…' : 'Re-pair'}
-                </span>
+                </Typography>
               </motion.button>
-            </div>
-          </div>
+            </Box>
+          </GlassCard>
         </motion.div>
 
         {/* Edit details */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.10 }}>
-          <p style={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', marginBottom: 8, paddingLeft: 4 }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', mb: 1, pl: '4px' }}>
             Details
-          </p>
-          <div style={{
-            background: 'rgba(255,255,255,0.055)',
-            backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.09)',
-            borderRadius: 18, padding: '16px',
-          }}>
+          </Typography>
+          <GlassCard sx={{ borderRadius: '18px', padding: '16px' }}>
             <EditField
               label="Nickname"
               value={form.nickname}
@@ -562,7 +558,7 @@ function VehicleDetailView({ vehicle, onSave, onRemove, onBack }) {
               placeholder="e.g. My Tesla"
             />
             <PlateField value={form.plate} onChange={v => setForm(f => ({ ...f, plate: v }))} />
-          </div>
+          </GlassCard>
         </motion.div>
 
         {/* Save button */}
@@ -585,62 +581,68 @@ function VehicleDetailView({ vehicle, onSave, onRemove, onBack }) {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.13 }} style={{ marginTop: 24 }}>
           <AnimatePresence mode="wait">
             {removeState === 'idle' ? (
-              <motion.button
+              <MotionButton
                 key="remove-idle"
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setRemoveState('confirm')}
-                style={{
-                  width: '100%', height: 50, borderRadius: 16,
+                disableRipple disableTouchRipple
+                sx={{
+                  width: '100%', height: 50, borderRadius: '16px',
                   background: 'rgba(232,101,106,0.1)', border: '1px solid rgba(232,101,106,0.22)',
                   color: '#E8656A', fontSize: 15, fontWeight: 600,
-                  fontFamily: 'Inter, sans-serif', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  cursor: 'pointer', textTransform: 'none', minWidth: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  '&:hover': { background: 'rgba(232,101,106,0.15)' },
                 }}
               >
                 <Trash2 size={15} /> Remove Vehicle
-              </motion.button>
+              </MotionButton>
             ) : (
               <motion.div
                 key="remove-confirm"
                 initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
               >
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, textAlign: 'center', fontFamily: 'Inter, sans-serif', marginBottom: 10 }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, textAlign: 'center', mb: '10px' }}>
                   Remove {vehicle.nickname}? This can't be undone.
-                </p>
-                <div style={{ display: 'flex', gap: 10 }}>
-                  <motion.button
+                </Typography>
+                <Box sx={{ display: 'flex', gap: '10px' }}>
+                  <MotionButton
                     whileTap={{ scale: 0.97 }}
                     onClick={() => setRemoveState('idle')}
-                    style={{
-                      flex: 1, height: 50, borderRadius: 16,
+                    disableRipple disableTouchRipple
+                    sx={{
+                      flex: 1, height: 50, borderRadius: '16px',
                       background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)',
                       color: '#fff', fontSize: 15, fontWeight: 600,
-                      fontFamily: 'Inter, sans-serif', cursor: 'pointer',
+                      cursor: 'pointer', textTransform: 'none', minWidth: 0,
+                      '&:hover': { background: 'rgba(255,255,255,0.10)' },
                     }}
                   >
                     Cancel
-                  </motion.button>
-                  <motion.button
+                  </MotionButton>
+                  <MotionButton
                     whileTap={{ scale: 0.97 }}
                     onClick={() => onRemove(vehicle.id)}
-                    style={{
-                      flex: 1, height: 50, borderRadius: 16,
+                    disableRipple disableTouchRipple
+                    sx={{
+                      flex: 1, height: 50, borderRadius: '16px',
                       background: '#E8656A', border: 'none',
                       color: '#fff', fontSize: 15, fontWeight: 700,
-                      fontFamily: 'Inter, sans-serif', cursor: 'pointer',
+                      cursor: 'pointer', textTransform: 'none', minWidth: 0,
+                      '&:hover': { background: '#d95a5f' },
                     }}
                   >
                     Yes, Remove
-                  </motion.button>
-                </div>
+                  </MotionButton>
+                </Box>
               </motion.div>
             )}
           </AnimatePresence>
         </motion.div>
 
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
@@ -652,7 +654,7 @@ const DETECTED_CAR  = { year: '2023', make: 'Honda', model: 'Civic', trim: 'Spor
 
 function StepDots({ current, total }) {
   return (
-    <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
       {Array.from({ length: total }).map((_, i) => (
         <motion.div
           key={i}
@@ -661,7 +663,7 @@ function StepDots({ current, total }) {
           style={{ height: 6, borderRadius: 99 }}
         />
       ))}
-    </div>
+    </Box>
   )
 }
 
@@ -704,7 +706,7 @@ function AddVehicleView({ onAdd, onBack }) {
   }
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav
         title="Add Vehicle"
         onBack={onBack}
@@ -722,33 +724,36 @@ function AddVehicleView({ onAdd, onBack }) {
             style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '8px 20px', paddingBottom: 96, overflowY: 'auto' }}
           >
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-              <p style={{ color: '#fff', fontSize: 22, fontWeight: 800, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.5px', margin: '4px 0 6px' }}>
+              <Typography sx={{ color: '#fff', fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', m: '4px 0 6px' }}>
                 Enter your VIN
-              </p>
-              <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 14, fontFamily: 'Inter, sans-serif', margin: '0 0 28px' }}>
+              </Typography>
+              <Typography sx={{ color: 'rgba(255,255,255,0.38)', fontSize: 14, m: '0 0 28px' }}>
                 Found on your dashboard, door jamb, or registration.
-              </p>
+              </Typography>
             </motion.div>
 
             {/* VIN field + scan button */}
             <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}>
-              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 7px' }}>
+              <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 7px' }}>
                 VIN (17 characters)
-              </p>
-              <div style={{ position: 'relative' }}>
-                <input
+              </Typography>
+              <Box sx={{ position: 'relative' }}>
+                <TextField
                   value={vin}
                   onChange={e => setVin(e.target.value.toUpperCase().slice(0, 17))}
                   placeholder="e.g. 1HGBH41JXMN109186"
-                  maxLength={17}
-                  style={{
-                    width: '100%', height: 50, borderRadius: 14, boxSizing: 'border-box',
-                    background: 'rgba(255,255,255,0.07)',
-                    backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-                    border: `1.5px solid ${vin.length === 17 ? 'rgba(200,255,0,0.5)' : 'rgba(255,255,255,0.09)'}`,
-                    color: '#fff', fontSize: 14, padding: '0 52px 0 16px',
-                    fontFamily: 'Inter, sans-serif', letterSpacing: '0.5px',
-                    outline: 'none', transition: 'border-color 0.2s',
+                  inputProps={{ maxLength: 17 }}
+                  fullWidth
+                  variant="outlined"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      height: 50, borderRadius: '14px',
+                      background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)',
+                      '& fieldset': { borderColor: vin.length === 17 ? 'rgba(200,255,0,0.5)' : 'rgba(255,255,255,0.09)', borderWidth: '1.5px' },
+                      '&:hover fieldset': { borderColor: vin.length === 17 ? 'rgba(200,255,0,0.5)' : 'rgba(255,255,255,0.18)' },
+                      '&.Mui-focused fieldset': { borderColor: 'rgba(200,255,0,0.55)' },
+                      '& input': { color: '#fff', fontSize: 14, padding: '0 52px 0 16px', letterSpacing: '0.5px' },
+                    },
                   }}
                 />
                 <motion.button
@@ -764,10 +769,10 @@ function AddVehicleView({ onAdd, onBack }) {
                 >
                   {scanning ? <Spinner color="#C8FF00" size={14} /> : <ScanLine size={15} color="#C8FF00" />}
                 </motion.button>
-              </div>
-              <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '8px 0 0', textAlign: 'center' }}>
-                Or tap <span style={{ color: '#C8FF00' }}>scan</span> to read the barcode
-              </p>
+              </Box>
+              <Typography sx={{ color: 'rgba(255,255,255,0.28)', fontSize: 12, mt: '8px', textAlign: 'center' }}>
+                Or tap <Typography component="span" sx={{ color: '#C8FF00' }}>scan</Typography> to read the barcode
+              </Typography>
             </motion.div>
 
             {/* Detected chip (appears after verifying) */}
@@ -784,35 +789,37 @@ function AddVehicleView({ onAdd, onBack }) {
                   }}
                 >
                   <Check size={15} color="#4ade80" style={{ flexShrink: 0 }} />
-                  <p style={{ color: '#4ade80', fontSize: 13, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+                  <Typography sx={{ color: '#4ade80', fontSize: 13, fontWeight: 600, m: 0 }}>
                     Found: {detected.year} {detected.make} {detected.model} · {detected.trim}
-                  </p>
+                  </Typography>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            <div style={{ flex: 1 }} />
+            <Box sx={{ flex: 1 }} />
 
-            <motion.button
+            <MotionButton
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
               whileTap={vin.length > 0 && !verifying ? { scale: 0.97 } : {}}
               onClick={handleContinue}
-              style={{
-                width: '100%', height: 54, borderRadius: 18,
+              disableRipple disableTouchRipple
+              sx={{
+                width: '100%', height: 54, borderRadius: '18px',
                 background: vin.length > 0 && !verifying
                   ? 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)'
                   : 'rgba(255,255,255,0.06)',
                 border: '1px solid rgba(255,255,255,0.08)',
                 color: vin.length > 0 && !verifying ? '#000' : 'rgba(255,255,255,0.25)',
-                fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif',
+                fontSize: 16, fontWeight: 700, textTransform: 'none', minWidth: 0,
                 cursor: vin.length > 0 && !verifying ? 'pointer' : 'default',
                 boxShadow: vin.length > 0 && !verifying ? '0 8px 28px rgba(200,255,0,0.25)' : 'none',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                 transition: 'all 0.2s',
+                '&:hover': { background: vin.length > 0 && !verifying ? 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)' : 'rgba(255,255,255,0.06)' },
               }}
             >
               {verifying ? <><Spinner />&nbsp;Verifying VIN…</> : 'Continue'}
-            </motion.button>
+            </MotionButton>
           </motion.div>
         )}
 
@@ -825,12 +832,12 @@ function AddVehicleView({ onAdd, onBack }) {
             style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '8px 20px', paddingBottom: 96, overflowY: 'auto' }}
           >
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 }}>
-              <p style={{ color: '#fff', fontSize: 22, fontWeight: 800, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.5px', margin: '4px 0 6px' }}>
+              <Typography sx={{ color: '#fff', fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', m: '4px 0 6px' }}>
                 Name your vehicle
-              </p>
-              <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 14, fontFamily: 'Inter, sans-serif', margin: '0 0 20px' }}>
+              </Typography>
+              <Typography sx={{ color: 'rgba(255,255,255,0.38)', fontSize: 14, m: '0 0 20px' }}>
                 Give it a nickname you'll recognize.
-              </p>
+              </Typography>
             </motion.div>
 
             {/* Detected vehicle chip */}
@@ -843,14 +850,14 @@ function AddVehicleView({ onAdd, onBack }) {
               }}
             >
               <Car size={16} color="#C8FF00" style={{ flexShrink: 0 }} />
-              <div style={{ flex: 1 }}>
-                <p style={{ color: '#C8FF00', fontSize: 13, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+              <Box sx={{ flex: 1 }}>
+                <Typography sx={{ color: '#C8FF00', fontSize: 13, fontWeight: 600, m: 0 }}>
                   {detected?.year} {detected?.make} {detected?.model}
-                </p>
-                <p style={{ color: 'rgba(200,255,0,0.6)', fontSize: 11, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>
+                </Typography>
+                <Typography sx={{ color: 'rgba(200,255,0,0.6)', fontSize: 11, m: '2px 0 0' }}>
                   {detected?.trim} · VIN confirmed
-                </p>
-              </div>
+                </Typography>
+              </Box>
               <Check size={14} color="rgba(200,255,0,0.7)" />
             </motion.div>
 
@@ -859,32 +866,34 @@ function AddVehicleView({ onAdd, onBack }) {
               <PlateField value={plate} onChange={setPlate} optional />
             </motion.div>
 
-            <div style={{ flex: 1 }} />
+            <Box sx={{ flex: 1 }} />
 
-            <motion.button
+            <MotionButton
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.13 }}
               whileTap={!adding ? { scale: 0.97 } : {}}
               onClick={handleAdd}
-              style={{
-                width: '100%', height: 54, borderRadius: 18,
+              disableRipple disableTouchRipple
+              sx={{
+                width: '100%', height: 54, borderRadius: '18px',
                 background: addDone
                   ? 'linear-gradient(135deg, #4ade80, #22c55e)'
                   : 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
                 border: '1px solid rgba(255,255,255,0.08)',
                 color: addDone ? '#fff' : '#000',
-                fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif',
+                fontSize: 16, fontWeight: 700, textTransform: 'none', minWidth: 0,
                 cursor: adding ? 'default' : 'pointer',
                 boxShadow: addDone ? 'none' : '0 8px 28px rgba(200,255,0,0.25), inset 0 1px 0 rgba(255,255,255,0.22)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                 transition: 'background 0.25s',
+                '&:hover': { background: addDone ? 'linear-gradient(135deg, #4ade80, #22c55e)' : 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)' },
               }}
             >
               {addDone ? <><Check size={18} /> Vehicle Added</> : adding ? <Spinner /> : 'Add Vehicle'}
-            </motion.button>
+            </MotionButton>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </Box>
   )
 }
 
@@ -921,63 +930,61 @@ function SubscriptionMain({ subscription, onSwitch, onCancel, onPayment, onBack 
   const statusLabel = active ? 'Active' : paused ? 'Paused' : 'Cancelled'
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', paddingTop: 44 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', paddingTop: '44px' }}>
       <SubNav title="Subscription" onBack={onBack} />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '4px 16px', paddingBottom: 96 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '4px 16px', paddingBottom: '96px' }}>
 
         {/* ── Plan hero ── */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 }}
           style={{
-            background: cancelled
-              ? 'rgba(232,101,106,0.07)'
-              : 'linear-gradient(145deg, rgba(200,255,0,0.08) 0%, rgba(255,255,255,0.04) 100%)',
+            background: cancelled ? 'rgba(232,101,106,0.07)' : 'linear-gradient(145deg, rgba(200,255,0,0.08) 0%, rgba(255,255,255,0.04) 100%)',
             border: `1px solid ${cancelled ? 'rgba(232,101,106,0.2)' : 'rgba(200,255,0,0.18)'}`,
             borderRadius: 20, padding: '20px 18px', marginBottom: 14,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: '16px' }}>
             {/* Plan badge */}
-            <div style={{
+            <Box sx={{
               background: cancelled ? 'rgba(232,101,106,0.15)' : 'rgba(200,255,0,0.15)',
               border: `1px solid ${cancelled ? 'rgba(232,101,106,0.3)' : 'rgba(200,255,0,0.3)'}`,
-              borderRadius: 8, padding: '4px 10px',
+              borderRadius: '8px', padding: '4px 10px',
             }}>
-              <span style={{
+              <Typography component="span" sx={{
                 color: cancelled ? '#E8656A' : '#C8FF00', fontSize: 11, fontWeight: 800,
-                letterSpacing: '0.8px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif',
+                letterSpacing: '0.8px', textTransform: 'uppercase',
               }}>
                 {plan.label}
-              </span>
-            </div>
+              </Typography>
+            </Box>
             {/* Status */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <div style={{ width: 7, height: 7, borderRadius: 4, background: statusColor }} />
-              <span style={{ color: statusColor, fontSize: 12, fontWeight: 600, fontFamily: 'Inter, sans-serif' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Box sx={{ width: 7, height: 7, borderRadius: '4px', background: statusColor }} />
+              <Typography component="span" sx={{ color: statusColor, fontSize: 12, fontWeight: 600 }}>
                 {statusLabel}
-              </span>
-            </div>
-          </div>
+              </Typography>
+            </Box>
+          </Box>
 
           {/* Price */}
           {!cancelled && (
-            <div style={{ marginBottom: 6 }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
-                <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 22, fontWeight: 400, fontFamily: 'Inter, sans-serif' }}>$</span>
-                <span style={{ color: '#fff', fontSize: 42, fontWeight: 800, fontFamily: 'Inter, sans-serif', letterSpacing: '-2px', lineHeight: 1 }}>
+            <Box sx={{ mb: '6px' }}>
+              <Box sx={{ display: 'flex', alignItems: 'baseline', gap: '2px' }}>
+                <Typography component="span" sx={{ color: 'rgba(255,255,255,0.45)', fontSize: 22, fontWeight: 400 }}>$</Typography>
+                <Typography component="span" sx={{ color: '#fff', fontSize: 42, fontWeight: 800, letterSpacing: '-2px', lineHeight: 1 }}>
                   {plan.monthly}
-                </span>
-                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 15, fontFamily: 'Inter, sans-serif', marginLeft: 2 }}>/mo</span>
-              </div>
-              <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, fontFamily: 'Inter, sans-serif', margin: '6px 0 0' }}>
-                {plan.billedLabel} · <span style={{ color: '#C8FF00' }}>{plan.savings}</span>
-              </p>
-            </div>
+                </Typography>
+                <Typography component="span" sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 15, ml: '2px' }}>/mo</Typography>
+              </Box>
+              <Typography sx={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, m: '6px 0 0' }}>
+                {plan.billedLabel} · <Typography component="span" sx={{ color: '#C8FF00' }}>{plan.savings}</Typography>
+              </Typography>
+            </Box>
           )}
           {cancelled && (
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, fontFamily: 'Inter, sans-serif', margin: '4px 0 0' }}>
+            <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, m: '4px 0 0' }}>
               Access ends {subscription.nextDate}
-            </p>
+            </Typography>
           )}
         </motion.div>
 
@@ -985,44 +992,39 @@ function SubscriptionMain({ subscription, onSwitch, onCancel, onPayment, onBack 
         {!cancelled && (
           <motion.div
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.07 }}
-            style={{
-              background: 'rgba(255,255,255,0.055)',
-              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.09)',
-              borderRadius: 18, overflow: 'hidden', marginBottom: 14,
-            }}
+            style={{ ...glassCard, borderRadius: 18, overflow: 'hidden', marginBottom: 14 }}
           >
             {/* Next charge */}
-            <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(200,255,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Box sx={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <Box sx={{ width: 34, height: 34, borderRadius: '10px', background: 'rgba(200,255,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Calendar size={15} color="#C8FF00" />
-              </div>
-              <div style={{ flex: 1 }}>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.4px', fontFamily: 'Inter, sans-serif', margin: '0 0 3px' }}>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.4px', m: '0 0 3px' }}>
                   {paused ? 'Resumes' : 'Next charge'}
-                </p>
-                <p style={{ color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+                </Typography>
+                <Typography sx={{ color: '#fff', fontSize: 14, fontWeight: 600, m: 0 }}>
                   {paused ? subscription.nextDate : `${subscription.nextAmount} · ${subscription.nextDate}`}
-                </p>
-              </div>
-            </div>
+                </Typography>
+              </Box>
+            </Box>
             {/* Payment method — tappable */}
             <motion.div
               whileTap={{ scale: 0.985 }} onClick={onPayment}
               style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}
             >
-              <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(200,255,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Box sx={{ width: 34, height: 34, borderRadius: '10px', background: 'rgba(200,255,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <CreditCard size={15} color="#C8FF00" />
-              </div>
-              <div style={{ flex: 1 }}>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.4px', fontFamily: 'Inter, sans-serif', margin: '0 0 3px' }}>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.4px', m: '0 0 3px' }}>
                   Payment method
-                </p>
-                <p style={{ color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+                </Typography>
+                <Typography sx={{ color: '#fff', fontSize: 14, fontWeight: 600, m: 0 }}>
                   {subscription.payment.type === 'visa' ? 'Visa' : subscription.payment.type === 'mastercard' ? 'Mastercard' : subscription.payment.type === 'amex' ? 'Amex' : 'Card'}
                   &nbsp;···· {subscription.payment.last4}
-                </p>
-              </div>
+                </Typography>
+              </Box>
               <ChevronRight size={15} color="rgba(255,255,255,0.22)" />
             </motion.div>
           </motion.div>
@@ -1030,79 +1032,80 @@ function SubscriptionMain({ subscription, onSwitch, onCancel, onPayment, onBack 
 
         {/* ── What's included ── */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.10 }} style={{ marginBottom: 14 }}>
-          <p style={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', marginBottom: 8, paddingLeft: 4 }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', mb: 1, pl: '4px' }}>
             {cancelled ? 'What you had' : "What's included"}
-          </p>
-          <div style={{
-            background: 'rgba(255,255,255,0.055)',
-            backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.09)',
-            borderRadius: 18, overflow: 'hidden',
-          }}>
+          </Typography>
+          <GlassCard sx={{ borderRadius: '18px', overflow: 'hidden' }}>
             {FEATURES.map(({ Icon, text }, i) => (
-              <div key={text} style={{
-                display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px',
+              <Box key={text} sx={{
+                display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
                 borderBottom: i < FEATURES.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
                 opacity: cancelled ? 0.35 : 1,
               }}>
                 <Icon size={14} color={cancelled ? 'rgba(255,255,255,0.4)' : '#C8FF00'} style={{ flexShrink: 0 }} />
-                <p style={{ color: cancelled ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.78)', fontSize: 13.5, fontFamily: 'Inter, sans-serif', margin: 0, textDecoration: cancelled ? 'line-through' : 'none' }}>
+                <Typography sx={{ color: cancelled ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.78)', fontSize: 13.5, m: 0, textDecoration: cancelled ? 'line-through' : 'none' }}>
                   {text}
-                </p>
-              </div>
+                </Typography>
+              </Box>
             ))}
-          </div>
+          </GlassCard>
         </motion.div>
 
         {/* ── Actions ── */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.13 }} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {cancelled ? (
-            <motion.button
+            <MotionButton
               whileTap={{ scale: 0.97 }}
-              style={{
-                width: '100%', height: 54, borderRadius: 18,
+              disableRipple disableTouchRipple
+              sx={{
+                width: '100%', height: 54, borderRadius: '18px',
                 background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
                 border: 'none', color: '#000', fontSize: 16, fontWeight: 700,
-                fontFamily: 'Inter, sans-serif', cursor: 'pointer',
+                textTransform: 'none', minWidth: 0, cursor: 'pointer',
                 boxShadow: '0 8px 28px rgba(200,255,0,0.25)',
+                '&:hover': { background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)' },
               }}
             >
               Resubscribe
-            </motion.button>
+            </MotionButton>
           ) : (
             <>
-              <motion.button
+              <MotionButton
                 whileTap={{ scale: 0.97 }} onClick={onSwitch}
-                style={{
-                  width: '100%', height: 50, borderRadius: 16,
+                disableRipple disableTouchRipple
+                sx={{
+                  width: '100%', height: 50, borderRadius: '16px',
                   background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)',
                   color: '#fff', fontSize: 15, fontWeight: 600,
-                  fontFamily: 'Inter, sans-serif', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  textTransform: 'none', minWidth: 0, cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  '&:hover': { background: 'rgba(255,255,255,0.10)' },
                 }}
               >
                 <ArrowLeftRight size={15} />
                 Switch to {subscription.plan === 'annual' ? 'Monthly' : 'Annual'}
-              </motion.button>
+              </MotionButton>
 
               {!paused && (
-                <motion.button
+                <MotionButton
                   whileTap={{ scale: 0.97 }} onClick={onCancel}
-                  style={{
-                    width: '100%', height: 44, borderRadius: 14,
+                  disableRipple disableTouchRipple
+                  sx={{
+                    width: '100%', height: 44, borderRadius: '14px',
                     background: 'none', border: 'none',
                     color: '#E8656A', fontSize: 14, fontWeight: 500,
-                    fontFamily: 'Inter, sans-serif', cursor: 'pointer',
+                    textTransform: 'none', minWidth: 0, cursor: 'pointer',
+                    '&:hover': { background: 'rgba(232,101,106,0.06)' },
                   }}
                 >
                   Cancel subscription
-                </motion.button>
+                </MotionButton>
               )}
             </>
           )}
         </motion.div>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
@@ -1127,16 +1130,17 @@ function SwitchPlanView({ subscription, onConfirm, onBack }) {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', paddingTop: 44 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', paddingTop: '44px' }}>
       <SubNav title="Switch Plan" onBack={onBack} />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '4px 16px', paddingBottom: 96 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '4px 16px', paddingBottom: '96px' }}>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 }}
-          style={{ color: 'rgba(255,255,255,0.42)', fontSize: 14, fontFamily: 'Inter, sans-serif', margin: '0 0 20px' }}
         >
-          Choose a plan. You can switch again any time.
-        </motion.p>
+          <Typography sx={{ color: 'rgba(255,255,255,0.42)', fontSize: 14, m: '0 0 20px' }}>
+            Choose a plan. You can switch again any time.
+          </Typography>
+        </motion.div>
 
         {/* Plan cards */}
         {[currentId, otherId].map((planId, i) => {
@@ -1165,22 +1169,22 @@ function SwitchPlanView({ subscription, onConfirm, onBack }) {
                 transition: 'border-color 0.22s, background 0.22s, opacity 0.22s',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
-                <p style={{ color: '#fff', fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+              <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: '10px' }}>
+                <Typography sx={{ color: '#fff', fontSize: 16, fontWeight: 700, m: 0 }}>
                   {plan.label}
-                </p>
+                </Typography>
                 {/* Badge stays tied to account fact (current plan), not selection state */}
                 {isCurrent ? (
-                  <span style={{
+                  <Typography component="span" sx={{
                     background: isActive ? 'rgba(200,255,0,0.15)' : 'rgba(255,255,255,0.07)',
                     border: `1px solid ${isActive ? 'rgba(200,255,0,0.3)' : 'rgba(255,255,255,0.12)'}`,
-                    borderRadius: 6, padding: '3px 8px',
+                    borderRadius: '6px', padding: '3px 8px',
                     color: isActive ? '#C8FF00' : 'rgba(255,255,255,0.4)',
-                    fontSize: 11, fontWeight: 700, fontFamily: 'Inter, sans-serif', letterSpacing: '0.3px',
+                    fontSize: 11, fontWeight: 700, letterSpacing: '0.3px',
                     transition: 'all 0.22s',
                   }}>
                     Current
-                  </span>
+                  </Typography>
                 ) : isActive ? (
                   <motion.div
                     initial={{ scale: 0.7 }} animate={{ scale: 1 }}
@@ -1189,18 +1193,18 @@ function SwitchPlanView({ subscription, onConfirm, onBack }) {
                     <Check size={13} color="#000" />
                   </motion.div>
                 ) : (
-                  <div style={{ width: 22, height: 22, borderRadius: 11, border: '1.5px solid rgba(255,255,255,0.2)' }} />
+                  <Box sx={{ width: 22, height: 22, borderRadius: '11px', border: '1.5px solid rgba(255,255,255,0.2)' }} />
                 )}
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 1, marginBottom: 4 }}>
-                <span style={{ color: isActive ? '#C8FF00' : 'rgba(255,255,255,0.45)', fontSize: 28, fontWeight: 800, fontFamily: 'Inter, sans-serif', letterSpacing: '-1px', transition: 'color 0.22s' }}>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'baseline', gap: '1px', mb: '4px' }}>
+                <Typography component="span" sx={{ color: isActive ? '#C8FF00' : 'rgba(255,255,255,0.45)', fontSize: 28, fontWeight: 800, letterSpacing: '-1px', transition: 'color 0.22s' }}>
                   ${plan.monthly}
-                </span>
-                <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13, fontFamily: 'Inter, sans-serif', marginLeft: 2 }}>/mo</span>
-              </div>
-              <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, fontFamily: 'Inter, sans-serif', margin: 0 }}>
-                {plan.billedLabel} · <span style={{ color: isActive ? 'rgba(200,255,0,0.8)' : 'rgba(255,255,255,0.28)', transition: 'color 0.22s' }}>{plan.savings}</span>
-              </p>
+                </Typography>
+                <Typography component="span" sx={{ color: 'rgba(255,255,255,0.3)', fontSize: 13, ml: '2px' }}>/mo</Typography>
+              </Box>
+              <Typography sx={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, m: 0 }}>
+                {plan.billedLabel} · <Typography component="span" sx={{ color: isActive ? 'rgba(200,255,0,0.8)' : 'rgba(255,255,255,0.28)', transition: 'color 0.22s' }}>{plan.savings}</Typography>
+              </Typography>
             </motion.div>
           )
         })}
@@ -1213,25 +1217,26 @@ function SwitchPlanView({ subscription, onConfirm, onBack }) {
               initial={{ opacity: 0, y: 8, height: 0 }} animate={{ opacity: 1, y: 0, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
               style={{ overflow: 'hidden', marginBottom: 20 }}
             >
-              <div style={{
+              <Box sx={{
                 background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)',
-                borderRadius: 14, padding: '12px 14px',
-                display: 'flex', alignItems: 'flex-start', gap: 10,
+                borderRadius: '14px', padding: '12px 14px',
+                display: 'flex', alignItems: 'flex-start', gap: '10px',
               }}>
                 <BadgeCheck size={15} color="rgba(200,255,0,0.7)" style={{ flexShrink: 0, marginTop: 1 }} />
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12.5, fontFamily: 'Inter, sans-serif', margin: 0, lineHeight: 1.5 }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: 12.5, m: 0, lineHeight: 1.5 }}>
                   {prorationNote}
-                </p>
-              </div>
+                </Typography>
+              </Box>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <motion.button
+        <MotionButton
           whileTap={selected && !confirming ? { scale: 0.97 } : {}}
           onClick={handleConfirm}
-          style={{
-            width: '100%', height: 54, borderRadius: 18,
+          disableRipple disableTouchRipple
+          sx={{
+            width: '100%', height: 54, borderRadius: '18px',
             background: done
               ? 'linear-gradient(135deg, #4ade80, #22c55e)'
               : selected && !confirming
@@ -1239,17 +1244,18 @@ function SwitchPlanView({ subscription, onConfirm, onBack }) {
                 : 'rgba(255,255,255,0.06)',
             border: '1px solid rgba(255,255,255,0.08)',
             color: done ? '#fff' : selected && !confirming ? '#000' : 'rgba(255,255,255,0.25)',
-            fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif',
+            fontSize: 16, fontWeight: 700, textTransform: 'none', minWidth: 0,
             cursor: selected && !confirming ? 'pointer' : 'default',
             boxShadow: selected && !confirming && !done ? '0 8px 28px rgba(200,255,0,0.25)' : 'none',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
             transition: 'all 0.2s',
+            '&:hover': { background: done ? 'linear-gradient(135deg, #4ade80, #22c55e)' : selected && !confirming ? 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)' : 'rgba(255,255,255,0.06)' },
           }}
         >
           {done ? <><Check size={18} /> Plan updated</> : confirming ? <Spinner /> : 'Confirm Switch'}
-        </motion.button>
-      </div>
-    </div>
+        </MotionButton>
+      </Box>
+    </Box>
   )
 }
 
@@ -1271,19 +1277,19 @@ function CancelFlowView({ subscription, onPause, onCancel, onKeep, onBack }) {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', paddingTop: 44 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', paddingTop: '44px' }}>
       <SubNav
         title={step === 1 ? 'Before you go…' : step === 2 ? "What you'll lose" : 'Cancel subscription'}
         onBack={step === 1 ? onBack : () => setStep(s => s - 1)}
         right={
-          <div style={{ display: 'flex', gap: 5 }}>
+          <Box sx={{ display: 'flex', gap: '5px' }}>
             {[1,2,3].map(n => (
               <motion.div key={n} animate={{ background: n <= step ? '#C8FF00' : 'rgba(255,255,255,0.18)', width: n === step ? 18 : 6 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 28 }}
                 style={{ height: 6, borderRadius: 99 }}
               />
             ))}
-          </div>
+          </Box>
         }
       />
 
@@ -1296,7 +1302,7 @@ function CancelFlowView({ subscription, onPause, onCancel, onKeep, onBack }) {
             style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '16px 20px', paddingBottom: 40 }}
           >
             {/* Pause icon */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, paddingBottom: 20 }}>
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px', pb: '20px' }}>
               <motion.div
                 initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.08, type: 'spring', stiffness: 300, damping: 22 }}
                 style={{
@@ -1308,41 +1314,45 @@ function CancelFlowView({ subscription, onPause, onCancel, onKeep, onBack }) {
                 <PauseCircle size={36} color="#C8FF00" />
               </motion.div>
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} style={{ textAlign: 'center' }}>
-                <p style={{ color: '#fff', fontSize: 22, fontWeight: 800, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.5px', margin: '0 0 10px' }}>
+                <Typography sx={{ color: '#fff', fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', m: '0 0 10px' }}>
                   Need a break?
-                </p>
-                <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, fontFamily: 'Inter, sans-serif', margin: 0, lineHeight: 1.6, maxWidth: 280 }}>
+                </Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, m: 0, lineHeight: 1.6, maxWidth: 280 }}>
                   Pause for 30 days — your data stays safe and we'll remind you before it automatically resumes.
-                </p>
+                </Typography>
               </motion.div>
-            </div>
+            </Box>
 
             {/* Actions */}
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <motion.button
+              <MotionButton
                 whileTap={{ scale: 0.97 }} onClick={handlePause}
-                style={{
-                  width: '100%', height: 54, borderRadius: 18,
+                disableRipple disableTouchRipple
+                sx={{
+                  width: '100%', height: 54, borderRadius: '18px',
                   background: pausing ? 'rgba(255,255,255,0.06)' : 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
                   border: 'none', color: pausing ? 'rgba(255,255,255,0.3)' : '#000',
-                  fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif', cursor: 'pointer',
+                  fontSize: 16, fontWeight: 700, textTransform: 'none', minWidth: 0, cursor: 'pointer',
                   boxShadow: pausing ? 'none' : '0 8px 28px rgba(200,255,0,0.25)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  '&:hover': { background: pausing ? 'rgba(255,255,255,0.06)' : 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)' },
                 }}
               >
                 {pausing ? <Spinner /> : <><PauseCircle size={17} /> Pause my subscription</>}
-              </motion.button>
-              <motion.button
+              </MotionButton>
+              <MotionButton
                 whileTap={{ scale: 0.97 }} onClick={() => setStep(2)}
-                style={{
-                  width: '100%', height: 44, borderRadius: 14,
+                disableRipple disableTouchRipple
+                sx={{
+                  width: '100%', height: 44, borderRadius: '14px',
                   background: 'none', border: 'none',
-                  color: 'rgba(255,255,255,0.35)', fontSize: 14, fontFamily: 'Inter, sans-serif',
+                  color: 'rgba(255,255,255,0.35)', fontSize: 14, textTransform: 'none', minWidth: 0,
                   cursor: 'pointer',
+                  '&:hover': { background: 'rgba(255,255,255,0.04)' },
                 }}
               >
                 No thanks, continue cancelling →
-              </motion.button>
+              </MotionButton>
             </motion.div>
           </motion.div>
         )}
@@ -1353,11 +1363,11 @@ function CancelFlowView({ subscription, onPause, onCancel, onKeep, onBack }) {
             transition={{ type: 'spring', stiffness: 380, damping: 36 }}
             style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '8px 16px', paddingBottom: 40, overflowY: 'auto' }}
           >
-            <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 }}
-              style={{ color: 'rgba(255,255,255,0.42)', fontSize: 14, fontFamily: 'Inter, sans-serif', margin: '0 0 16px 4px' }}
-            >
-              Cancelling means losing access to everything below.
-            </motion.p>
+            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 }}>
+              <Typography sx={{ color: 'rgba(255,255,255,0.42)', fontSize: 14, m: '0 0 16px 4px' }}>
+                Cancelling means losing access to everything below.
+              </Typography>
+            </motion.div>
 
             {/* Loss list */}
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}
@@ -1367,17 +1377,17 @@ function CancelFlowView({ subscription, onPause, onCancel, onKeep, onBack }) {
               }}
             >
               {FEATURES.map(({ Icon, text }, i) => (
-                <div key={text} style={{
-                  display: 'flex', alignItems: 'center', gap: 12, padding: '13px 16px',
+                <Box key={text} sx={{
+                  display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px',
                   borderBottom: i < FEATURES.length - 1 ? '1px solid rgba(232,101,106,0.1)' : 'none',
                 }}>
-                  <div style={{ width: 24, height: 24, borderRadius: 12, background: 'rgba(232,101,106,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Box sx={{ width: 24, height: 24, borderRadius: '12px', background: 'rgba(232,101,106,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <X size={12} color="#E8656A" />
-                  </div>
-                  <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13.5, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+                  </Box>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.55)', fontSize: 13.5, m: 0 }}>
                     {text}
-                  </p>
-                </div>
+                  </Typography>
+                </Box>
               ))}
             </motion.div>
 
@@ -1390,33 +1400,37 @@ function CancelFlowView({ subscription, onPause, onCancel, onKeep, onBack }) {
               }}
             >
               <Calendar size={14} color="rgba(255,255,255,0.45)" style={{ flexShrink: 0 }} />
-              <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, fontFamily: 'Inter, sans-serif', margin: 0 }}>
-                You'll keep access until <span style={{ color: '#fff', fontWeight: 600 }}>{subscription.nextDate}</span>
-              </p>
+              <Typography sx={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, m: 0 }}>
+                You'll keep access until <Typography component="span" sx={{ color: '#fff', fontWeight: 600 }}>{subscription.nextDate}</Typography>
+              </Typography>
             </motion.div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <motion.button whileTap={{ scale: 0.97 }} onClick={onKeep}
-                style={{
-                  width: '100%', height: 54, borderRadius: 18,
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <MotionButton whileTap={{ scale: 0.97 }} onClick={onKeep}
+                disableRipple disableTouchRipple
+                sx={{
+                  width: '100%', height: 54, borderRadius: '18px',
                   background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
                   border: 'none', color: '#000', fontSize: 16, fontWeight: 700,
-                  fontFamily: 'Inter, sans-serif', cursor: 'pointer',
+                  textTransform: 'none', minWidth: 0, cursor: 'pointer',
                   boxShadow: '0 8px 28px rgba(200,255,0,0.25)',
+                  '&:hover': { background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)' },
                 }}
               >
                 Keep my plan
-              </motion.button>
-              <motion.button whileTap={{ scale: 0.97 }} onClick={() => setStep(3)}
-                style={{
-                  width: '100%', height: 44, borderRadius: 14,
+              </MotionButton>
+              <MotionButton whileTap={{ scale: 0.97 }} onClick={() => setStep(3)}
+                disableRipple disableTouchRipple
+                sx={{
+                  width: '100%', height: 44, borderRadius: '14px',
                   background: 'none', border: 'none',
-                  color: '#E8656A', fontSize: 14, fontFamily: 'Inter, sans-serif', cursor: 'pointer',
+                  color: '#E8656A', fontSize: 14, textTransform: 'none', minWidth: 0, cursor: 'pointer',
+                  '&:hover': { background: 'rgba(232,101,106,0.06)' },
                 }}
               >
                 Still want to cancel →
-              </motion.button>
-            </div>
+              </MotionButton>
+            </Box>
           </motion.div>
         )}
 
@@ -1426,50 +1440,54 @@ function CancelFlowView({ subscription, onPause, onCancel, onKeep, onBack }) {
             transition={{ type: 'spring', stiffness: 380, damping: 36 }}
             style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '16px 20px', paddingBottom: 40 }}
           >
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12, paddingBottom: 24 }}>
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '12px', pb: '24px' }}>
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-                <p style={{ color: '#fff', fontSize: 22, fontWeight: 800, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.5px', margin: '0 0 12px' }}>
+                <Typography sx={{ color: '#fff', fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', m: '0 0 12px' }}>
                   One last thing
-                </p>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, fontFamily: 'Inter, sans-serif', margin: '0 0 10px', lineHeight: 1.6 }}>
+                </Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, m: '0 0 10px', lineHeight: 1.6 }}>
                   Your <strong style={{ color: '#fff' }}>{PLAN_DATA[subscription.plan].label} Plan</strong> stays fully active until{' '}
                   <strong style={{ color: '#fff' }}>{subscription.nextDate}</strong>. After that, all tracking stops.
-                </p>
-                <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 13, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+                </Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 13, m: 0 }}>
                   No refund is issued for unused time on annual plans.
-                </p>
+                </Typography>
               </motion.div>
-            </div>
+            </Box>
 
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.10 }} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <motion.button whileTap={{ scale: 0.97 }} onClick={onKeep}
-                style={{
-                  width: '100%', height: 54, borderRadius: 18,
+              <MotionButton whileTap={{ scale: 0.97 }} onClick={onKeep}
+                disableRipple disableTouchRipple
+                sx={{
+                  width: '100%', height: 54, borderRadius: '18px',
                   background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
                   border: 'none', color: '#000', fontSize: 16, fontWeight: 700,
-                  fontFamily: 'Inter, sans-serif', cursor: 'pointer',
+                  textTransform: 'none', minWidth: 0, cursor: 'pointer',
                   boxShadow: '0 8px 28px rgba(200,255,0,0.25)',
+                  '&:hover': { background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)' },
                 }}
               >
                 Keep my plan
-              </motion.button>
-              <motion.button
+              </MotionButton>
+              <MotionButton
                 whileTap={{ scale: 0.97 }} onClick={handleCancel}
-                style={{
-                  width: '100%', height: 50, borderRadius: 16,
+                disableRipple disableTouchRipple
+                sx={{
+                  width: '100%', height: 50, borderRadius: '16px',
                   background: 'rgba(232,101,106,0.1)', border: '1px solid rgba(232,101,106,0.3)',
                   color: cancelling ? 'rgba(232,101,106,0.4)' : '#E8656A',
-                  fontSize: 15, fontWeight: 600, fontFamily: 'Inter, sans-serif', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  fontSize: 15, fontWeight: 600, textTransform: 'none', minWidth: 0, cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  '&:hover': { background: 'rgba(232,101,106,0.15)' },
                 }}
               >
                 {cancelling ? <Spinner color="#E8656A" size={16} /> : 'Cancel subscription'}
-              </motion.button>
+              </MotionButton>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </Box>
   )
 }
 
@@ -1486,38 +1504,41 @@ const CARD_TYPE_LABELS = { visa: 'VISA', mastercard: 'MC', amex: 'AMEX', card: '
 const CARD_TYPE_COLORS = { visa: '#1A72E8', mastercard: '#EB5C28', amex: '#2E77BC', card: 'rgba(255,255,255,0.4)' }
 
 function CardField({ label, value, onChange, placeholder, type = 'text', right, monospace }) {
-  const [focused, setFocused] = useState(false)
   return (
-    <div style={{ flex: 1 }}>
-      <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 7px' }}>
+    <Box sx={{ flex: 1 }}>
+      <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 7px' }}>
         {label}
-      </p>
-      <div style={{ position: 'relative' }}>
-        <input
+      </Typography>
+      <Box sx={{ position: 'relative' }}>
+        <TextField
           type={type} value={value} placeholder={placeholder}
-          inputMode={monospace ? 'numeric' : 'text'}
+          inputProps={{ inputMode: monospace ? 'numeric' : 'text' }}
           onChange={e => onChange(e.target.value)}
-          onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-          style={{
-            width: '100%', height: 50, borderRadius: 14, boxSizing: 'border-box',
-            background: 'rgba(255,255,255,0.07)',
-            backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-            border: `1.5px solid ${focused ? 'rgba(200,255,0,0.55)' : 'rgba(255,255,255,0.09)'}`,
-            boxShadow: focused ? '0 0 0 3px rgba(200,255,0,0.09)' : 'none',
-            color: '#fff', fontSize: monospace ? 15 : 15,
-            padding: `0 ${right ? 52 : 16}px 0 16px`,
-            fontFamily: monospace ? 'monospace' : 'Inter, sans-serif',
-            letterSpacing: monospace ? '2px' : 'normal',
-            transition: 'border-color 0.18s, box-shadow 0.18s', outline: 'none',
+          fullWidth
+          variant="outlined"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              height: 50, borderRadius: '14px',
+              background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)',
+              '& fieldset': { borderColor: 'rgba(255,255,255,0.09)', borderWidth: '1.5px' },
+              '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.18)' },
+              '&.Mui-focused fieldset': { borderColor: 'rgba(200,255,0,0.55)', boxShadow: '0 0 0 3px rgba(200,255,0,0.09)' },
+              '& input': {
+                color: '#fff', fontSize: 15,
+                padding: `0 ${right ? 52 : 16}px 0 16px`,
+                fontFamily: monospace ? 'monospace' : 'inherit',
+                letterSpacing: monospace ? '2px' : 'normal',
+              },
+            },
           }}
         />
         {right && (
-          <div style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+          <Box sx={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
             {right}
-          </div>
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
@@ -1566,40 +1587,34 @@ function PaymentMethodView({ subscription, onSave, onBack }) {
   const cardTypeColor = cardType ? CARD_TYPE_COLORS[cardType] : null
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', paddingTop: 44 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', paddingTop: '44px' }}>
       <SubNav title="Payment Method" onBack={onBack} />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '4px 16px', paddingBottom: 96 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '4px 16px', paddingBottom: '96px' }}>
 
         {/* Current card on file */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 }}
           style={{ marginBottom: 22 }}
         >
-          <p style={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', marginBottom: 8, paddingLeft: 4 }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', mb: 1, pl: '4px' }}>
             On file
-          </p>
-          <div style={{
-            background: 'rgba(255,255,255,0.055)',
-            backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(200,255,0,0.2)',
-            borderRadius: 16, padding: '14px 16px',
-            display: 'flex', alignItems: 'center', gap: 12,
-          }}>
-            <div style={{ width: 36, height: 24, borderRadius: 5, background: CARD_TYPE_COLORS[subscription.payment.type] || '#1A72E8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <span style={{ color: '#fff', fontSize: 8, fontWeight: 800, letterSpacing: '0.3px' }}>
+          </Typography>
+          <GlassCard sx={{ borderRadius: '16px', padding: '14px 16px', border: '1px solid rgba(200,255,0,0.2)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Box sx={{ width: 36, height: 24, borderRadius: '5px', background: CARD_TYPE_COLORS[subscription.payment.type] || '#1A72E8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Typography component="span" sx={{ color: '#fff', fontSize: 8, fontWeight: 800, letterSpacing: '0.3px' }}>
                 {CARD_TYPE_LABELS[subscription.payment.type] || 'CARD'}
-              </span>
-            </div>
-            <div style={{ flex: 1 }}>
-              <p style={{ color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+              </Typography>
+            </Box>
+            <Box sx={{ flex: 1 }}>
+              <Typography sx={{ color: '#fff', fontSize: 14, fontWeight: 600, m: 0 }}>
                 ···· ···· ···· {subscription.payment.last4}
-              </p>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <div style={{ width: 7, height: 7, borderRadius: 4, background: '#4ade80' }} />
-              <span style={{ color: '#4ade80', fontSize: 11, fontWeight: 600, fontFamily: 'Inter, sans-serif' }}>In use</span>
-            </div>
-          </div>
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Box sx={{ width: 7, height: 7, borderRadius: '4px', background: '#4ade80' }} />
+              <Typography component="span" sx={{ color: '#4ade80', fontSize: 11, fontWeight: 600 }}>In use</Typography>
+            </Box>
+          </GlassCard>
         </motion.div>
 
         {/* Divider */}
@@ -1607,16 +1622,16 @@ function PaymentMethodView({ subscription, onSave, onBack }) {
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.07 }}
           style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}
         >
-          <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.07)' }} />
-          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}>or add a new card</span>
-          <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.07)' }} />
+          <Box sx={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.07)' }} />
+          <Typography component="span" sx={{ color: 'rgba(255,255,255,0.25)', fontSize: 12 }}>or add a new card</Typography>
+          <Box sx={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.07)' }} />
         </motion.div>
 
         {/* Card form */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.09 }}>
 
           {/* Card number */}
-          <div style={{ marginBottom: 14 }}>
+          <Box sx={{ mb: '14px' }}>
             <CardField
               label="Card number"
               value={number}
@@ -1624,15 +1639,15 @@ function PaymentMethodView({ subscription, onSave, onBack }) {
               placeholder="1234 5678 9012 3456"
               monospace
               right={cardTypeLabel && (
-                <span style={{ color: cardTypeColor, fontSize: 11, fontWeight: 800, letterSpacing: '0.5px' }}>
+                <Typography component="span" sx={{ color: cardTypeColor, fontSize: 11, fontWeight: 800, letterSpacing: '0.5px' }}>
                   {cardTypeLabel}
-                </span>
+                </Typography>
               )}
             />
-          </div>
+          </Box>
 
           {/* Expiry + CVV row */}
-          <div style={{ display: 'flex', gap: 10, marginBottom: 14 }}>
+          <Box sx={{ display: 'flex', gap: '10px', mb: '14px' }}>
             <CardField label="Expiry" value={expiry} onChange={handleExpiry} placeholder="MM/YY" monospace />
             <CardField
               label={`CVV${maxCvv === 4 ? ' (4 digits)' : ''}`}
@@ -1642,24 +1657,25 @@ function PaymentMethodView({ subscription, onSave, onBack }) {
               type="password"
               monospace
             />
-          </div>
+          </Box>
 
           {/* Name on card */}
-          <div style={{ marginBottom: 4 }}>
+          <Box sx={{ mb: '4px' }}>
             <CardField label="Name on card" value={name} onChange={setName} placeholder="Jane Smith" />
-          </div>
+          </Box>
 
           {/* Security note */}
-          <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: 11.5, fontFamily: 'Inter, sans-serif', margin: '8px 0 24px', textAlign: 'center' }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.2)', fontSize: 11.5, m: '8px 0 24px', textAlign: 'center' }}>
             🔒 Secured with 256-bit encryption
-          </p>
+          </Typography>
 
           {/* Save button */}
-          <motion.button
+          <MotionButton
             whileTap={isValid && !saving ? { scale: 0.97 } : {}}
             onClick={handleSave}
-            style={{
-              width: '100%', height: 54, borderRadius: 18,
+            disableRipple disableTouchRipple
+            sx={{
+              width: '100%', height: 54, borderRadius: '18px',
               background: done
                 ? 'linear-gradient(135deg, #4ade80, #22c55e)'
                 : isValid && !saving
@@ -1667,18 +1683,19 @@ function PaymentMethodView({ subscription, onSave, onBack }) {
                   : 'rgba(255,255,255,0.06)',
               border: '1px solid rgba(255,255,255,0.08)',
               color: done ? '#fff' : isValid && !saving ? '#000' : 'rgba(255,255,255,0.2)',
-              fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif',
+              fontSize: 16, fontWeight: 700, textTransform: 'none', minWidth: 0,
               cursor: isValid && !saving ? 'pointer' : 'default',
               boxShadow: isValid && !saving && !done ? '0 8px 28px rgba(200,255,0,0.25)' : 'none',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
               transition: 'all 0.22s',
+              '&:hover': { background: done ? 'linear-gradient(135deg, #4ade80, #22c55e)' : isValid && !saving ? 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)' : 'rgba(255,255,255,0.06)' },
             }}
           >
             {done ? <><Check size={18} /> Card saved</> : saving ? <Spinner /> : 'Save & use this card'}
-          </motion.button>
+          </MotionButton>
         </motion.div>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
@@ -1693,7 +1710,7 @@ function SubscriptionView({ subscription, onUpdate, onBack, initialView = 'main'
   const back = () => { setDir(-1); setView('main') }
 
   return (
-    <div style={{ position: 'absolute', inset: 0, background: '#04050d', overflow: 'hidden' }}>
+    <Box sx={{ position: 'absolute', inset: 0, background: '#04050d', overflow: 'hidden' }}>
       <AnimatePresence custom={dir} mode="popLayout" initial={false}>
         {view === 'main' && (
           <motion.div key="sub-main" custom={dir} variants={subVariants} initial="enter" animate="center" exit="exit" transition={slideTransition}
@@ -1740,7 +1757,7 @@ function SubscriptionView({ subscription, onUpdate, onBack, initialView = 'main'
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </Box>
   )
 }
 
@@ -1766,61 +1783,55 @@ function PasswordStrengthBar({ password }) {
   if (!password) return null
   return (
     <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: -6, marginBottom: 14 }}>
-      <div style={{ display: 'flex', gap: 4, marginBottom: 5 }}>
+      <Box sx={{ display: 'flex', gap: '4px', mb: '5px' }}>
         {[1,2,3,4,5].map(i => (
-          <div key={i} style={{
-            flex: 1, height: 3, borderRadius: 2,
+          <Box key={i} sx={{
+            flex: 1, height: 3, borderRadius: '2px',
             background: i <= score ? color : 'rgba(255,255,255,0.1)',
             transition: 'background 0.3s',
           }} />
         ))}
-      </div>
-      <p style={{ color, fontSize: 11, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>{label}</p>
+      </Box>
+      <Typography sx={{ color, fontSize: 11, fontWeight: 600, m: 0 }}>{label}</Typography>
     </motion.div>
   )
 }
 
 function PasswordField({ label, value, onChange, placeholder }) {
   const [show, setShow] = useState(false)
-  const [focused, setFocused] = useState(false)
   return (
-    <div style={{ marginBottom: 14 }}>
-      <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 7px' }}>
+    <Box sx={{ mb: '14px' }}>
+      <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 7px' }}>
         {label}
-      </p>
-      <div style={{ position: 'relative' }}>
-        <input
-          type={show ? 'text' : 'password'}
-          value={value}
-          placeholder={placeholder}
-          onChange={e => onChange(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          style={{
-            width: '100%', height: 50, borderRadius: 14, boxSizing: 'border-box',
-            background: 'rgba(255,255,255,0.07)',
-            backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-            border: `1.5px solid ${focused ? 'rgba(200,255,0,0.55)' : 'rgba(255,255,255,0.09)'}`,
-            boxShadow: focused ? '0 0 0 3px rgba(200,255,0,0.09)' : 'none',
-            color: '#fff', fontSize: 15, padding: '0 48px 0 16px',
-            fontFamily: 'Inter, sans-serif', transition: 'border-color 0.18s, box-shadow 0.18s', outline: 'none',
-          }}
-        />
-        <button
-          onClick={() => setShow(s => !s)}
-          style={{
-            position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
-            background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-            display: 'flex', alignItems: 'center',
-          }}
-        >
-          {show
-            ? <EyeOff size={17} color="rgba(255,255,255,0.35)" />
-            : <Eye    size={17} color="rgba(255,255,255,0.35)" />
-          }
-        </button>
-      </div>
-    </div>
+      </Typography>
+      <TextField
+        type={show ? 'text' : 'password'}
+        value={value}
+        placeholder={placeholder}
+        onChange={e => onChange(e.target.value)}
+        fullWidth
+        variant="outlined"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setShow(s => !s)} edge="end" sx={{ color: 'rgba(255,255,255,0.35)', p: '6px' }}>
+                {show ? <EyeOff size={17} /> : <Eye size={17} />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            height: 50, borderRadius: '14px',
+            background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)',
+            '& fieldset': { borderColor: 'rgba(255,255,255,0.09)', borderWidth: '1.5px' },
+            '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.18)' },
+            '&.Mui-focused fieldset': { borderColor: 'rgba(200,255,0,0.55)', boxShadow: '0 0 0 3px rgba(200,255,0,0.09)' },
+            '& input': { color: '#fff', fontSize: 15, padding: '0 0 0 16px' },
+          },
+        }}
+      />
+    </Box>
   )
 }
 
@@ -1847,24 +1858,24 @@ function ChangePasswordView({ onBack }) {
   }
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav title="Change Password" onBack={onBack} />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 20px', paddingBottom: 96 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '12px 20px', paddingBottom: '96px' }}>
 
         {/* Icon hero */}
         <motion.div initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.04, type: 'spring', stiffness: 280, damping: 26 }}
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 32, marginTop: 8 }}
         >
-          <div style={{
-            width: 64, height: 64, borderRadius: 20,
+          <Box sx={{
+            width: 64, height: 64, borderRadius: '20px',
             background: 'rgba(200,255,0,0.10)', border: '1px solid rgba(200,255,0,0.2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', mb: '12px',
           }}>
             <KeyRound size={28} color="#C8FF00" />
-          </div>
-          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, fontFamily: 'Inter, sans-serif', textAlign: 'center', maxWidth: 240, lineHeight: 1.5, margin: 0 }}>
+          </Box>
+          <Typography sx={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, textAlign: 'center', maxWidth: 240, lineHeight: 1.5, m: 0 }}>
             Choose a strong password with at least 8 characters, including numbers and symbols.
-          </p>
+          </Typography>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}>
@@ -1873,11 +1884,11 @@ function ChangePasswordView({ onBack }) {
           <PasswordStrengthBar password={next} />
           <PasswordField label="Confirm New Password" value={confirm} onChange={setConfirm} placeholder="Repeat new password" />
           {mismatch && (
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              style={{ color: '#E8656A', fontSize: 12, fontFamily: 'Inter, sans-serif', marginTop: -8, marginBottom: 12 }}
-            >
-              Passwords don't match
-            </motion.p>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <Typography sx={{ color: '#E8656A', fontSize: 12, mt: '-8px', mb: '12px' }}>
+                Passwords don't match
+              </Typography>
+            </motion.div>
           )}
         </motion.div>
 
@@ -1888,22 +1899,22 @@ function ChangePasswordView({ onBack }) {
             borderRadius: 14, padding: '14px 16px', marginTop: 4,
           }}
         >
-          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: '0 0 8px' }}>Tips for a strong password</p>
+          <Typography sx={{ color: 'rgba(255,255,255,0.55)', fontSize: 12, fontWeight: 600, m: '0 0 8px' }}>Tips for a strong password</Typography>
           {['Use 12+ characters', 'Mix uppercase & lowercase', 'Include numbers & symbols', 'Avoid personal information'].map(tip => (
-            <div key={tip} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
-              <div style={{ width: 4, height: 4, borderRadius: 2, background: '#C8FF00', flexShrink: 0 }} />
-              <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: 0 }}>{tip}</p>
-            </div>
+            <Box key={tip} sx={{ display: 'flex', alignItems: 'center', gap: '8px', mb: '5px' }}>
+              <Box sx={{ width: 4, height: 4, borderRadius: '2px', background: '#C8FF00', flexShrink: 0 }} />
+              <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: 0 }}>{tip}</Typography>
+            </Box>
           ))}
         </motion.div>
-      </div>
+      </Box>
 
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
         style={{ padding: '12px 20px 36px', flexShrink: 0 }}
       >
         <PrimaryBtn label="Save Password" onClick={handleSave} disabled={!canSave} loading={saving && !done} done={done} />
       </motion.div>
-    </div>
+    </Box>
   )
 }
 
@@ -1957,77 +1968,76 @@ function TwoFactorView({ twoFactor, onUpdate, onBack }) {
   }
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav title={backTitle} onBack={handleBack} />
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 20px', paddingBottom: 96 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '12px 20px', paddingBottom: '96px' }}>
         <AnimatePresence mode="wait">
 
           {/* ── Main ── */}
           {step === 'main' && (
             <motion.div key="tfa-main" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 32, marginTop: 8 }}>
-                <div style={{
-                  width: 64, height: 64, borderRadius: 20,
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: '32px', mt: '8px' }}>
+                <Box sx={{
+                  width: 64, height: 64, borderRadius: '20px',
                   background: twoFactor.enabled ? 'rgba(74,222,128,0.12)' : 'rgba(200,255,0,0.10)',
                   border: `1px solid ${twoFactor.enabled ? 'rgba(74,222,128,0.28)' : 'rgba(200,255,0,0.2)'}`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', mb: '12px',
                 }}>
                   <ShieldCheck size={28} color={twoFactor.enabled ? '#4ade80' : '#C8FF00'} />
-                </div>
-                <p style={{ color: '#fff', fontSize: 17, fontWeight: 700, fontFamily: 'Inter, sans-serif', margin: '0 0 6px', letterSpacing: '-0.2px' }}>
+                </Box>
+                <Typography sx={{ color: '#fff', fontSize: 17, fontWeight: 700, m: '0 0 6px', letterSpacing: '-0.2px' }}>
                   {twoFactor.enabled ? '2FA is Active' : 'Add Extra Security'}
-                </p>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, fontFamily: 'Inter, sans-serif', textAlign: 'center', maxWidth: 260, lineHeight: 1.5, margin: 0 }}>
+                </Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, textAlign: 'center', maxWidth: 260, lineHeight: 1.5, m: 0 }}>
                   {twoFactor.enabled
                     ? `Protected via ${twoFactor.method === 'sms' ? 'SMS text message' : 'Authenticator app'}`
                     : 'Protect your account with a second verification step each time you sign in.'}
-                </p>
-              </div>
+                </Typography>
+              </Box>
 
               {twoFactor.enabled ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  <div style={{
-                    background: 'rgba(255,255,255,0.055)', border: '1px solid rgba(255,255,255,0.09)',
-                    borderRadius: 18, overflow: 'hidden',
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                      <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <GlassCard sx={{ borderRadius: '18px', overflow: 'hidden' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: '13px', padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                      <Box sx={{ width: 34, height: 34, borderRadius: '10px', background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {twoFactor.method === 'sms' ? <MessageSquare size={15} color="#C8FF00" /> : <QrCode size={15} color="#C8FF00" />}
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <p style={{ color: '#fff', fontSize: 14.5, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+                      </Box>
+                      <Box sx={{ flex: 1 }}>
+                        <Typography sx={{ color: '#fff', fontSize: 14.5, fontWeight: 500, m: 0 }}>
                           {twoFactor.method === 'sms' ? 'SMS Text Message' : 'Authenticator App'}
-                        </p>
-                        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>Active method</p>
-                      </div>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: '#4ade80', fontFamily: 'Inter, sans-serif', background: 'rgba(74,222,128,0.12)', padding: '3px 8px', borderRadius: 6 }}>ON</span>
-                    </div>
+                        </Typography>
+                        <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: '2px 0 0' }}>Active method</Typography>
+                      </Box>
+                      <Typography component="span" sx={{ fontSize: 11, fontWeight: 700, color: '#4ade80', background: 'rgba(74,222,128,0.12)', padding: '3px 8px', borderRadius: '6px' }}>ON</Typography>
+                    </Box>
                     <motion.div whileTap={{ scale: 0.985 }} onClick={() => setStep('backup')}
                       style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '14px 16px', cursor: 'pointer' }}
                     >
-                      <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Box sx={{ width: 34, height: 34, borderRadius: '10px', background: 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Copy size={15} color="rgba(255,255,255,0.6)" />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <p style={{ color: '#fff', fontSize: 14.5, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: 0 }}>View Backup Codes</p>
-                        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>6 codes remaining</p>
-                      </div>
+                      </Box>
+                      <Box sx={{ flex: 1 }}>
+                        <Typography sx={{ color: '#fff', fontSize: 14.5, fontWeight: 500, m: 0 }}>View Backup Codes</Typography>
+                        <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: '2px 0 0' }}>6 codes remaining</Typography>
+                      </Box>
                       <ChevronRight size={15} color="rgba(255,255,255,0.22)" />
                     </motion.div>
-                  </div>
+                  </GlassCard>
 
-                  <motion.button whileTap={{ scale: 0.97 }} onClick={disable2FA}
-                    style={{
-                      width: '100%', height: 50, borderRadius: 16,
+                  <MotionButton whileTap={{ scale: 0.97 }} onClick={disable2FA}
+                    disableRipple disableTouchRipple
+                    sx={{
+                      width: '100%', height: 50, borderRadius: '16px',
                       background: 'rgba(232,101,106,0.08)', border: '1px solid rgba(232,101,106,0.2)',
-                      color: '#E8656A', fontSize: 15, fontWeight: 600, fontFamily: 'Inter, sans-serif',
+                      color: '#E8656A', fontSize: 15, fontWeight: 600, textTransform: 'none', minWidth: 0,
                       cursor: 'pointer',
+                      '&:hover': { background: 'rgba(232,101,106,0.12)' },
                     }}
                   >
                     Disable Two-Factor Auth
-                  </motion.button>
-                </div>
+                  </MotionButton>
+                </Box>
               ) : (
                 <PrimaryBtn label="Enable Two-Factor Auth" onClick={() => setStep('method')} />
               )}
@@ -2037,9 +2047,9 @@ function TwoFactorView({ twoFactor, onUpdate, onBack }) {
           {/* ── Method selection ── */}
           {step === 'method' && (
             <motion.div key="tfa-method" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
-              <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, fontFamily: 'Inter, sans-serif', marginBottom: 20, lineHeight: 1.55 }}>
+              <Typography sx={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, mb: '20px', lineHeight: 1.55 }}>
                 Choose how you'd like to receive your verification codes.
-              </p>
+              </Typography>
               {[
                 { id: 'sms', Icon: MessageSquare, label: 'SMS Text Message', sub: 'Codes sent to your phone number on file' },
                 { id: 'app', Icon: QrCode,        label: 'Authenticator App', sub: 'Use Google Authenticator, Authy, or similar' },
@@ -2053,62 +2063,72 @@ function TwoFactorView({ twoFactor, onUpdate, onBack }) {
                     transition: 'background 0.2s, border-color 0.2s',
                   }}
                 >
-                  <div style={{ width: 40, height: 40, borderRadius: 12, background: method === opt.id ? 'rgba(200,255,0,0.12)' : 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ width: 40, height: 40, borderRadius: '12px', background: method === opt.id ? 'rgba(200,255,0,0.12)' : 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <opt.Icon size={18} color={method === opt.id ? '#C8FF00' : 'rgba(255,255,255,0.5)'} />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <p style={{ color: '#fff', fontSize: 15, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>{opt.label}</p>
-                    <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '3px 0 0' }}>{opt.sub}</p>
-                  </div>
-                  <div style={{
-                    width: 20, height: 20, borderRadius: 10,
+                  </Box>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography sx={{ color: '#fff', fontSize: 15, fontWeight: 600, m: 0 }}>{opt.label}</Typography>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, m: '3px 0 0' }}>{opt.sub}</Typography>
+                  </Box>
+                  <Box sx={{
+                    width: 20, height: 20, borderRadius: '10px',
                     border: `2px solid ${method === opt.id ? '#C8FF00' : 'rgba(255,255,255,0.2)'}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     background: method === opt.id ? '#C8FF00' : 'transparent',
                   }}>
-                    {method === opt.id && <div style={{ width: 8, height: 8, borderRadius: 4, background: '#000' }} />}
-                  </div>
+                    {method === opt.id && <Box sx={{ width: 8, height: 8, borderRadius: '4px', background: '#000' }} />}
+                  </Box>
                 </motion.div>
               ))}
-              <div style={{ marginTop: 8 }}>
+              <Box sx={{ mt: '8px' }}>
                 <PrimaryBtn label="Continue" onClick={() => setStep(method === 'sms' ? 'sms-verify' : 'app-setup')} />
-              </div>
+              </Box>
             </motion.div>
           )}
 
           {/* ── SMS verify ── */}
           {step === 'sms-verify' && (
             <motion.div key="tfa-sms" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
-              <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, fontFamily: 'Inter, sans-serif', marginBottom: 24, lineHeight: 1.55 }}>
-                We'll send a 6-digit code to <span style={{ color: '#fff', fontWeight: 600 }}>+1 (555) 000-0000</span>
-              </p>
+              <Typography sx={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, mb: '24px', lineHeight: 1.55 }}>
+                We'll send a 6-digit code to <Typography component="span" sx={{ color: '#fff', fontWeight: 600 }}>+1 (555) 000-0000</Typography>
+              </Typography>
 
-              <div style={{ marginBottom: 20 }}>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 7px' }}>
+              <Box sx={{ mb: '20px' }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 7px' }}>
                   Verification Code
-                </p>
-                <input
+                </Typography>
+                <TextField
                   value={code} onChange={e => setCode(e.target.value.replace(/\D/g,'').slice(0,6))}
-                  placeholder="• • • • • •" maxLength={6}
-                  style={{
-                    width: '100%', height: 56, borderRadius: 14, boxSizing: 'border-box',
-                    background: 'rgba(255,255,255,0.07)', border: '1.5px solid rgba(255,255,255,0.09)',
-                    color: verified ? '#4ade80' : '#fff', fontSize: 22, fontWeight: 700, letterSpacing: '8px',
-                    textAlign: 'center', fontFamily: 'Inter, sans-serif', outline: 'none',
-                    transition: 'border-color 0.2s',
-                    borderColor: verified ? 'rgba(74,222,128,0.5)' : code.length === 6 ? 'rgba(200,255,0,0.45)' : 'rgba(255,255,255,0.09)',
+                  placeholder="• • • • • •" inputProps={{ maxLength: 6 }}
+                  fullWidth variant="outlined"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      height: 56, borderRadius: '14px',
+                      background: 'rgba(255,255,255,0.07)',
+                      '& fieldset': {
+                        borderWidth: '1.5px',
+                        borderColor: verified ? 'rgba(74,222,128,0.5)' : code.length === 6 ? 'rgba(200,255,0,0.45)' : 'rgba(255,255,255,0.09)',
+                      },
+                      '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.18)' },
+                      '&.Mui-focused fieldset': { borderColor: 'rgba(200,255,0,0.55)' },
+                      '& input': {
+                        color: verified ? '#4ade80' : '#fff', fontSize: 22, fontWeight: 700, letterSpacing: '8px',
+                        textAlign: 'center', padding: '0',
+                      },
+                    },
                   }}
                 />
-              </div>
+              </Box>
 
               {!codeSent ? (
-                <motion.button whileTap={{ scale: 0.97 }} onClick={sendCode}
-                  style={{ background: 'none', border: 'none', color: '#C8FF00', fontSize: 14, fontWeight: 600, fontFamily: 'Inter, sans-serif', cursor: 'pointer', padding: '0 0 20px' }}
+                <MotionButton whileTap={{ scale: 0.97 }} onClick={sendCode}
+                  disableRipple disableTouchRipple
+                  sx={{ background: 'none', border: 'none', color: '#C8FF00', fontSize: 14, fontWeight: 600, textTransform: 'none', minWidth: 0, cursor: 'pointer', padding: '0 0 20px', '&:hover': { background: 'none' } }}
                 >
                   Send Code
-                </motion.button>
+                </MotionButton>
               ) : (
-                <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 13, fontFamily: 'Inter, sans-serif', marginBottom: 20 }}>Code sent — resend in 30s</p>
+                <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 13, mb: '20px' }}>Code sent — resend in 30s</Typography>
               )}
 
               <PrimaryBtn
@@ -2124,44 +2144,49 @@ function TwoFactorView({ twoFactor, onUpdate, onBack }) {
           {/* ── Authenticator App setup ── */}
           {step === 'app-setup' && (
             <motion.div key="tfa-app" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
-              <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, fontFamily: 'Inter, sans-serif', marginBottom: 20, lineHeight: 1.55 }}>
+              <Typography sx={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, mb: '20px', lineHeight: 1.55 }}>
                 Scan this QR code with your authenticator app or enter the key manually.
-              </p>
+              </Typography>
 
               {/* Mock QR code */}
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-                <div style={{
-                  width: 160, height: 160, borderRadius: 16,
-                  background: '#fff', padding: 12,
-                  display: 'grid', gridTemplateColumns: 'repeat(8,1fr)', gap: 2,
+              <Box sx={{ display: 'flex', justifyContent: 'center', mb: '20px' }}>
+                <Box sx={{
+                  width: 160, height: 160, borderRadius: '16px',
+                  background: '#fff', padding: '12px',
+                  display: 'grid', gridTemplateColumns: 'repeat(8,1fr)', gap: '2px',
                 }}>
                   {Array.from({ length: 64 }).map((_, i) => {
                     const isOn = [0,1,2,3,4,5,6,8,14,16,22,24,30,32,38,48,49,50,51,52,53,54,56,62,63,7,15,23,31,39,47,9,17,25,33,41,11,19,43,21,29,37,45,55,57,58,59,60,61].includes(i)
-                    return <div key={i} style={{ background: isOn ? '#000' : '#fff', borderRadius: 1 }} />
+                    return <Box key={i} sx={{ background: isOn ? '#000' : '#fff', borderRadius: '1px' }} />
                   })}
-                </div>
-              </div>
+                </Box>
+              </Box>
 
-              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '14px 16px', marginBottom: 20 }}>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 6px' }}>Manual Key</p>
-                <p style={{ color: '#C8FF00', fontSize: 14, fontWeight: 600, letterSpacing: '2px', fontFamily: 'monospace', margin: 0 }}>JBSW Y3DP EBZG K3LN</p>
-              </div>
+              <Box sx={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '14px', padding: '14px 16px', mb: '20px' }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 6px' }}>Manual Key</Typography>
+                <Typography sx={{ color: '#C8FF00', fontSize: 14, fontWeight: 600, letterSpacing: '2px', fontFamily: 'monospace', m: 0 }}>JBSW Y3DP EBZG K3LN</Typography>
+              </Box>
 
-              <div style={{ marginBottom: 20 }}>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 7px' }}>
+              <Box sx={{ mb: '20px' }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 7px' }}>
                   Enter 6-Digit Code from App
-                </p>
-                <input
+                </Typography>
+                <TextField
                   value={code} onChange={e => setCode(e.target.value.replace(/\D/g,'').slice(0,6))}
-                  placeholder="• • • • • •" maxLength={6}
-                  style={{
-                    width: '100%', height: 56, borderRadius: 14, boxSizing: 'border-box',
-                    background: 'rgba(255,255,255,0.07)', border: '1.5px solid rgba(255,255,255,0.09)',
-                    color: '#fff', fontSize: 22, fontWeight: 700, letterSpacing: '8px',
-                    textAlign: 'center', fontFamily: 'Inter, sans-serif', outline: 'none',
+                  placeholder="• • • • • •" inputProps={{ maxLength: 6 }}
+                  fullWidth variant="outlined"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      height: 56, borderRadius: '14px',
+                      background: 'rgba(255,255,255,0.07)',
+                      '& fieldset': { borderWidth: '1.5px', borderColor: 'rgba(255,255,255,0.09)' },
+                      '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.18)' },
+                      '&.Mui-focused fieldset': { borderColor: 'rgba(200,255,0,0.55)' },
+                      '& input': { color: '#fff', fontSize: 22, fontWeight: 700, letterSpacing: '8px', textAlign: 'center', padding: '0' },
+                    },
                   }}
                 />
-              </div>
+              </Box>
 
               <PrimaryBtn
                 label="Verify & Enable"
@@ -2176,14 +2201,14 @@ function TwoFactorView({ twoFactor, onUpdate, onBack }) {
           {/* ── Backup Codes ── */}
           {step === 'backup' && (
             <motion.div key="tfa-backup" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
-                <p style={{ color: '#fff', fontSize: 17, fontWeight: 700, fontFamily: 'Inter, sans-serif', margin: '0 0 8px', letterSpacing: '-0.2px' }}>Save Your Backup Codes</p>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, fontFamily: 'Inter, sans-serif', textAlign: 'center', maxWidth: 280, lineHeight: 1.5, margin: 0 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: '24px' }}>
+                <Typography sx={{ color: '#fff', fontSize: 17, fontWeight: 700, m: '0 0 8px', letterSpacing: '-0.2px' }}>Save Your Backup Codes</Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, textAlign: 'center', maxWidth: 280, lineHeight: 1.5, m: 0 }}>
                   Store these in a safe place. Each code can only be used once if you lose access to your authenticator.
-                </p>
-              </div>
+                </Typography>
+              </Box>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 20 }}>
+              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', mb: '20px' }}>
                 {TFA_BACKUP_CODES.map((c, i) => (
                   <motion.div key={c} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
                     style={{
@@ -2191,32 +2216,34 @@ function TwoFactorView({ twoFactor, onUpdate, onBack }) {
                       borderRadius: 10, padding: '10px 14px', textAlign: 'center',
                     }}
                   >
-                    <span style={{ color: '#C8FF00', fontSize: 13, fontWeight: 600, fontFamily: 'monospace', letterSpacing: '1px' }}>{c}</span>
+                    <Typography component="span" sx={{ color: '#C8FF00', fontSize: 13, fontWeight: 600, fontFamily: 'monospace', letterSpacing: '1px' }}>{c}</Typography>
                   </motion.div>
                 ))}
-              </div>
+              </Box>
 
-              <div style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
-                <motion.button whileTap={{ scale: 0.97 }} onClick={copyBackups}
-                  style={{
-                    flex: 1, height: 48, borderRadius: 14,
+              <Box sx={{ display: 'flex', gap: '10px', mb: '12px' }}>
+                <MotionButton whileTap={{ scale: 0.97 }} onClick={copyBackups}
+                  disableRipple disableTouchRipple
+                  sx={{
+                    flex: 1, height: 48, borderRadius: '14px',
                     background: copied ? 'rgba(74,222,128,0.1)' : 'rgba(255,255,255,0.07)',
                     border: `1px solid ${copied ? 'rgba(74,222,128,0.3)' : 'rgba(255,255,255,0.09)'}`,
                     color: copied ? '#4ade80' : 'rgba(255,255,255,0.7)',
-                    fontSize: 14, fontWeight: 600, fontFamily: 'Inter, sans-serif',
-                    cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+                    fontSize: 14, fontWeight: 600, textTransform: 'none', minWidth: 0,
+                    cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '7px',
+                    '&:hover': { background: copied ? 'rgba(74,222,128,0.14)' : 'rgba(255,255,255,0.10)' },
                   }}
                 >
                   {copied ? <><Check size={15} /> Copied</> : <><Copy size={15} /> Copy Codes</>}
-                </motion.button>
-              </div>
+                </MotionButton>
+              </Box>
               <PrimaryBtn label="Done" onClick={onBack} />
             </motion.div>
           )}
 
         </AnimatePresence>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
@@ -2254,29 +2281,29 @@ function ActiveSessionsView({ onBack }) {
   const otherSessions = sessions.filter(s => !s.current)
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav title="Active Sessions" onBack={onBack} />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px', paddingBottom: 96 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '12px 16px', paddingBottom: '96px' }}>
 
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.04 }}
-          style={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, fontFamily: 'Inter, sans-serif', marginBottom: 16, lineHeight: 1.55 }}
-        >
-          These devices are signed into your account. Remove any sessions you don't recognize.
-        </motion.p>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.04 }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, mb: '16px', lineHeight: 1.55 }}>
+            These devices are signed into your account. Remove any sessions you don't recognize.
+          </Typography>
+        </motion.div>
 
         {/* Current device */}
         <Section title="This Device" delay={0.06}>
           {sessions.filter(s => s.current).map(sess => (
-            <div key={sess.id} style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '14px 16px' }}>
-              <div style={{ width: 36, height: 36, borderRadius: 11, background: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Box key={sess.id} sx={{ display: 'flex', alignItems: 'center', gap: '13px', padding: '14px 16px' }}>
+              <Box sx={{ width: 36, height: 36, borderRadius: '11px', background: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <sess.icon size={16} color="#4ade80" />
-              </div>
-              <div style={{ flex: 1 }}>
-                <p style={{ color: '#fff', fontSize: 14.5, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: 0 }}>{sess.device}</p>
-                <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>{sess.os} · {sess.location}</p>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#4ade80', fontFamily: 'Inter, sans-serif', background: 'rgba(74,222,128,0.12)', padding: '3px 8px', borderRadius: 6 }}>Active</span>
-            </div>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography sx={{ color: '#fff', fontSize: 14.5, fontWeight: 500, m: 0 }}>{sess.device}</Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: '2px 0 0' }}>{sess.os} · {sess.location}</Typography>
+              </Box>
+              <Typography component="span" sx={{ fontSize: 11, fontWeight: 700, color: '#4ade80', background: 'rgba(74,222,128,0.12)', padding: '3px 8px', borderRadius: '6px' }}>Active</Typography>
+            </Box>
           ))}
         </Section>
 
@@ -2289,24 +2316,26 @@ function ActiveSessionsView({ onBack }) {
                 transition={{ duration: 0.3 }}
                 style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '13px 16px', borderBottom: i < otherSessions.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}
               >
-                <div style={{ width: 36, height: 36, borderRadius: 11, background: 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Box sx={{ width: 36, height: 36, borderRadius: '11px', background: 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <sess.icon size={16} color="rgba(255,255,255,0.5)" />
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ color: '#fff', fontSize: 14.5, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: 0 }}>{sess.device}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>{sess.location} · {sess.lastActive}</p>
-                </div>
-                <motion.button whileTap={{ scale: 0.9 }} onClick={() => revokeSession(sess.id)}
+                </Box>
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography sx={{ color: '#fff', fontSize: 14.5, fontWeight: 500, m: 0 }}>{sess.device}</Typography>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: '2px 0 0' }}>{sess.location} · {sess.lastActive}</Typography>
+                </Box>
+                <MotionButton whileTap={{ scale: 0.9 }} onClick={() => revokeSession(sess.id)}
                   disabled={!!revoking}
-                  style={{
+                  disableRipple disableTouchRipple
+                  sx={{
                     background: 'rgba(232,101,106,0.08)', border: '1px solid rgba(232,101,106,0.2)',
-                    borderRadius: 8, padding: '5px 10px', cursor: 'pointer',
-                    color: '#E8656A', fontSize: 12, fontWeight: 600, fontFamily: 'Inter, sans-serif',
-                    display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0,
+                    borderRadius: '8px', padding: '5px 10px', cursor: 'pointer',
+                    color: '#E8656A', fontSize: 12, fontWeight: 600, textTransform: 'none', minWidth: 0,
+                    display: 'flex', alignItems: 'center', gap: '5px', flexShrink: 0,
+                    '&:hover': { background: 'rgba(232,101,106,0.12)' },
                   }}
                 >
                   {revoking === sess.id ? <Spinner color="#E8656A" size={14} /> : 'Revoke'}
-                </motion.button>
+                </MotionButton>
               </motion.div>
             ))}
           </Section>
@@ -2316,31 +2345,33 @@ function ActiveSessionsView({ onBack }) {
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, padding: '24px 0' }}
           >
-            <div style={{ width: 48, height: 48, borderRadius: 24, background: 'rgba(74,222,128,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box sx={{ width: 48, height: 48, borderRadius: '24px', background: 'rgba(74,222,128,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Check size={22} color="#4ade80" />
-            </div>
-            <p style={{ color: '#4ade80', fontSize: 14, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>All other sessions removed</p>
+            </Box>
+            <Typography sx={{ color: '#4ade80', fontSize: 14, fontWeight: 600, m: 0 }}>All other sessions removed</Typography>
           </motion.div>
         )}
 
         {otherSessions.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }} style={{ marginTop: 8 }}>
-            <motion.button whileTap={{ scale: 0.97 }} onClick={revokeAll} disabled={signOutAll}
-              style={{
-                width: '100%', height: 50, borderRadius: 16,
+            <MotionButton whileTap={{ scale: 0.97 }} onClick={revokeAll} disabled={signOutAll}
+              disableRipple disableTouchRipple
+              sx={{
+                width: '100%', height: 50, borderRadius: '16px',
                 background: 'rgba(232,101,106,0.07)', border: '1px solid rgba(232,101,106,0.18)',
                 color: signOutAll ? 'rgba(232,101,106,0.4)' : '#E8656A',
-                fontSize: 15, fontWeight: 600, fontFamily: 'Inter, sans-serif',
+                fontSize: 15, fontWeight: 600, textTransform: 'none', minWidth: 0,
                 cursor: signOutAll ? 'default' : 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                '&:hover': { background: 'rgba(232,101,106,0.10)' },
               }}
             >
               {signOutAll ? <><Spinner color="#E8656A" size={16} /> Revoking...</> : <><LogOut size={16} /> Sign Out All Other Devices</>}
-            </motion.button>
+            </MotionButton>
           </motion.div>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
@@ -2359,9 +2390,9 @@ function PrivacyDataView({ privacy, onUpdate, onBack }) {
   }
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav title="Privacy & Data" onBack={onBack} />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px', paddingBottom: 96 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '12px 16px', paddingBottom: '96px' }}>
 
         <Section title="Location" delay={0.04}>
           <Row icon={MapPin}   label="Precise Location" sublabel="Required for live tracking"         toggle={{ on: privacy.location,    onToggle: set('location')    }} />
@@ -2377,17 +2408,17 @@ function PrivacyDataView({ privacy, onUpdate, onBack }) {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
           style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: '16px', marginBottom: 22 }}
         >
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: '0 0 10px' }}>Data we collect</p>
+          <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, fontWeight: 600, m: '0 0 10px' }}>Data we collect</Typography>
           {[
             'GPS location during active trips',
             'Vehicle speed & acceleration events',
             'OBD-II diagnostic codes',
             'App usage & crash reports (if enabled)',
           ].map(item => (
-            <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 7 }}>
-              <div style={{ width: 4, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.3)', flexShrink: 0, marginTop: 5 }} />
-              <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12.5, fontFamily: 'Inter, sans-serif', lineHeight: 1.5, margin: 0 }}>{item}</p>
-            </div>
+            <Box key={item} sx={{ display: 'flex', alignItems: 'flex-start', gap: '8px', mb: '7px' }}>
+              <Box sx={{ width: 4, height: 4, borderRadius: '2px', background: 'rgba(255,255,255,0.3)', flexShrink: 0, mt: '5px' }} />
+              <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12.5, lineHeight: 1.5, m: 0 }}>{item}</Typography>
+            </Box>
           ))}
         </motion.div>
 
@@ -2395,30 +2426,30 @@ function PrivacyDataView({ privacy, onUpdate, onBack }) {
           <motion.div whileTap={{ scale: 0.985 }} onClick={handleExport}
             style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '14px 16px', cursor: 'pointer' }}
           >
-            <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box sx={{ width: 34, height: 34, borderRadius: '10px', background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {exporting ? <Spinner color="#C8FF00" size={15} /> : exported ? <Check size={15} color="#4ade80" /> : <Download size={15} color="#C8FF00" />}
-            </div>
-            <div style={{ flex: 1 }}>
-              <p style={{ color: exported ? '#4ade80' : '#fff', fontSize: 14.5, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+            </Box>
+            <Box sx={{ flex: 1 }}>
+              <Typography sx={{ color: exported ? '#4ade80' : '#fff', fontSize: 14.5, fontWeight: 500, m: 0 }}>
                 {exported ? 'Export Requested' : 'Export My Data'}
-              </p>
-              <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>
-                {exported ? 'You\'ll receive an email within 24 hours' : 'Download a copy of your Tracklynk data'}
-              </p>
-            </div>
+              </Typography>
+              <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: '2px 0 0' }}>
+                {exported ? "You'll receive an email within 24 hours" : 'Download a copy of your Tracklynk data'}
+              </Typography>
+            </Box>
             {!exporting && !exported && <ChevronRight size={15} color="rgba(255,255,255,0.22)" />}
           </motion.div>
         </Section>
 
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-          style={{ color: 'rgba(255,255,255,0.22)', fontSize: 12, fontFamily: 'Inter, sans-serif', textAlign: 'center', lineHeight: 1.6, padding: '0 12px' }}
-        >
-          We never sell your personal data. Read our full{' '}
-          <span style={{ color: 'rgba(200,255,0,0.7)', textDecoration: 'underline' }}>Privacy Policy</span>{' '}
-          for details.
-        </motion.p>
-      </div>
-    </div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.22)', fontSize: 12, textAlign: 'center', lineHeight: 1.6, padding: '0 12px' }}>
+            We never sell your personal data. Read our full{' '}
+            <Typography component="span" sx={{ color: 'rgba(200,255,0,0.7)', textDecoration: 'underline' }}>Privacy Policy</Typography>{' '}
+            for details.
+          </Typography>
+        </motion.div>
+      </Box>
+    </Box>
   )
 }
 
@@ -2442,36 +2473,36 @@ function DeleteAccountView({ profile, onBack }) {
   }
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav
         title={step === 'warning' ? 'Delete Account' : step === 'confirm' ? 'Confirm Deletion' : 'Deleting Account'}
         onBack={step === 'warning' ? onBack : () => setStep('warning')}
       />
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 20px', paddingBottom: 96, display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '20px 20px', paddingBottom: '96px', display: 'flex', flexDirection: 'column' }}>
         <AnimatePresence mode="wait">
 
           {/* ── Warning ── */}
           {step === 'warning' && (
             <motion.div key="del-warning" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.22 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 32, marginTop: 8 }}>
-                <div style={{
-                  width: 72, height: 72, borderRadius: 22,
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: '32px', mt: '8px' }}>
+                <Box sx={{
+                  width: 72, height: 72, borderRadius: '22px',
                   background: 'rgba(232,101,106,0.10)', border: '1px solid rgba(232,101,106,0.25)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', mb: '14px',
                 }}>
                   <AlertTriangle size={32} color="#E8656A" />
-                </div>
-                <p style={{ color: '#fff', fontSize: 19, fontWeight: 800, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.4px', margin: '0 0 8px' }}>
+                </Box>
+                <Typography sx={{ color: '#fff', fontSize: 19, fontWeight: 800, letterSpacing: '-0.4px', m: '0 0 8px' }}>
                   This can't be undone
-                </p>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13.5, fontFamily: 'Inter, sans-serif', textAlign: 'center', maxWidth: 270, lineHeight: 1.6, margin: 0 }}>
+                </Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 13.5, textAlign: 'center', maxWidth: 270, lineHeight: 1.6, m: 0 }}>
                   Deleting your account will permanently remove all your data from Tracklynk.
-                </p>
-              </div>
+                </Typography>
+              </Box>
 
-              <div style={{ background: 'rgba(232,101,106,0.06)', border: '1px solid rgba(232,101,106,0.14)', borderRadius: 16, padding: '16px', marginBottom: 28 }}>
-                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12.5, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: '0 0 10px' }}>What will be deleted:</p>
+              <Box sx={{ background: 'rgba(232,101,106,0.06)', border: '1px solid rgba(232,101,106,0.14)', borderRadius: '16px', padding: '16px', mb: '28px' }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.55)', fontSize: 12.5, fontWeight: 600, m: '0 0 10px' }}>What will be deleted:</Typography>
                 {[
                   'Your profile and account credentials',
                   'All trip history and routes',
@@ -2479,80 +2510,90 @@ function DeleteAccountView({ profile, onBack }) {
                   'Active subscription (no refund)',
                   'Saved geofences and alerts',
                 ].map(item => (
-                  <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8 }}>
+                  <Box key={item} sx={{ display: 'flex', alignItems: 'flex-start', gap: '10px', mb: '8px' }}>
                     <X size={13} color="#E8656A" style={{ flexShrink: 0, marginTop: 2 }} />
-                    <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, fontFamily: 'Inter, sans-serif', lineHeight: 1.5, margin: 0 }}>{item}</p>
-                  </div>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, lineHeight: 1.5, m: 0 }}>{item}</Typography>
+                  </Box>
                 ))}
-              </div>
+              </Box>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                <motion.button whileTap={{ scale: 0.97 }} onClick={() => setStep('confirm')}
-                  style={{
-                    width: '100%', height: 52, borderRadius: 16,
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <MotionButton whileTap={{ scale: 0.97 }} onClick={() => setStep('confirm')}
+                  disableRipple disableTouchRipple
+                  sx={{
+                    width: '100%', height: 52, borderRadius: '16px',
                     background: 'rgba(232,101,106,0.10)', border: '1.5px solid rgba(232,101,106,0.3)',
-                    color: '#E8656A', fontSize: 15, fontWeight: 700, fontFamily: 'Inter, sans-serif',
+                    color: '#E8656A', fontSize: 15, fontWeight: 700, textTransform: 'none', minWidth: 0,
                     cursor: 'pointer',
+                    '&:hover': { background: 'rgba(232,101,106,0.15)' },
                   }}
                 >
                   Continue to Delete
-                </motion.button>
-                <motion.button whileTap={{ scale: 0.97 }} onClick={onBack}
-                  style={{
-                    width: '100%', height: 52, borderRadius: 16,
+                </MotionButton>
+                <MotionButton whileTap={{ scale: 0.97 }} onClick={onBack}
+                  disableRipple disableTouchRipple
+                  sx={{
+                    width: '100%', height: 52, borderRadius: '16px',
                     background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)',
-                    color: '#fff', fontSize: 15, fontWeight: 600, fontFamily: 'Inter, sans-serif',
+                    color: '#fff', fontSize: 15, fontWeight: 600, textTransform: 'none', minWidth: 0,
                     cursor: 'pointer',
+                    '&:hover': { background: 'rgba(255,255,255,0.09)' },
                   }}
                 >
                   Keep My Account
-                </motion.button>
-              </div>
+                </MotionButton>
+              </Box>
             </motion.div>
           )}
 
           {/* ── Confirm ── */}
           {step === 'confirm' && (
             <motion.div key="del-confirm" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.22 }}>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, fontFamily: 'Inter, sans-serif', marginBottom: 28, lineHeight: 1.6 }}>
+              <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, mb: '28px', lineHeight: 1.6 }}>
                 To confirm, type your email address{' '}
-                <span style={{ color: '#fff', fontWeight: 600 }}>{targetEmail}</span>{' '}
+                <Typography component="span" sx={{ color: '#fff', fontWeight: 600 }}>{targetEmail}</Typography>{' '}
                 below.
-              </p>
+              </Typography>
 
-              <div style={{ marginBottom: 28 }}>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 7px' }}>
+              <Box sx={{ mb: '28px' }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 7px' }}>
                   Email Address
-                </p>
-                <input
+                </Typography>
+                <TextField
                   type="email" value={typed} placeholder={targetEmail}
                   onChange={e => setTyped(e.target.value)}
-                  onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-                  style={{
-                    width: '100%', height: 52, borderRadius: 14, boxSizing: 'border-box',
-                    background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-                    border: `1.5px solid ${confirmed ? 'rgba(232,101,106,0.5)' : focused ? 'rgba(200,255,0,0.45)' : 'rgba(255,255,255,0.09)'}`,
-                    boxShadow: focused ? '0 0 0 3px rgba(200,255,0,0.08)' : 'none',
-                    color: confirmed ? '#E8656A' : '#fff', fontSize: 15,
-                    padding: '0 16px', fontFamily: 'Inter, sans-serif',
-                    transition: 'border-color 0.18s, box-shadow 0.18s', outline: 'none',
+                  fullWidth variant="outlined"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      height: 52, borderRadius: '14px',
+                      background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)',
+                      '& fieldset': {
+                        borderWidth: '1.5px',
+                        borderColor: confirmed ? 'rgba(232,101,106,0.5)' : 'rgba(255,255,255,0.09)',
+                      },
+                      '&:hover fieldset': { borderColor: confirmed ? 'rgba(232,101,106,0.5)' : 'rgba(255,255,255,0.18)' },
+                      '&.Mui-focused fieldset': { borderColor: confirmed ? 'rgba(232,101,106,0.5)' : 'rgba(200,255,0,0.45)', boxShadow: '0 0 0 3px rgba(200,255,0,0.08)' },
+                      '& input': { color: confirmed ? '#E8656A' : '#fff', fontSize: 15, padding: '0 16px' },
+                    },
                   }}
                 />
-              </div>
+              </Box>
 
-              <motion.button whileTap={confirmed ? { scale: 0.97 } : {}} onClick={handleDelete}
-                style={{
-                  width: '100%', height: 54, borderRadius: 16,
+              <MotionButton whileTap={confirmed ? { scale: 0.97 } : {}} onClick={handleDelete}
+                disableRipple disableTouchRipple
+                sx={{
+                  width: '100%', height: 54, borderRadius: '16px',
                   background: confirmed ? 'rgba(232,101,106,0.15)' : 'rgba(255,255,255,0.04)',
                   border: `1.5px solid ${confirmed ? 'rgba(232,101,106,0.45)' : 'rgba(255,255,255,0.06)'}`,
                   color: confirmed ? '#E8656A' : 'rgba(255,255,255,0.2)',
-                  fontSize: 15, fontWeight: 700, fontFamily: 'Inter, sans-serif',
+                  fontSize: 15, fontWeight: 700, textTransform: 'none', minWidth: 0,
                   cursor: confirmed ? 'pointer' : 'default',
                   transition: 'all 0.2s',
+                  '&:hover': { background: confirmed ? 'rgba(232,101,106,0.20)' : 'rgba(255,255,255,0.04)' },
                 }}
               >
                 Permanently Delete Account
-              </motion.button>
+              </MotionButton>
             </motion.div>
           )}
 
@@ -2566,14 +2607,14 @@ function DeleteAccountView({ profile, onBack }) {
                 transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
                 style={{ width: 48, height: 48, borderRadius: 24, border: '3px solid rgba(232,101,106,0.15)', borderTopColor: '#E8656A', marginBottom: 20 }}
               />
-              <p style={{ color: '#E8656A', fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif', margin: '0 0 8px' }}>Deleting your account…</p>
-              <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13, fontFamily: 'Inter, sans-serif', margin: 0 }}>This may take a moment</p>
+              <Typography sx={{ color: '#E8656A', fontSize: 16, fontWeight: 700, m: '0 0 8px' }}>Deleting your account…</Typography>
+              <Typography sx={{ color: 'rgba(255,255,255,0.3)', fontSize: 13, m: 0 }}>This may take a moment</Typography>
             </motion.div>
           )}
 
         </AnimatePresence>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
@@ -2621,7 +2662,7 @@ function FaqItem({ q, a, index }) {
         style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', cursor: 'pointer' }}
       >
         <HelpCircle size={15} color="rgba(200,255,0,0.7)" style={{ flexShrink: 0 }} />
-        <p style={{ flex: 1, color: '#fff', fontSize: 14, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: 0, lineHeight: 1.4 }}>{q}</p>
+        <Typography sx={{ flex: 1, color: '#fff', fontSize: 14, fontWeight: 500, m: 0, lineHeight: 1.4 }}>{q}</Typography>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ type: 'spring', stiffness: 300, damping: 28 }}>
           <ChevronDown size={15} color="rgba(255,255,255,0.3)" />
         </motion.div>
@@ -2636,9 +2677,9 @@ function FaqItem({ q, a, index }) {
             transition={{ duration: 0.22, ease: 'easeInOut' }}
             style={{ overflow: 'hidden' }}
           >
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, fontFamily: 'Inter, sans-serif', lineHeight: 1.65, margin: 0, padding: '0 16px 16px 43px' }}>
+            <Typography sx={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, lineHeight: 1.65, m: 0, padding: '0 16px 16px 43px' }}>
               {a}
-            </p>
+            </Typography>
           </motion.div>
         )}
       </AnimatePresence>
@@ -2662,28 +2703,30 @@ function HelpSupportView({ onBack }) {
   }
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav title="Help & Support" onBack={onBack} />
 
       {/* Tab switcher */}
-      <div style={{ display: 'flex', gap: 8, padding: '4px 16px 12px', flexShrink: 0 }}>
+      <Box sx={{ display: 'flex', gap: '8px', padding: '4px 16px 12px', flexShrink: 0 }}>
         {[{ id: 'faq', label: 'FAQs' }, { id: 'contact', label: 'Contact Us' }].map(t => (
-          <motion.button key={t.id} whileTap={{ scale: 0.95 }} onClick={() => setTab(t.id)}
-            style={{
-              flex: 1, height: 38, borderRadius: 12,
+          <MotionButton key={t.id} whileTap={{ scale: 0.95 }} onClick={() => setTab(t.id)}
+            disableRipple disableTouchRipple
+            sx={{
+              flex: 1, height: 38, borderRadius: '12px',
               background: tab === t.id ? 'rgba(200,255,0,0.10)' : 'rgba(255,255,255,0.05)',
               border: `1.5px solid ${tab === t.id ? 'rgba(200,255,0,0.3)' : 'rgba(255,255,255,0.08)'}`,
               color: tab === t.id ? '#C8FF00' : 'rgba(255,255,255,0.45)',
-              fontSize: 13.5, fontWeight: 600, fontFamily: 'Inter, sans-serif',
+              fontSize: 13.5, fontWeight: 600, textTransform: 'none', minWidth: 0,
               cursor: 'pointer', transition: 'all 0.18s',
+              '&:hover': { background: tab === t.id ? 'rgba(200,255,0,0.14)' : 'rgba(255,255,255,0.08)' },
             }}
           >
             {t.label}
-          </motion.button>
+          </MotionButton>
         ))}
-      </div>
+      </Box>
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '0 16px', paddingBottom: 40 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '0 16px', paddingBottom: '40px' }}>
         <AnimatePresence mode="wait">
 
           {/* ── FAQ tab ── */}
@@ -2699,10 +2742,10 @@ function HelpSupportView({ onBack }) {
                 }}
               >
                 <CheckCircle2 size={16} color="#4ade80" />
-                <div style={{ flex: 1 }}>
-                  <p style={{ color: '#4ade80', fontSize: 13, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>All systems operational</p>
-                  <p style={{ color: 'rgba(74,222,128,0.6)', fontSize: 11.5, fontFamily: 'Inter, sans-serif', margin: '1px 0 0' }}>Live tracking · OBD sync · Notifications</p>
-                </div>
+                <Box sx={{ flex: 1 }}>
+                  <Typography sx={{ color: '#4ade80', fontSize: 13, fontWeight: 600, m: 0 }}>All systems operational</Typography>
+                  <Typography sx={{ color: 'rgba(74,222,128,0.6)', fontSize: 11.5, m: '1px 0 0' }}>Live tracking · OBD sync · Notifications</Typography>
+                </Box>
                 <motion.div
                   animate={{ scale: [1, 1.3, 1] }}
                   transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
@@ -2714,39 +2757,39 @@ function HelpSupportView({ onBack }) {
                 {FAQS.map((faq, i) => (
                   <FaqItem key={i} q={faq.q} a={faq.a} index={i} />
                 ))}
-                <div style={{ padding: '14px 16px' }}>
+                <Box sx={{ padding: '14px 16px' }}>
                   <motion.div whileTap={{ scale: 0.97 }} onClick={() => setTab('contact')}
                     style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}
                   >
                     <MessageSquare size={15} color="#C8FF00" />
-                    <p style={{ color: '#C8FF00', fontSize: 13.5, fontWeight: 600, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+                    <Typography sx={{ color: '#C8FF00', fontSize: 13.5, fontWeight: 600, m: 0 }}>
                       Didn't find your answer? Contact us →
-                    </p>
+                    </Typography>
                   </motion.div>
-                </div>
+                </Box>
               </Section>
 
               {/* Quick contact options */}
               <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ marginTop: 4 }}>
-                <p style={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', marginBottom: 8, paddingLeft: 4 }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.32)', fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', textTransform: 'uppercase', mb: 1, pl: '4px' }}>
                   Reach Us Directly
-                </p>
-                <div style={{ background: 'rgba(255,255,255,0.055)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 18, overflow: 'hidden' }}>
+                </Typography>
+                <GlassCard sx={{ borderRadius: '18px', overflow: 'hidden' }}>
                   {[
                     { Icon: Mail,      label: 'support@tracklynk.com', sub: 'Response within 24 hours' },
                     { Icon: PhoneIcon, label: '+1 (800) 555-0199',      sub: 'Mon–Fri, 9am–6pm PST', last: true },
                   ].map(({ Icon, label, sub, last }) => (
-                    <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '14px 16px', borderBottom: last ? 'none' : '1px solid rgba(255,255,255,0.06)' }}>
-                      <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Box key={label} sx={{ display: 'flex', alignItems: 'center', gap: '13px', padding: '14px 16px', borderBottom: last ? 'none' : '1px solid rgba(255,255,255,0.06)' }}>
+                      <Box sx={{ width: 34, height: 34, borderRadius: '10px', background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <Icon size={15} color="#C8FF00" />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <p style={{ color: '#fff', fontSize: 14, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: 0 }}>{label}</p>
-                        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>{sub}</p>
-                      </div>
-                    </div>
+                      </Box>
+                      <Box sx={{ flex: 1 }}>
+                        <Typography sx={{ color: '#fff', fontSize: 14, fontWeight: 500, m: 0 }}>{label}</Typography>
+                        <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: '2px 0 0' }}>{sub}</Typography>
+                      </Box>
+                    </Box>
                   ))}
-                </div>
+                </GlassCard>
               </motion.div>
             </motion.div>
           )}
@@ -2758,76 +2801,78 @@ function HelpSupportView({ onBack }) {
                 <motion.div initial={{ opacity: 0, scale: 0.88 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 22 }}
                   style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 48, gap: 14 }}
                 >
-                  <div style={{ width: 72, height: 72, borderRadius: 22, background: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.28)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ width: 72, height: 72, borderRadius: '22px', background: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.28)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Check size={30} color="#4ade80" />
-                  </div>
-                  <p style={{ color: '#fff', fontSize: 19, fontWeight: 800, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.4px', margin: 0 }}>Message Sent!</p>
-                  <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13.5, fontFamily: 'Inter, sans-serif', textAlign: 'center', maxWidth: 260, lineHeight: 1.6, margin: 0 }}>
+                  </Box>
+                  <Typography sx={{ color: '#fff', fontSize: 19, fontWeight: 800, letterSpacing: '-0.4px', m: 0 }}>Message Sent!</Typography>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 13.5, textAlign: 'center', maxWidth: 260, lineHeight: 1.6, m: 0 }}>
                     Our support team will get back to you at your registered email within 24 hours.
-                  </p>
-                  <motion.button whileTap={{ scale: 0.97 }} onClick={() => { setSent(false); setSubject(''); setMessage('') }}
-                    style={{
-                      marginTop: 8, padding: '12px 28px', borderRadius: 14,
+                  </Typography>
+                  <MotionButton whileTap={{ scale: 0.97 }} onClick={() => { setSent(false); setSubject(''); setMessage('') }}
+                    disableRipple disableTouchRipple
+                    sx={{
+                      mt: '8px', padding: '12px 28px', borderRadius: '14px',
                       background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)',
-                      color: 'rgba(255,255,255,0.7)', fontSize: 14, fontWeight: 600, fontFamily: 'Inter, sans-serif',
+                      color: 'rgba(255,255,255,0.7)', fontSize: 14, fontWeight: 600, textTransform: 'none', minWidth: 0,
                       cursor: 'pointer',
+                      '&:hover': { background: 'rgba(255,255,255,0.10)' },
                     }}
                   >
                     Send Another
-                  </motion.button>
+                  </MotionButton>
                 </motion.div>
               ) : (
                 <>
-                  <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.04 }}
-                    style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, fontFamily: 'Inter, sans-serif', lineHeight: 1.6, marginBottom: 20 }}
-                  >
-                    Describe your issue and we'll respond to your registered email.
-                  </motion.p>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.04 }}>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, lineHeight: 1.6, mb: '20px' }}>
+                      Describe your issue and we'll respond to your registered email.
+                    </Typography>
+                  </motion.div>
 
                   {/* Subject picker */}
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }} style={{ marginBottom: 14 }}>
-                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 9px' }}>Topic</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 9px' }}>Topic</Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                       {['Device Setup', 'Billing', 'Trips & Data', 'Account', 'App Bug', 'Other'].map(s => (
-                        <motion.button key={s} whileTap={{ scale: 0.94 }} onClick={() => setSubject(s)}
-                          style={{
-                            padding: '8px 14px', borderRadius: 10,
+                        <MotionButton key={s} whileTap={{ scale: 0.94 }} onClick={() => setSubject(s)}
+                          disableRipple disableTouchRipple
+                          sx={{
+                            padding: '8px 14px', borderRadius: '10px',
                             background: subject === s ? 'rgba(200,255,0,0.10)' : 'rgba(255,255,255,0.06)',
                             border: `1.5px solid ${subject === s ? 'rgba(200,255,0,0.35)' : 'rgba(255,255,255,0.09)'}`,
                             color: subject === s ? '#C8FF00' : 'rgba(255,255,255,0.5)',
-                            fontSize: 13, fontWeight: 600, fontFamily: 'Inter, sans-serif',
+                            fontSize: 13, fontWeight: 600, textTransform: 'none', minWidth: 0,
                             cursor: 'pointer', transition: 'all 0.15s',
+                            '&:hover': { background: subject === s ? 'rgba(200,255,0,0.14)' : 'rgba(255,255,255,0.09)' },
                           }}
                         >
                           {s}
-                        </motion.button>
+                        </MotionButton>
                       ))}
-                    </div>
+                    </Box>
                   </motion.div>
 
                   {/* Message textarea */}
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.10 }} style={{ marginBottom: 20 }}>
-                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', margin: '0 0 7px' }}>Message</p>
-                    <textarea
+                    <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', m: '0 0 7px' }}>Message</Typography>
+                    <TextField
                       value={message}
                       placeholder="Describe your issue in detail…"
                       onChange={e => setMessage(e.target.value)}
-                      onFocus={() => setMsgFocused(true)}
-                      onBlur={() => setMsgFocused(false)}
-                      rows={5}
-                      style={{
-                        width: '100%', borderRadius: 14, boxSizing: 'border-box',
-                        background: 'rgba(255,255,255,0.07)',
-                        backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-                        border: `1.5px solid ${msgFocused ? 'rgba(200,255,0,0.5)' : 'rgba(255,255,255,0.09)'}`,
-                        boxShadow: msgFocused ? '0 0 0 3px rgba(200,255,0,0.08)' : 'none',
-                        color: '#fff', fontSize: 14, padding: '14px 16px',
-                        fontFamily: 'Inter, sans-serif', lineHeight: 1.6,
-                        resize: 'none', outline: 'none',
-                        transition: 'border-color 0.18s, box-shadow 0.18s',
+                      multiline rows={5}
+                      fullWidth variant="outlined"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '14px',
+                          background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)',
+                          '& fieldset': { borderColor: 'rgba(255,255,255,0.09)', borderWidth: '1.5px' },
+                          '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.18)' },
+                          '&.Mui-focused fieldset': { borderColor: 'rgba(200,255,0,0.5)', boxShadow: '0 0 0 3px rgba(200,255,0,0.08)' },
+                          '& textarea': { color: '#fff', fontSize: 14, lineHeight: 1.6, padding: '14px 16px' },
+                        },
                       }}
                     />
-                    <p style={{ color: 'rgba(255,255,255,0.22)', fontSize: 11.5, fontFamily: 'Inter, sans-serif', margin: '5px 0 0', textAlign: 'right' }}>{message.length} chars</p>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.22)', fontSize: 11.5, m: '5px 0 0', textAlign: 'right' }}>{message.length} chars</Typography>
                   </motion.div>
 
                   <PrimaryBtn
@@ -2843,8 +2888,8 @@ function HelpSupportView({ onBack }) {
           )}
 
         </AnimatePresence>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
@@ -2892,9 +2937,9 @@ const CHANGELOG = [
 
 function WhatsNewView({ onBack }) {
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav title="What's New" onBack={onBack} />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '8px 16px', paddingBottom: 40 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '8px 16px', paddingBottom: '40px' }}>
         {CHANGELOG.map((release, ri) => (
           <motion.div key={release.version}
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -2902,32 +2947,32 @@ function WhatsNewView({ onBack }) {
             style={{ marginBottom: 20 }}
           >
             {/* Version header */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-              <div style={{
-                padding: '4px 10px', borderRadius: 8,
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', mb: '10px' }}>
+              <Box sx={{
+                padding: '4px 10px', borderRadius: '8px',
                 background: release.current ? 'rgba(200,255,0,0.12)' : 'rgba(255,255,255,0.06)',
                 border: `1px solid ${release.current ? 'rgba(200,255,0,0.3)' : 'rgba(255,255,255,0.09)'}`,
               }}>
-                <span style={{
+                <Typography component="span" sx={{
                   color: release.current ? '#C8FF00' : 'rgba(255,255,255,0.5)',
-                  fontSize: 12, fontWeight: 700, fontFamily: 'Inter, sans-serif', letterSpacing: '0.2px',
+                  fontSize: 12, fontWeight: 700, letterSpacing: '0.2px',
                 }}>
                   v{release.version}
-                </span>
-              </div>
+                </Typography>
+              </Box>
               {release.current && (
-                <span style={{ fontSize: 11, fontWeight: 700, color: '#4ade80', fontFamily: 'Inter, sans-serif', background: 'rgba(74,222,128,0.10)', padding: '3px 8px', borderRadius: 6, border: '1px solid rgba(74,222,128,0.2)' }}>
+                <Typography component="span" sx={{ fontSize: 11, fontWeight: 700, color: '#4ade80', background: 'rgba(74,222,128,0.10)', padding: '3px 8px', borderRadius: '6px', border: '1px solid rgba(74,222,128,0.2)' }}>
                   Current
-                </span>
+                </Typography>
               )}
-              <span style={{ color: 'rgba(255,255,255,0.28)', fontSize: 12, fontFamily: 'Inter, sans-serif', marginLeft: 'auto' }}>{release.date}</span>
-            </div>
+              <Typography component="span" sx={{ color: 'rgba(255,255,255,0.28)', fontSize: 12, ml: 'auto' }}>{release.date}</Typography>
+            </Box>
 
             {/* Changes card */}
-            <div style={{
+            <Box sx={{
               background: release.current ? 'rgba(200,255,0,0.04)' : 'rgba(255,255,255,0.04)',
               border: `1px solid ${release.current ? 'rgba(200,255,0,0.12)' : 'rgba(255,255,255,0.07)'}`,
-              borderRadius: 16, padding: '14px 16px',
+              borderRadius: '16px', padding: '14px 16px',
             }}>
               {release.changes.map((c, ci) => (
                 <motion.div key={c}
@@ -2935,21 +2980,21 @@ function WhatsNewView({ onBack }) {
                   transition={{ delay: ri * 0.07 + ci * 0.03 }}
                   style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: ci < release.changes.length - 1 ? 10 : 0 }}
                 >
-                  <div style={{ width: 5, height: 5, borderRadius: 2.5, background: release.current ? '#C8FF00' : 'rgba(255,255,255,0.25)', flexShrink: 0, marginTop: 5 }} />
-                  <p style={{ color: release.current ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.38)', fontSize: 13.5, fontFamily: 'Inter, sans-serif', lineHeight: 1.5, margin: 0 }}>{c}</p>
+                  <Box sx={{ width: 5, height: 5, borderRadius: '2.5px', background: release.current ? '#C8FF00' : 'rgba(255,255,255,0.25)', flexShrink: 0, mt: '5px' }} />
+                  <Typography sx={{ color: release.current ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.38)', fontSize: 13.5, lineHeight: 1.5, m: 0 }}>{c}</Typography>
                 </motion.div>
               ))}
-            </div>
+            </Box>
           </motion.div>
         ))}
 
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-          style={{ color: 'rgba(255,255,255,0.18)', fontSize: 12, fontFamily: 'Inter, sans-serif', textAlign: 'center', paddingBottom: 8 }}
-        >
-          Tracklynk · Built with ♥ in San Francisco
-        </motion.p>
-      </div>
-    </div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.18)', fontSize: 12, textAlign: 'center', pb: '8px' }}>
+            Tracklynk · Built with ♥ in San Francisco
+          </Typography>
+        </motion.div>
+      </Box>
+    </Box>
   )
 }
 
@@ -2985,32 +3030,34 @@ function TermsPrivacyView({ onBack }) {
   const updated  = tab === 'terms' ? 'Last updated April 1, 2026' : 'Last updated April 1, 2026'
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: 44 }}>
+    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: '#04050d', paddingTop: '44px' }}>
       <SubNav title="Terms & Privacy" onBack={onBack} />
 
       {/* Tab bar */}
-      <div style={{ display: 'flex', gap: 8, padding: '4px 16px 12px', flexShrink: 0 }}>
+      <Box sx={{ display: 'flex', gap: '8px', padding: '4px 16px 12px', flexShrink: 0 }}>
         {[{ id: 'terms', label: 'Terms of Service' }, { id: 'privacy', label: 'Privacy Policy' }].map(t => (
-          <motion.button key={t.id} whileTap={{ scale: 0.95 }} onClick={() => setTab(t.id)}
-            style={{
-              flex: 1, height: 38, borderRadius: 12,
+          <MotionButton key={t.id} whileTap={{ scale: 0.95 }} onClick={() => setTab(t.id)}
+            disableRipple disableTouchRipple
+            sx={{
+              flex: 1, height: 38, borderRadius: '12px',
               background: tab === t.id ? 'rgba(200,255,0,0.10)' : 'rgba(255,255,255,0.05)',
               border: `1.5px solid ${tab === t.id ? 'rgba(200,255,0,0.3)' : 'rgba(255,255,255,0.08)'}`,
               color: tab === t.id ? '#C8FF00' : 'rgba(255,255,255,0.45)',
-              fontSize: 13, fontWeight: 600, fontFamily: 'Inter, sans-serif',
+              fontSize: 13, fontWeight: 600, textTransform: 'none', minWidth: 0,
               cursor: 'pointer', transition: 'all 0.18s',
+              '&:hover': { background: tab === t.id ? 'rgba(200,255,0,0.14)' : 'rgba(255,255,255,0.08)' },
             }}
           >
             {t.label}
-          </motion.button>
+          </MotionButton>
         ))}
-      </div>
+      </Box>
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '0 16px', paddingBottom: 40 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', padding: '0 16px', paddingBottom: '40px' }}>
         <AnimatePresence mode="wait">
           <motion.div key={tab} initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -14 }} transition={{ duration: 0.18 }}>
 
-            <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12, fontFamily: 'Inter, sans-serif', marginBottom: 18, paddingLeft: 2 }}>{updated}</p>
+            <Typography sx={{ color: 'rgba(255,255,255,0.25)', fontSize: 12, mb: '18px', pl: '2px' }}>{updated}</Typography>
 
             {content.map((section, i) => (
               <motion.div key={section.heading}
@@ -3018,21 +3065,21 @@ function TermsPrivacyView({ onBack }) {
                 transition={{ delay: i * 0.04 }}
                 style={{ marginBottom: 20 }}
               >
-                <p style={{ color: '#fff', fontSize: 13.5, fontWeight: 700, fontFamily: 'Inter, sans-serif', margin: '0 0 6px', letterSpacing: '-0.1px' }}>{section.heading}</p>
-                <p style={{ color: 'rgba(255,255,255,0.42)', fontSize: 13, fontFamily: 'Inter, sans-serif', lineHeight: 1.7, margin: 0 }}>{section.body}</p>
+                <Typography sx={{ color: '#fff', fontSize: 13.5, fontWeight: 700, m: '0 0 6px', letterSpacing: '-0.1px' }}>{section.heading}</Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.42)', fontSize: 13, lineHeight: 1.7, m: 0 }}>{section.body}</Typography>
               </motion.div>
             ))}
 
-            <div style={{ marginTop: 8, padding: '14px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14 }}>
-              <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12, fontFamily: 'Inter, sans-serif', textAlign: 'center', lineHeight: 1.6, margin: 0 }}>
+            <Box sx={{ mt: '8px', padding: '14px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '14px' }}>
+              <Typography sx={{ color: 'rgba(255,255,255,0.25)', fontSize: 12, textAlign: 'center', lineHeight: 1.6, m: 0 }}>
                 Questions? Email{' '}
-                <span style={{ color: 'rgba(200,255,0,0.65)' }}>legal@tracklynk.com</span>
-              </p>
-            </div>
+                <Typography component="span" sx={{ color: 'rgba(200,255,0,0.65)' }}>legal@tracklynk.com</Typography>
+              </Typography>
+            </Box>
           </motion.div>
         </AnimatePresence>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
@@ -3085,17 +3132,17 @@ export default function Settings() {
   const displayName = `${profile.first} ${profile.last}`
 
   return (
-    <div style={{ height: '100%', position: 'relative', background: '#04050d', overflow: 'hidden' }}>
+    <Box sx={{ height: '100%', position: 'relative', background: '#04050d', overflow: 'hidden' }}>
 
       {/* ── Main list ── */}
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', paddingTop: 44 }}>
-        <div style={{ padding: '14px 20px 10px', flexShrink: 0 }}>
-          <h1 style={{ color: '#fff', fontSize: 22, fontWeight: 800, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.5px', margin: 0 }}>
+      <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', paddingTop: '44px' }}>
+        <Box sx={{ padding: '14px 20px 10px', flexShrink: 0 }}>
+          <Typography sx={{ color: '#fff', fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', m: 0 }}>
             Settings
-          </h1>
-        </div>
+          </Typography>
+        </Box>
 
-        <div style={{ flex: 1, overflowY: 'auto', padding: '6px 16px', paddingBottom: 96 }}>
+        <Box sx={{ flex: 1, overflowY: 'auto', padding: '6px 16px', paddingBottom: '96px' }}>
 
           {/* Profile card */}
           <motion.div
@@ -3103,27 +3150,21 @@ export default function Settings() {
             transition={{ delay: 0.04, type: 'spring', stiffness: 320, damping: 28 }}
             whileTap={{ scale: 0.985 }}
             onClick={() => setActiveView('profile')}
-            style={{
-              background: 'rgba(255,255,255,0.055)',
-              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.09)',
-              borderRadius: 18, padding: '14px 16px', marginBottom: 22,
-              display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer',
-            }}
+            style={{ ...glassCard, borderRadius: 18, padding: '14px 16px', marginBottom: 22, display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer' }}
           >
-            <div style={{
-              width: 50, height: 50, borderRadius: 25, flexShrink: 0,
+            <Box sx={{
+              width: 50, height: 50, borderRadius: '25px', flexShrink: 0,
               background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <span style={{ color: '#000', fontSize: 20, fontWeight: 800, fontFamily: 'Inter, sans-serif' }}>
+              <Typography component="span" sx={{ color: '#000', fontSize: 20, fontWeight: 800 }}>
                 {profile.first[0]?.toUpperCase()}
-              </span>
-            </div>
-            <div style={{ flex: 1 }}>
-              <p style={{ color: '#fff', fontSize: 16, fontWeight: 700, fontFamily: 'Inter, sans-serif', letterSpacing: '-0.2px', margin: 0 }}>{displayName}</p>
-              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>{profile.email}</p>
-            </div>
+              </Typography>
+            </Box>
+            <Box sx={{ flex: 1 }}>
+              <Typography sx={{ color: '#fff', fontSize: 16, fontWeight: 700, letterSpacing: '-0.2px', m: 0 }}>{displayName}</Typography>
+              <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, m: '2px 0 0' }}>{profile.email}</Typography>
+            </Box>
             <ChevronRight size={15} color="rgba(255,255,255,0.22)" />
           </motion.div>
 
@@ -3198,61 +3239,64 @@ export default function Settings() {
             <Row icon={FileText}  label="Terms & Privacy" onPress={() => setActiveView('terms-privacy')} />
 
             {/* Rate the App — inline stars */}
-            <div style={{ padding: '13px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 13 }}>
-                <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Box sx={{ padding: '13px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '13px' }}>
+                <Box sx={{ width: 34, height: 34, borderRadius: '10px', background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Star size={15} color="#C8FF00" />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <p style={{ color: '#fff', fontSize: 14.5, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: 0 }}>Rate the App</p>
-                  {rated && <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>Thanks for your feedback!</p>}
-                </div>
-                <div style={{ display: 'flex', gap: 4 }}>
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography sx={{ color: '#fff', fontSize: 14.5, fontWeight: 500, m: 0 }}>Rate the App</Typography>
+                  {rated && <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: '2px 0 0' }}>Thanks for your feedback!</Typography>}
+                </Box>
+                <Box sx={{ display: 'flex', gap: '4px' }}>
                   {[1,2,3,4,5].map(s => (
-                    <motion.button key={s} whileTap={{ scale: 0.8 }} onClick={() => handleRate(s)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}
+                    <MotionButton key={s} whileTap={{ scale: 0.8 }} onClick={() => handleRate(s)}
+                      disableRipple disableTouchRipple
+                      sx={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', minWidth: 0 }}
                     >
                       <Star size={18}
                         color={s <= rating ? '#C8FF00' : 'rgba(255,255,255,0.2)'}
                         fill={s <= rating ? '#C8FF00' : 'none'}
                         style={{ transition: 'color 0.15s, fill 0.15s' }}
                       />
-                    </motion.button>
+                    </MotionButton>
                   ))}
-                </div>
-              </div>
-            </div>
+                </Box>
+              </Box>
+            </Box>
 
             {/* Share Tracklynk — inline copy link */}
-            <div style={{ padding: '13px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 13 }}>
-                <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Box sx={{ padding: '13px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '13px' }}>
+                <Box sx={{ width: 34, height: 34, borderRadius: '10px', background: 'rgba(200,255,0,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Share2 size={15} color="#C8FF00" />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <p style={{ color: '#fff', fontSize: 14.5, fontWeight: 500, fontFamily: 'Inter, sans-serif', margin: 0 }}>Share Tracklynk</p>
-                  <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, fontFamily: 'Inter, sans-serif', margin: '2px 0 0' }}>Invite friends & family</p>
-                </div>
-                <motion.button whileTap={{ scale: 0.9 }} onClick={handleCopyLink}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px', borderRadius: 9,
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography sx={{ color: '#fff', fontSize: 14.5, fontWeight: 500, m: 0 }}>Share Tracklynk</Typography>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, m: '2px 0 0' }}>Invite friends & family</Typography>
+                </Box>
+                <MotionButton whileTap={{ scale: 0.9 }} onClick={handleCopyLink}
+                  disableRipple disableTouchRipple
+                  sx={{
+                    display: 'flex', alignItems: 'center', gap: '5px', padding: '6px 12px', borderRadius: '9px',
                     background: copied ? 'rgba(74,222,128,0.1)' : 'rgba(200,255,0,0.10)',
                     border: `1px solid ${copied ? 'rgba(74,222,128,0.28)' : 'rgba(200,255,0,0.25)'}`,
                     color: copied ? '#4ade80' : '#C8FF00',
-                    fontSize: 12.5, fontWeight: 600, fontFamily: 'Inter, sans-serif',
+                    fontSize: 12.5, fontWeight: 600, textTransform: 'none', minWidth: 0,
                     cursor: 'pointer', flexShrink: 0, transition: 'all 0.2s',
+                    '&:hover': { background: copied ? 'rgba(74,222,128,0.14)' : 'rgba(200,255,0,0.14)' },
                   }}
                 >
                   {copied ? <><Check size={13} /> Copied</> : <><Link size={13} /> Copy Link</>}
-                </motion.button>
-              </div>
-            </div>
+                </MotionButton>
+              </Box>
+            </Box>
 
             <Row label="Version" value="1.0.0 (build 42)" last />
           </Section>
 
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* ── Sub-screen layer ── */}
       <AnimatePresence>
@@ -3363,6 +3407,6 @@ export default function Settings() {
         )}
       </AnimatePresence>
 
-    </div>
+    </Box>
   )
 }

@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check, Zap, Shield, MapPin } from 'lucide-react'
 import ProgressBar from './ProgressBar.jsx'
-import { screenBase, headingStyle, subStyle, PrimaryButton, glassCard } from './SignUp.jsx'
+import { glassCard } from '../styles/glass'
+import { screenBase, headingStyle, subStyle, PrimaryButton } from './SignUp.jsx'
 
 const features = [
   { icon: MapPin, text: 'Real-time GPS tracking' },

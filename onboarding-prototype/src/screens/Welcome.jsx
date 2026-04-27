@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Box, Typography, Button, Divider } from '@mui/material'
 import { MapPin, Shield, Zap, Check } from 'lucide-react'
 import Car3D from '../components/Car3D.jsx'
+import { GlassCard } from '../components/GlassCard.jsx'
 
 // ─── Data ─────────────────────────────────────────────
 
@@ -39,50 +41,42 @@ const fadeUp = {
   show:   { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 360, damping: 28 } },
 }
 
+const MotionButton = motion(Button)
+
 // ─── Slide 1: Hero ────────────────────────────────────
 
 function HeroSlide() {
   return (
-    /* Outer: fill carousel height, center the whole content block vertically */
-    <div style={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: '0 0 4px',
-      gap: 0,
+    <Box sx={{
+      height: '100%', display: 'flex', flexDirection: 'column',
+      justifyContent: 'center', alignItems: 'center', pb: '4px',
     }}>
 
-      {/* Wordmark */}
-      <motion.h1
+      <motion.div
         initial={{ opacity: 0, y: -14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05, type: 'spring', stiffness: 300, damping: 28 }}
-        style={{
-          fontSize: 42, fontWeight: 900, color: '#fff',
-          letterSpacing: '-1.8px', lineHeight: 1,
-          fontFamily: 'Inter, sans-serif',
-          textAlign: 'center', marginBottom: 8,
-        }}
       >
-        Track<span style={{ color: '#C8FF00' }}>Lynk</span>
-      </motion.h1>
+        <Typography sx={{
+          fontSize: 42, fontWeight: 900, color: 'text.primary',
+          letterSpacing: '-1.8px', lineHeight: 1, textAlign: 'center', mb: '8px',
+        }}>
+          Track<Box component="span" sx={{ color: 'primary.main' }}>Lynk</Box>
+        </Typography>
+      </motion.div>
 
-      {/* Tagline */}
-      <motion.p
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.14 }}
-        style={{
-          color: 'rgba(255,255,255,0.38)', fontSize: 14,
-          fontFamily: 'Inter, sans-serif', marginBottom: 18, textAlign: 'center',
-        }}
       >
-        Know where your vehicle is — always.
-      </motion.p>
+        <Typography variant="caption" sx={{
+          fontSize: 14, display: 'block', textAlign: 'center', mb: '18px',
+        }}>
+          Know where your vehicle is — always.
+        </Typography>
+      </motion.div>
 
-      {/* Car — natural height, no flex stretching */}
       <motion.div
         initial={{ opacity: 0, scale: 0.92 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -93,39 +87,33 @@ function HeroSlide() {
         <Car3D width={360} />
       </motion.div>
 
-      {/* Trust badge */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.34 }}
-        style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          gap: 8, marginTop: 14,
-        }}
       >
-        {[0, 1, 2].map(i => (
-          <div key={i} style={{
-            width: 24, height: 24, borderRadius: 7,
-            background: 'rgba(200,255,0,0.10)',
-            border: '1px solid rgba(200,255,0,0.18)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
-              <path d="M11.5 5.3L10.6 3H3.4L2.5 5.3H11.5Z" fill="#C8FF00" opacity="0.9"/>
-              <rect x="1" y="5.3" width="12" height="3" rx="1" fill="#C8FF00" opacity="0.7"/>
-              <circle cx="3.5" cy="9" r="1.2" fill="#C8FF00"/>
-              <circle cx="10.5" cy="9" r="1.2" fill="#C8FF00"/>
-            </svg>
-          </div>
-        ))}
-        <span style={{
-          color: 'rgba(255,255,255,0.40)', fontSize: 12.5,
-          fontFamily: 'Inter, sans-serif', fontWeight: 500,
-        }}>
-          10,000+ vehicles protected
-        </span>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', mt: '14px' }}>
+          {[0, 1, 2].map(i => (
+            <Box key={i} sx={{
+              width: 24, height: 24, borderRadius: '7px',
+              bgcolor: 'rgba(200,255,0,0.10)',
+              border: '1px solid rgba(200,255,0,0.18)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
+                <path d="M11.5 5.3L10.6 3H3.4L2.5 5.3H11.5Z" fill="#C8FF00" opacity="0.9"/>
+                <rect x="1" y="5.3" width="12" height="3" rx="1" fill="#C8FF00" opacity="0.7"/>
+                <circle cx="3.5" cy="9" r="1.2" fill="#C8FF00"/>
+                <circle cx="10.5" cy="9" r="1.2" fill="#C8FF00"/>
+              </svg>
+            </Box>
+          ))}
+          <Typography variant="caption" sx={{ fontSize: 12.5, fontWeight: 500 }}>
+            10,000+ vehicles protected
+          </Typography>
+        </Box>
       </motion.div>
-    </div>
+    </Box>
   )
 }
 
@@ -133,112 +121,71 @@ function HeroSlide() {
 
 function FeaturesSlide() {
   return (
-    <div style={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      padding: '0 24px',
-    }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', px: '24px' }}>
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        style={{ marginBottom: 24 }}
       >
-        <h2 style={{
-          fontSize: 28,
-          fontWeight: 800,
-          color: '#fff',
-          letterSpacing: '-0.8px',
-          fontFamily: 'Inter, sans-serif',
-          marginBottom: 6,
-        }}>
-          Everything you need
-        </h2>
-        <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 14, fontFamily: 'Inter, sans-serif' }}>
-          One device. Full vehicle intelligence.
-        </p>
+        <Box sx={{ mb: '24px' }}>
+          <Typography sx={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.8px', mb: '6px' }}>
+            Everything you need
+          </Typography>
+          <Typography variant="caption" sx={{ fontSize: 14 }}>
+            One device. Full vehicle intelligence.
+          </Typography>
+        </Box>
       </motion.div>
 
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        animate="show"
-        style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
-      >
+      <motion.div variants={stagger} initial="hidden" animate="show" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {featureItems.map(({ icon: Icon, title, desc }) => (
-          <motion.div
-            key={title}
-            variants={fadeUp}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 14,
-              padding: '14px 16px', borderRadius: 18,
-              background: 'rgba(255,255,255,0.055)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.10)',
-            }}
-          >
-            <div style={{
-              width: 42, height: 42, borderRadius: 13, flexShrink: 0,
-              background: 'rgba(200,255,0,0.10)',
-              border: '1px solid rgba(200,255,0,0.18)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Icon size={19} color="#C8FF00" />
-            </div>
-            <div>
-              <p style={{ color: '#fff', fontWeight: 600, fontSize: 14, marginBottom: 3, fontFamily: 'Inter, sans-serif' }}>
-                {title}
-              </p>
-              <p style={{ color: 'rgba(255,255,255,0.40)', fontSize: 12.5, fontFamily: 'Inter, sans-serif' }}>
-                {desc}
-              </p>
-            </div>
+          <motion.div key={title} variants={fadeUp}>
+            <GlassCard sx={{ display: 'flex', alignItems: 'center', gap: '14px', p: '14px 16px', borderRadius: '18px' }}>
+              <Box sx={{
+                width: 42, height: 42, borderRadius: '13px', flexShrink: 0,
+                bgcolor: 'rgba(200,255,0,0.10)',
+                border: '1px solid rgba(200,255,0,0.18)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <Icon size={19} color="#C8FF00" />
+              </Box>
+              <Box>
+                <Typography sx={{ fontWeight: 600, fontSize: 14, mb: '3px' }}>{title}</Typography>
+                <Typography variant="caption" sx={{ fontSize: 12.5, color: 'rgba(255,255,255,0.40)' }}>{desc}</Typography>
+              </Box>
+            </GlassCard>
           </motion.div>
         ))}
       </motion.div>
-    </div>
+    </Box>
   )
 }
 
 // ─── Slide 3: Pricing ─────────────────────────────────
+// Toggle kept fully custom — MUI ToggleButtonGroup has no shared sliding indicator
 
 function PricingSlide() {
   const [annual, setAnnual] = useState(false)
   const price = annual ? 7.99 : 9.65
 
   return (
-    <div style={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      padding: '0 24px',
-    }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', px: '24px' }}>
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        style={{ marginBottom: 18 }}
       >
-        <h2 style={{
-          fontSize: 28,
-          fontWeight: 800,
-          color: '#fff',
-          letterSpacing: '-0.8px',
-          fontFamily: 'Inter, sans-serif',
-          marginBottom: 6,
-        }}>
-          Simple pricing
-        </h2>
-        <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 14, fontFamily: 'Inter, sans-serif' }}>
-          No contracts. Cancel any time.
-        </p>
+        <Box sx={{ mb: '18px' }}>
+          <Typography sx={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.8px', mb: '6px' }}>
+            Simple pricing
+          </Typography>
+          <Typography variant="caption" sx={{ fontSize: 14 }}>
+            No contracts. Cancel any time.
+          </Typography>
+        </Box>
       </motion.div>
 
-      {/* Toggle */}
+      {/* Custom sliding toggle — kept as-is, MUI has no equivalent */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -296,56 +243,50 @@ function PricingSlide() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        style={{
-          background: 'rgba(255,255,255,0.055)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255,255,255,0.10)',
-          borderRadius: 20, padding: '20px', position: 'relative', overflow: 'hidden',
-        }}
       >
-        <div style={{
-          position: 'absolute', top: -30, right: -30, width: 130, height: 130,
-          background: 'radial-gradient(circle, rgba(200,255,0,0.07) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
+        <GlassCard sx={{ position: 'relative', overflow: 'hidden', p: '20px' }}>
+          <Box sx={{
+            position: 'absolute', top: -30, right: -30, width: 130, height: 130,
+            background: 'radial-gradient(circle, rgba(200,255,0,0.07) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }} />
 
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 5, marginBottom: 14 }}>
-          <motion.span
-            key={price}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{
-              fontSize: 42, fontWeight: 900, color: '#fff', lineHeight: 1,
-              fontFamily: 'Inter, sans-serif', letterSpacing: '-1.5px',
-            }}
-          >
-            ${price.toFixed(2)}
-          </motion.span>
-          <span style={{ color: 'rgba(255,255,255,0.38)', fontSize: 13, marginBottom: 6, fontFamily: 'Inter, sans-serif' }}>
-            /mo{annual && ', billed yearly'}
-          </span>
-        </div>
+          <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '5px', mb: '14px' }}>
+            <motion.span
+              key={price}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{ display: 'contents' }}
+            >
+              <Typography sx={{ fontSize: 42, fontWeight: 900, lineHeight: 1, letterSpacing: '-1.5px' }}>
+                ${price.toFixed(2)}
+              </Typography>
+            </motion.span>
+            <Typography variant="caption" sx={{ fontSize: 13, mb: '6px' }}>
+              /mo{annual && ', billed yearly'}
+            </Typography>
+          </Box>
 
-        <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', marginBottom: 14 }} />
+          <Divider sx={{ mb: '14px' }} />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-          {planFeatures.map(f => (
-            <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{
-                width: 20, height: 20, borderRadius: 99, flexShrink: 0,
-                background: 'rgba(200,255,0,0.10)',
-                border: '1px solid rgba(200,255,0,0.18)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <Check size={11} color="#C8FF00" />
-              </div>
-              <span style={{ color: 'rgba(255,255,255,0.70)', fontSize: 13, fontFamily: 'Inter, sans-serif' }}>{f}</span>
-            </div>
-          ))}
-        </div>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+            {planFeatures.map(f => (
+              <Box key={f} sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Box sx={{
+                  width: 20, height: 20, borderRadius: '99px', flexShrink: 0,
+                  bgcolor: 'rgba(200,255,0,0.10)',
+                  border: '1px solid rgba(200,255,0,0.18)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Check size={11} color="#C8FF00" />
+                </Box>
+                <Typography variant="body2" sx={{ fontSize: 13 }}>{f}</Typography>
+              </Box>
+            ))}
+          </Box>
+        </GlassCard>
       </motion.div>
-    </div>
+    </Box>
   )
 }
 
@@ -385,16 +326,10 @@ export default function Welcome({ next, goTo, onEnterApp }) {
   }
 
   return (
-    <div style={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      paddingTop: 44,
-      background: 'transparent',
-    }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', pt: '44px' }}>
 
       {/* ── Carousel ── */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+      <Box sx={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
         <AnimatePresence custom={dir} mode="popLayout" initial={false}>
           <motion.div
             key={slide}
@@ -415,16 +350,10 @@ export default function Welcome({ next, goTo, onEnterApp }) {
             {slide === 2 && <PricingSlide />}
           </motion.div>
         </AnimatePresence>
-      </div>
+      </Box>
 
-      {/* ── Dot indicators (breathing room above CTA section) ── */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 7,
-        padding: '18px 0 22px',
-      }}>
+      {/* ── Dot indicators ── */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '7px', py: '18px' }}>
         {Array.from({ length: TOTAL_SLIDES }).map((_, i) => (
           <motion.div
             key={i}
@@ -437,69 +366,56 @@ export default function Welcome({ next, goTo, onEnterApp }) {
             style={{ height: 6, borderRadius: 99, cursor: 'pointer' }}
           />
         ))}
-      </div>
+      </Box>
 
-      {/* ── CTA section — NO auth here, just entry points ── */}
-      <div style={{ padding: '0 24px 44px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {/* ── CTA section ── */}
+      <Box sx={{ px: '24px', pb: '44px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
-        {/* Primary: Get Started */}
-        <motion.button
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={next}
-          style={{
-            width: '100%', height: 54, borderRadius: 18,
-            background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            color: '#000', fontSize: 16, fontWeight: 700, cursor: 'pointer',
-            letterSpacing: '-0.2px',
-            boxShadow: '0 8px 32px rgba(200,255,0,0.30), inset 0 1px 0 rgba(255,255,255,0.25)',
-            fontFamily: 'Inter, sans-serif',
-          }}
-        >
-          Get Started →
-        </motion.button>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <MotionButton
+            fullWidth
+            variant="contained"
+            whileTap={{ scale: 0.97 }}
+            onClick={next}
+            sx={{ height: 54, borderRadius: '18px', fontSize: 16, fontWeight: 700, letterSpacing: '-0.2px' }}
+          >
+            Get Started →
+          </MotionButton>
+        </motion.div>
 
-        {/* Secondary: Test drive */}
-        <motion.button
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.26 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={onEnterApp}
-          style={{
-            width: '100%', height: 48, borderRadius: 16,
-            background: 'rgba(255,255,255,0.06)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            color: 'rgba(255,255,255,0.72)', fontSize: 15, fontWeight: 600,
-            cursor: 'pointer', fontFamily: 'Inter, sans-serif',
-          }}
-        >
-          Test drive the app
-        </motion.button>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.26 }}>
+          <MotionButton
+            fullWidth
+            variant="outlined"
+            whileTap={{ scale: 0.97 }}
+            onClick={onEnterApp}
+            sx={{
+              height: 48,
+              background: 'rgba(255,255,255,0.06)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              color: 'rgba(255,255,255,0.72)',
+              fontSize: 15,
+            }}
+          >
+            Test drive the app
+          </MotionButton>
+        </motion.div>
 
-        {/* Tertiary: Sign in link */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.32 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={next}
-          style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            color: 'rgba(255,255,255,0.35)', fontSize: 14,
-            fontFamily: 'Inter, sans-serif', padding: '4px 0',
-          }}
-        >
-          Already have an account?{' '}
-          <span style={{ color: '#C8FF00', fontWeight: 700 }}>Sign In</span>
-        </motion.button>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.32 }}>
+          <MotionButton
+            fullWidth
+            variant="text"
+            whileTap={{ scale: 0.97 }}
+            onClick={next}
+            sx={{ color: 'text.disabled', fontSize: 14, py: '4px' }}
+          >
+            Already have an account?{' '}
+            <Box component="span" sx={{ color: 'primary.main', fontWeight: 700, ml: '4px' }}>Sign In</Box>
+          </MotionButton>
+        </motion.div>
 
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }

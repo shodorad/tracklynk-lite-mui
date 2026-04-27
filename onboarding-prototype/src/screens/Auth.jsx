@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Box, Typography, Button } from '@mui/material'
 import { Fingerprint, Check, ArrowLeft } from 'lucide-react'
-import { glassCard } from './SignUp.jsx'
+import { glassCard } from '../styles/glass'
 
 // ─── OAuth brand icons ─────────────────────────────────
 
@@ -29,6 +30,8 @@ function GoogleIcon() {
 
 // ─── Biometric button ──────────────────────────────────
 
+const MotionButton = motion(Button)
+
 function FaceIDButton({ onClick }) {
   const [state, setState] = useState('idle') // idle | scanning | verified
 
@@ -40,23 +43,22 @@ function FaceIDButton({ onClick }) {
   }
 
   const color = state === 'verified' ? '#4ade80' : '#C8FF00'
+  const borderColor = state === 'verified' ? 'rgba(74,222,128,0.3)' : 'rgba(255,255,255,0.10)'
 
   return (
-    <motion.button
+    <MotionButton
       whileTap={{ scale: 0.90 }}
       onClick={handlePress}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8,
-        padding: '12px 18px',
-        borderRadius: 14,
+      variant="outlined"
+      sx={{
+        display: 'flex', alignItems: 'center', gap: '8px',
+        p: '12px 18px', borderRadius: '14px',
         background: 'rgba(255,255,255,0.06)',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
-        border: `1px solid ${state === 'verified' ? 'rgba(74,222,128,0.3)' : 'rgba(255,255,255,0.10)'}`,
-        cursor: 'pointer',
+        borderColor,
         transition: 'border-color 0.3s',
+        minWidth: 0,
       }}
     >
       {state === 'scanning' ? (
@@ -79,22 +81,19 @@ function FaceIDButton({ onClick }) {
       ) : (
         <Fingerprint size={20} color={color} />
       )}
-      <div style={{ textAlign: 'left' }}>
-        <p style={{
-          color: state === 'verified' ? '#4ade80' : '#fff',
-          fontSize: 13.5,
-          fontWeight: 600,
-          fontFamily: 'Inter, sans-serif',
-          lineHeight: 1.2,
+      <Box sx={{ textAlign: 'left' }}>
+        <Typography sx={{
+          color: state === 'verified' ? '#4ade80' : 'text.primary',
+          fontSize: 13.5, fontWeight: 600, lineHeight: 1.2,
           transition: 'color 0.3s',
         }}>
           {state === 'verified' ? 'Verified' : 'Use Face ID'}
-        </p>
-        <p style={{ color: 'rgba(255,255,255,0.32)', fontSize: 11.5, fontFamily: 'Inter, sans-serif' }}>
+        </Typography>
+        <Typography variant="caption" sx={{ fontSize: 11.5, color: 'rgba(255,255,255,0.32)' }}>
           Quick, secure re-entry
-        </p>
-      </div>
-    </motion.button>
+        </Typography>
+      </Box>
+    </MotionButton>
   )
 }
 
@@ -102,42 +101,28 @@ function FaceIDButton({ onClick }) {
 
 export default function Auth({ next, back, onOAuthLogin }) {
   return (
-    <div style={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      paddingTop: 44,
-      background: 'transparent',
-    }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', pt: '44px' }}>
 
       {/* Back button */}
-      <div style={{ padding: '12px 20px 0' }}>
-        <motion.button
+      <Box sx={{ p: '12px 20px 0' }}>
+        <MotionButton
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           whileTap={{ scale: 0.90 }}
           onClick={back}
-          style={{
-            width: 38, height: 38, borderRadius: 13,
+          variant="outlined"
+          sx={{
+            minWidth: 0, width: 38, height: 38, borderRadius: '13px', p: 0,
             background: 'rgba(255,255,255,0.07)',
             backdropFilter: 'blur(12px)',
             WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.10)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer',
           }}
         >
           <ArrowLeft size={17} color="rgba(255,255,255,0.80)" />
-        </motion.button>
-      </div>
+        </MotionButton>
+      </Box>
 
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        padding: '28px 26px 0',
-      }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', p: '28px 26px 0' }}>
 
         {/* Heading */}
         <motion.div
@@ -146,19 +131,12 @@ export default function Auth({ next, back, onOAuthLogin }) {
           transition={{ delay: 0.06, type: 'spring', stiffness: 300, damping: 28 }}
           style={{ marginBottom: 32 }}
         >
-          <h2 style={{
-            fontSize: 30,
-            fontWeight: 900,
-            color: '#fff',
-            letterSpacing: '-0.8px',
-            fontFamily: 'Inter, sans-serif',
-            marginBottom: 7,
-          }}>
+          <Typography sx={{ fontSize: 30, fontWeight: 900, letterSpacing: '-0.8px', mb: '7px' }}>
             Create your account
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 14.5, fontFamily: 'Inter, sans-serif' }}>
+          </Typography>
+          <Typography variant="caption" sx={{ fontSize: 14.5 }}>
             Choose how you'd like to get started.
-          </p>
+          </Typography>
         </motion.div>
 
         {/* OAuth buttons */}
@@ -168,169 +146,124 @@ export default function Auth({ next, back, onOAuthLogin }) {
           transition={{ delay: 0.12 }}
           style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
         >
-
-          {/* Apple — PRIMARY (red gradient, most prominent) */}
-          <motion.button
+          {/* Apple — primary */}
+          <MotionButton
+            fullWidth
+            variant="contained"
             whileTap={{ scale: 0.97 }}
             onClick={onOAuthLogin || next}
-            style={{
-              width: '100%', height: 54, borderRadius: 18,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              background: 'linear-gradient(135deg, #C8FF00 0%, #8FB800 100%)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: '#000', fontSize: 16, fontWeight: 700, cursor: 'pointer',
-              letterSpacing: '-0.2px',
-              boxShadow: '0 8px 32px rgba(200,255,0,0.30), inset 0 1px 0 rgba(255,255,255,0.25)',
-              fontFamily: 'Inter, sans-serif',
-            }}
+            sx={{ height: 54, borderRadius: '18px', fontSize: 16, fontWeight: 700, letterSpacing: '-0.2px', gap: '10px' }}
           >
             <AppleIcon />
             Continue with Apple
-          </motion.button>
+          </MotionButton>
 
-          {/* Google — SECONDARY (glass outlined) */}
-          <motion.button
+          {/* Google — secondary glass */}
+          <MotionButton
+            fullWidth
+            variant="outlined"
             whileTap={{ scale: 0.97 }}
             onClick={onOAuthLogin || next}
-            style={{
-              width: '100%', height: 50, borderRadius: 16,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+            sx={{
+              height: 50, borderRadius: '16px', fontSize: 15, fontWeight: 600,
               background: 'rgba(255,255,255,0.07)',
               backdropFilter: 'blur(12px)',
               WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255,255,255,0.14)',
-              color: '#fff', fontSize: 15, fontWeight: 600, cursor: 'pointer',
-              fontFamily: 'Inter, sans-serif',
+              color: 'text.primary',
+              gap: '10px',
             }}
           >
             <GoogleIcon />
             Continue with Google
-          </motion.button>
+          </MotionButton>
 
           {/* Divider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, margin: '2px 0' }}>
-            <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.07)' }} />
-            <span style={{ color: 'rgba(255,255,255,0.22)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}>or</span>
-            <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.07)' }} />
-          </div>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px', my: '2px' }}>
+            <Box sx={{ flex: 1, height: 1, bgcolor: 'rgba(255,255,255,0.07)' }} />
+            <Typography variant="caption" sx={{ fontSize: 12, color: 'rgba(255,255,255,0.22)' }}>or</Typography>
+            <Box sx={{ flex: 1, height: 1, bgcolor: 'rgba(255,255,255,0.07)' }} />
+          </Box>
 
-          {/* Email — TERTIARY (text link) */}
-          <motion.button
+          {/* Email — tertiary */}
+          <MotionButton
+            fullWidth
+            variant="text"
             whileTap={{ scale: 0.97 }}
             onClick={next}
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              color: 'rgba(255,255,255,0.55)', fontSize: 15, fontWeight: 600,
-              fontFamily: 'Inter, sans-serif', padding: '4px 0',
-              textAlign: 'center',
-            }}
+            sx={{ color: 'rgba(255,255,255,0.55)', fontSize: 15, fontWeight: 600 }}
           >
             Sign up with Email{' '}
-            <span style={{ color: '#C8FF00' }}>→</span>
-          </motion.button>
+            <Box component="span" sx={{ color: 'primary.main', ml: '4px' }}>→</Box>
+          </MotionButton>
         </motion.div>
 
-        {/* ── Sign in link ── */}
+        {/* Sign in link */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.28 }}
-          style={{
-            marginTop: 24,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 5,
-          }}
+          style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5 }}
         >
-          <span style={{
-            color: 'rgba(255,255,255,0.32)',
-            fontSize: 13.5,
-            fontFamily: 'Inter, sans-serif',
-          }}>
+          <Typography variant="caption" sx={{ fontSize: 13.5, color: 'rgba(255,255,255,0.32)' }}>
             Already have an account?
-          </span>
-          <motion.button
+          </Typography>
+          <MotionButton
+            variant="text"
             whileTap={{ scale: 0.95 }}
             onClick={next}
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              color: '#C8FF00', fontSize: 13.5, fontWeight: 700,
-              fontFamily: 'Inter, sans-serif', padding: 0,
-            }}
+            sx={{ color: 'primary.main', fontSize: 13.5, fontWeight: 700, p: 0, minWidth: 0 }}
           >
             Sign in
-          </motion.button>
+          </MotionButton>
         </motion.div>
 
-        {/* ── Returning user section ── */}
+        {/* Returning user section */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.22 }}
-          style={{
-            marginTop: 32,
-            ...glassCard,
-            borderRadius: 18,
-            padding: '18px 18px 18px',
-          }}
+          style={{ marginTop: 32, ...glassCard, borderRadius: 18, padding: '18px' }}
         >
-          <p style={{
-            color: 'rgba(255,255,255,0.30)',
-            fontSize: 10.5,
-            fontWeight: 700,
-            letterSpacing: '0.9px',
-            textTransform: 'uppercase',
-            fontFamily: 'Inter, sans-serif',
-            marginBottom: 14,
+          <Typography sx={{
+            color: 'rgba(255,255,255,0.30)', fontSize: 10.5, fontWeight: 700,
+            letterSpacing: '0.9px', textTransform: 'uppercase', mb: '14px',
           }}>
             Returning user
-          </p>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-            <div>
-              <p style={{
-                color: '#fff',
-                fontSize: 14,
-                fontWeight: 600,
-                fontFamily: 'Inter, sans-serif',
-                marginBottom: 3,
-              }}>
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+            <Box>
+              <Typography sx={{ fontSize: 14, fontWeight: 600, mb: '3px' }}>
                 Sign in with Face ID
-              </p>
-              <p style={{ color: 'rgba(255,255,255,0.32)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}>
+              </Typography>
+              <Typography variant="caption" sx={{ fontSize: 12, color: 'rgba(255,255,255,0.32)' }}>
                 Instant access to your account
-              </p>
-            </div>
+              </Typography>
+            </Box>
             <FaceIDButton onClick={next} />
-          </div>
+          </Box>
         </motion.div>
 
-      </div>
+      </Box>
 
-      {/* Spacer pushes legal text to bottom */}
-      <div style={{ flex: 1 }} />
+      <Box sx={{ flex: 1 }} />
 
       {/* Legal disclaimer */}
-      <motion.p
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.32 }}
-        style={{
-          color: 'rgba(255,255,255,0.20)',
-          fontSize: 11,
-          fontFamily: 'Inter, sans-serif',
-          textAlign: 'center',
-          padding: '0 32px 44px',
-          lineHeight: 1.5,
-        }}
       >
-        By continuing, you agree to our{' '}
-        <span style={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'underline' }}>Terms of Service</span>
-        {' '}and{' '}
-        <span style={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'underline' }}>Privacy Policy</span>
-      </motion.p>
+        <Typography sx={{
+          color: 'rgba(255,255,255,0.20)', fontSize: 11, textAlign: 'center',
+          p: '0 32px 44px', lineHeight: 1.5,
+        }}>
+          By continuing, you agree to our{' '}
+          <Box component="span" sx={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'underline' }}>Terms of Service</Box>
+          {' '}and{' '}
+          <Box component="span" sx={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'underline' }}>Privacy Policy</Box>
+        </Typography>
+      </motion.div>
 
-    </div>
+    </Box>
   )
 }
