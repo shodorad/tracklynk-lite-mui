@@ -34,3 +34,5 @@ npm-debug.log*
 
 # Claude Code tool directories
 onboarding-prototype/antivibe/
+# Added by code-review-graph
+.code-review-graph/

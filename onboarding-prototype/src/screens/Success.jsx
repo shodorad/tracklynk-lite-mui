@@ -110,7 +110,7 @@ export default function Success({ goTo, onEnterApp }) {
           transition={{ delay: 0.45 }}
           style={{ display: 'flex', gap: 8, margin: '18px 0 24px', flexWrap: 'wrap', justifyContent: 'center' }}
         >
-          {['Plan activated', 'Device ready'].map(label => (
+          {['Free plan active', 'Device ready'].map(label => (
             <div key={label} style={{
               display: 'flex',
               alignItems: 'center',

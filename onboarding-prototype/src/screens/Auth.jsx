@@ -100,7 +100,7 @@ function FaceIDButton({ onClick }) {
 
 // ─── Main screen ───────────────────────────────────────
 
-export default function Auth({ next, back }) {
+export default function Auth({ next, back, onOAuthLogin }) {
   return (
     <div style={{
       height: '100%',
@@ -172,7 +172,7 @@ export default function Auth({ next, back }) {
           {/* Apple — PRIMARY (red gradient, most prominent) */}
           <motion.button
             whileTap={{ scale: 0.97 }}
-            onClick={next}
+            onClick={onOAuthLogin || next}
             style={{
               width: '100%', height: 54, borderRadius: 18,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
@@ -191,7 +191,7 @@ export default function Auth({ next, back }) {
           {/* Google — SECONDARY (glass outlined) */}
           <motion.button
             whileTap={{ scale: 0.97 }}
-            onClick={next}
+            onClick={onOAuthLogin || next}
             style={{
               width: '100%', height: 50, borderRadius: 16,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,

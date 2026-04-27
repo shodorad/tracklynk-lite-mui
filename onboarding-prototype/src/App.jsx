@@ -6,14 +6,14 @@ import SignUp from './screens/SignUp.jsx'
 import AddVehicle from './screens/AddVehicle.jsx'
 import VehicleDetails from './screens/VehicleDetails.jsx'
 import ScanDevice from './screens/ScanDevice.jsx'
-import ChoosePlan from './screens/ChoosePlan.jsx'
+import DeviceSetupWizard from './screens/DeviceSetupWizard.jsx'
 import Success from './screens/Success.jsx'
 import Home from './screens/Home.jsx'
 import Trips from './screens/Trips.jsx'
 import Settings from './screens/Settings.jsx'
 import BottomTabs from './components/BottomTabs.jsx'
 
-const SCREENS = ['welcome', 'auth', 'signup', 'vehicle', 'details', 'scan', 'plan', 'success']
+const SCREENS = ['welcome', 'auth', 'signup', 'scan', 'vehicle', 'details', 'deviceSetup', 'success']
 
 const slideVariants = {
   enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
@@ -29,16 +29,17 @@ export default function App() {
   const [appPhase, setAppPhase]     = useState('onboarding')
   const [mainScreen, setMainScreen] = useState('home')
 
-  const next      = () => { setDir(1);  setStep(s => Math.min(s + 1, SCREENS.length - 1)) }
-  const back      = () => { setDir(-1); setStep(s => Math.max(s - 1, 0)) }
-  const goTo      = (i) => { setDir(i > step ? 1 : -1); setStep(i) }
-  const enterApp  = () => setAppPhase('main')
+  const next        = () => { setDir(1);  setStep(s => Math.min(s + 1, SCREENS.length - 1)) }
+  const back        = () => { setDir(-1); setStep(s => Math.max(s - 1, 0)) }
+  const goTo        = (i) => { setDir(i > step ? 1 : -1); setStep(i) }
+  const enterApp    = () => setAppPhase('main')
+  const skipToScan  = () => { setDir(1); setStep(SCREENS.indexOf('scan')) }
 
   const screen          = SCREENS[step]
   const onboardingStep  = step - 2
-  const totalOnboarding = 6
+  const totalOnboarding = 5
 
-  const screenProps = { next, back, goTo, step: onboardingStep, total: totalOnboarding, onEnterApp: enterApp }
+  const screenProps = { next, back, goTo, step: onboardingStep, total: totalOnboarding, onEnterApp: enterApp, onOAuthLogin: skipToScan }
 
   const renderOnboardingScreen = () => {
     switch (screen) {
@@ -47,9 +48,9 @@ export default function App() {
       case 'signup':  return <SignUp     {...screenProps} />
       case 'vehicle': return <AddVehicle {...screenProps} />
       case 'details': return <VehicleDetails {...screenProps} />
-      case 'scan':    return <ScanDevice {...screenProps} />
-      case 'plan':    return <ChoosePlan {...screenProps} />
-      case 'success': return <Success    {...screenProps} onEnterApp={enterApp} />
+      case 'scan':        return <ScanDevice        {...screenProps} />
+      case 'deviceSetup': return <DeviceSetupWizard {...screenProps} />
+      case 'success':     return <Success            {...screenProps} onEnterApp={enterApp} />
       default:        return null
     }
   }

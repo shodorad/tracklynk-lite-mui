@@ -17,8 +17,8 @@ export default function ScanDevice({ next, back, step, total }) {
 
       <div style={{ flex: 1, padding: '16px 24px 0', display: 'flex', flexDirection: 'column' }}>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <h2 style={headingStyle}>Connect your device</h2>
-          <p style={subStyle}>Plug the OBD device under your dashboard, then scan the barcode on the back.</p>
+          <h2 style={headingStyle}>Scan your device</h2>
+          <p style={subStyle}>Don't have the device yet? No worries — you can skip this and come back later.</p>
         </motion.div>
 
         {/* Device visual */}
@@ -205,7 +205,7 @@ export default function ScanDevice({ next, back, step, total }) {
         transition={{ delay: 0.3 }}
         style={{ padding: '20px 24px 48px' }}
       >
-        <PrimaryButton onClick={next} label={scanned ? 'Continue' : 'Skip — Enter IMEI manually'} />
+        <PrimaryButton onClick={next} label={scanned ? 'Continue →' : 'Skip for now'} />
       </motion.div>
     </div>
   )
